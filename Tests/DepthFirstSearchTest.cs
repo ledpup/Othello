@@ -21,7 +21,6 @@ namespace Tests
                                { "PotentialMobility", .9f },
                                { "Parity", 1f },
                                { "PositionValues", .8f },
-                               { "PotentialMobility", .9f },
 		                   };
 
         static TestNode AlphaBetaTree

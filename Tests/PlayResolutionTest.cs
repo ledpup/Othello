@@ -151,7 +151,8 @@ namespace Tests
         [TestMethod]
         public void BlackResolveTest()
         {
-            var gameState = GameState.NewGame();
+            var gameState = new GameState(0x00000028080c0000, 0x0000081034000000);
+            //var gameState = GameState.NewGame();
 
             var actual = Play.PlacePiece(131072, gameState.PlayerPieces, gameState.OpponentPieces);
             ulong expected = 67108864;

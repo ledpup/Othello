@@ -46,25 +46,6 @@ namespace Reversi.Model
             return validPlays;
         }
 
-        public static ulong PotentialMobilityOneDirection(Func<ulong, ulong> function, ulong playerPieces, ulong emptySquares)
-        {
-            var shift = function(playerPieces);
-            return shift & emptySquares;
-            //return potential & emptySquares;
-        }
-
-        public static ulong PotentialMobility(ulong playerPieces, ulong emptySquares)
-        {
-            return PotentialMobilityOneDirection(Up, playerPieces, emptySquares)
-                   | PotentialMobilityOneDirection(UpRight, playerPieces, emptySquares)
-                   | PotentialMobilityOneDirection(Right, playerPieces, emptySquares)
-                   | PotentialMobilityOneDirection(DownRight, playerPieces, emptySquares)
-                   | PotentialMobilityOneDirection(Down, playerPieces, emptySquares)
-                   | PotentialMobilityOneDirection(DownLeft, playerPieces, emptySquares)
-                   | PotentialMobilityOneDirection(Left, playerPieces, emptySquares)
-                   | PotentialMobilityOneDirection(UpLeft, playerPieces, emptySquares);
-        }
-
         public static ulong PlacePiece(ulong placement, ulong playerPieces, ulong opponentPieces)
         {
             return   PlaceOneDirection(Up, placement, playerPieces, opponentPieces)
@@ -94,6 +75,52 @@ namespace Reversi.Model
             while (potential > 0);
 
             return 0;            
+        }
+
+        public static ulong PotentialMobilityOneDirection(Func<ulong, ulong> function, ulong playerPieces, ulong emptySquares)
+        {
+            var shift = function(playerPieces);
+            return shift & emptySquares;
+        }
+
+        public static ulong PotentialMobility(ulong playerPieces, ulong emptySquares)
+        {
+            return PotentialMobilityOneDirection(Up, playerPieces, emptySquares)
+                   | PotentialMobilityOneDirection(UpRight, playerPieces, emptySquares)
+                   | PotentialMobilityOneDirection(Right, playerPieces, emptySquares)
+                   | PotentialMobilityOneDirection(DownRight, playerPieces, emptySquares)
+                   | PotentialMobilityOneDirection(Down, playerPieces, emptySquares)
+                   | PotentialMobilityOneDirection(DownLeft, playerPieces, emptySquares)
+                   | PotentialMobilityOneDirection(Left, playerPieces, emptySquares)
+                   | PotentialMobilityOneDirection(UpLeft, playerPieces, emptySquares);
+        }
+
+        private static ulong _stabilityRequirement = (new List<string> { 
+                                                     "a1", "a2", "b1",
+                                                     "g1", "h1", "h2",
+                                                     "a7", "a8", "b8",
+                                                     "g8", "h8", "h7" }).ToBitBoard();
+
+        public static ulong StablePieces(ulong playerPieces, ulong opponentPieces)
+        {
+            // If no corners or edges adjacent to corners contain a piece, there can not be any stable pieces on the board
+            // See: http://pressibus.org/ataxx/autre/minimax/node3.html
+            if ((playerPieces & _stabilityRequirement) == 0UL)
+                return 0UL;
+            
+            ulong stablePieces = 0UL;
+            ulong newStablePieces = 0;
+
+            do
+            {
+                stablePieces = stablePieces | newStablePieces;
+                newStablePieces = newStablePieces & (Up(playerPieces) | (Down(playerPieces)));
+                newStablePieces = newStablePieces & (Left(playerPieces) | (Right(playerPieces)));
+                newStablePieces = newStablePieces & (UpLeft(playerPieces) | (DownRight(playerPieces)));
+                newStablePieces = newStablePieces & (UpRight(playerPieces) | (DownLeft(playerPieces)));
+            } while (newStablePieces > 0);
+
+            return stablePieces;
         }
     }
 }

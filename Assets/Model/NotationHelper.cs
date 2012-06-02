@@ -85,5 +85,13 @@ namespace Reversi.Model
 
             return serialisedPlays;
         }
+
+        public static ulong ToBitBoard(this IEnumerable<string> locations)
+        {
+            var list = locations.Select(x => (short)x.ToIndex()).ToList();
+            ulong board = 0;
+            list.ForEach(x => board |= 1UL << x);
+            return board;
+        }
 	}
 }

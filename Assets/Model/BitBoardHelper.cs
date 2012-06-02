@@ -7,9 +7,6 @@ namespace Reversi.Model
 {
     public static class BitBoardHelper
     {
-        //var function = new Func<ulong, ulong>(x => x);
-        
-
         // From http://chessprogramming.wikispaces.com/Population+Count#SWAR-Popcount-The%20PopCount%20routine
         public static short CountBits(this ulong x)
         {
