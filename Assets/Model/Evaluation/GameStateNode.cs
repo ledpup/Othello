@@ -110,9 +110,9 @@ namespace Reversi.Model.Evaluation
         {
             get
             {
-                var playerPotentialMobility = Play.PotentialMobility(GameState.PlayerPieces, GameState.EmptySquares).CountBits();
-                var opponentPotentialMobility = Play.PotentialMobility(GameState.OpponentPieces, GameState.EmptySquares).CountBits();
-                var potentialMobility = playerPotentialMobility - opponentPotentialMobility + 64;
+                var playerFrontier = Play.PotentialMobility(GameState.PlayerPieces, GameState.EmptySquares).CountBits();
+                var opponentFrontier = Play.PotentialMobility(GameState.OpponentPieces, GameState.EmptySquares).CountBits();
+                var potentialMobility = opponentFrontier - playerFrontier + 64;
                 return potentialMobility == 0 ? 0 : Standardise(potentialMobility) * _weights["PotentialMobility"];
             }
         }
