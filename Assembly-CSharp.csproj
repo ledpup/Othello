@@ -1,78 +1,77 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.20506</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{24088D3D-CADF-C4F0-A6D6-B4AFA4ED0C12}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>
-    </RootNamespace>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_3_5_2;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0169</NoWarn>
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_5_2;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>Temp\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0169</NoWarn>
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+	<Reference Include="System" />
     <Reference Include="System.XML" />
-    <Reference Include="System.Core" />
-    <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>lib\UnityEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>lib\UnityEngine.dll</HintPath>
-    </Reference>
+	<Reference Include="System.Core" />
+	<Reference Include="UnityEngine">
+	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Event\Callback.cs" />
-    <Compile Include="Assets\Event\Messenger.cs" />
-    <Compile Include="Assets\Model\BitBoardHelper.cs" />
-    <Compile Include="Assets\Model\Evaluation\DepthFirstSearch.cs" />
-    <Compile Include="Assets\Model\Evaluation\GameStateNode.cs" />
-    <Compile Include="Assets\Model\Evaluation\GameStateNodeBuffer.cs" />
-    <Compile Include="Assets\Model\Evaluation\INode.cs" />
-    <Compile Include="Assets\Model\GameBoard.cs" />
-    <Compile Include="Assets\Model\GameManager.cs" />
-    <Compile Include="Assets\Model\GameState.cs" />
-    <Compile Include="Assets\Model\GameStateStats.cs" />
-    <Compile Include="Assets\Model\NotationHelper.cs" />
-    <Compile Include="Assets\Model\Play.cs" />
-    <Compile Include="Assets\Model\PlayStats.cs" />
-    <Compile Include="Assets\Model\Point.cs" />
-    <Compile Include="Assets\Model\Rotation.cs" />
-    <Compile Include="Assets\Model\SpacialObject.cs" />
-    <Compile Include="Assets\Model\Tile.cs" />
-    <Compile Include="Assets\Properties\AssemblyInfo.cs" />
-    <Compile Include="Assets\UI\GameBehaviour.cs" />
-    <Compile Include="Assets\UI\GamesController.cs" />
-    <Compile Include="Assets\UI\KeyboardCameraControl.cs" />
-    <Compile Include="Assets\UI\MouseCameraControl.cs" />
-    <Compile Include="Assets\UI\PieceBehaviour.cs" />
-    <Compile Include="Assets\UI\TileBehaviour.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="lib\" />
+     <Compile Include="Assets\Event\Callback.cs" />
+     <Compile Include="Assets\Event\Messenger.cs" />
+     <Compile Include="Assets\Model\BitBoardHelper.cs" />
+     <Compile Include="Assets\Model\Evaluation\ComputerPlayer.cs" />
+     <Compile Include="Assets\Model\Evaluation\DepthFirstSearch.cs" />
+     <Compile Include="Assets\Model\Evaluation\GameStateNode.cs" />
+     <Compile Include="Assets\Model\Evaluation\GameStateNodeBuffer.cs" />
+     <Compile Include="Assets\Model\Evaluation\GameStateNodeCollection.cs" />
+     <Compile Include="Assets\Model\Evaluation\INode.cs" />
+     <Compile Include="Assets\Model\Evaluation\SearchAlgorithms.cs" />
+     <Compile Include="Assets\Model\GameBoard.cs" />
+     <Compile Include="Assets\Model\GameManager.cs" />
+     <Compile Include="Assets\Model\GameState.cs" />
+     <Compile Include="Assets\Model\GameStateStats.cs" />
+     <Compile Include="Assets\Model\NotationHelper.cs" />
+     <Compile Include="Assets\Model\Play.cs" />
+     <Compile Include="Assets\Model\PlayStats.cs" />
+     <Compile Include="Assets\Model\Point.cs" />
+     <Compile Include="Assets\Model\Rotation.cs" />
+     <Compile Include="Assets\Model\SpacialObject.cs" />
+     <Compile Include="Assets\Model\Tile.cs" />
+     <Compile Include="Assets\Properties\AssemblyInfo.cs" />
+     <Compile Include="Assets\UI\GameBehaviour.cs" />
+     <Compile Include="Assets\UI\GamesController.cs" />
+     <Compile Include="Assets\UI\KeyboardCameraControl.cs" />
+     <Compile Include="Assets\UI\MouseCameraControl.cs" />
+     <Compile Include="Assets\UI\PieceBehaviour.cs" />
+     <Compile Include="Assets\UI\TileBehaviour.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -82,4 +81,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  
 </Project>

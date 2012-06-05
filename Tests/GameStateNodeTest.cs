@@ -25,7 +25,7 @@ namespace Tests
         {
 
             var gameManager = new GameManager();
-            var gameStateNode = new GameStateNode(gameManager.GameState, _weights);
+            var gameStateNode = new GameStateNode(ref gameManager.GameState, _weights);
 
             ValidateNode(gameStateNode);
         }
@@ -71,12 +71,13 @@ namespace Tests
 
                 short? computerPlayIndex = null;
 
-                DepthFirstSearch.GetPlay(gameManager, weights[gameManager.PlayerIndex], ref computerPlayIndex);
+                var depthFirstSearch = new DepthFirstSearch();
+                depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex);
 
                 gameManager.PlacePiece(computerPlayIndex);
                 gameManager.NextTurn();
 
-                var gameStateNode = new GameStateNode(gameManager.GameState, _weights);
+                var gameStateNode = new GameStateNode(ref gameManager.GameState, _weights);
                 ValidateNode(gameStateNode);
             }
         }

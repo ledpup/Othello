@@ -83,10 +83,12 @@ namespace Tests
                                          { 2, new PlayStats(subset.Count, subset, @"\M", 'D') },
                                      };
 
-            var bestIndexBlack = DepthFirstSearch.BestBookPlay(gameStateStats, 0);
+            var depthFirstSearch = new DepthFirstSearch();
+
+            var bestIndexBlack = depthFirstSearch.BestBookPlay(gameStateStats, 0);
             Assert.AreEqual((short)2, bestIndexBlack);
 
-            var bestIndexWhite = DepthFirstSearch.BestBookPlay(gameStateStats, 1);
+            var bestIndexWhite = depthFirstSearch.BestBookPlay(gameStateStats, 1);
             Assert.AreEqual((short)1, bestIndexWhite);
         }
     }

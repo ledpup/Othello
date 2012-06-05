@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{24088D3D-CADF-C4F0-A6D6-B4AFA4ED0C12}</ProjectGuid>
+	<ProjectGuid>{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -47,10 +47,13 @@
      <Compile Include="Assets\Event\Callback.cs" />
      <Compile Include="Assets\Event\Messenger.cs" />
      <Compile Include="Assets\Model\BitBoardHelper.cs" />
+     <Compile Include="Assets\Model\Evaluation\ComputerPlayer.cs" />
      <Compile Include="Assets\Model\Evaluation\DepthFirstSearch.cs" />
      <Compile Include="Assets\Model\Evaluation\GameStateNode.cs" />
      <Compile Include="Assets\Model\Evaluation\GameStateNodeBuffer.cs" />
+     <Compile Include="Assets\Model\Evaluation\GameStateNodeCollection.cs" />
      <Compile Include="Assets\Model\Evaluation\INode.cs" />
+     <Compile Include="Assets\Model\Evaluation\SearchAlgorithms.cs" />
      <Compile Include="Assets\Model\GameBoard.cs" />
      <Compile Include="Assets\Model\GameManager.cs" />
      <Compile Include="Assets\Model\GameState.cs" />

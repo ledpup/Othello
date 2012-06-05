@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,30 +33,16 @@ namespace WtbProcessor
             //DrawBoard(RotateIndices(function2));
             //DrawBoard(RotateIndices(rotate180));
 
-            
-
-
-            var weights = new []
-                           { 
-                               new Dictionary<string, float>{
-                                   { "Pieces", 1f },
-                                   { "Mobility", 1f },
-                                   { "PotentialMobility", 1f },
-                                   { "Parity", 1f },
-                                   { "PositionValues", 1f }
-		                       },
-                               new Dictionary<string, float>{
-                                   { "Pieces", 1f },
-                                   { "Mobility", 1f },
-                                   { "PotentialMobility", 1f },
-                                   { "Parity", 1f },
-                                   { "PositionValues", 1f }
-		                       },
-                           };
+            var computerPlayers = new[] { new ComputerPlayer(false), new ComputerPlayer(false) };
 
             var random = new Random();
 
-            for (var i = 0; i < 100; i++)
+            var depthFirstSearch = new DepthFirstSearch();
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            for (var i = 0; i < 500; i++)
             {
                 var gameManager = new GameManager();
 
@@ -69,52 +56,74 @@ namespace WtbProcessor
 
                     short? computerPlayIndex = null;
 
-                    DepthFirstSearch.GetPlay(gameManager, weights[gameManager.PlayerIndex], ref computerPlayIndex);
+                    depthFirstSearch.ComputerPlayer = computerPlayers[gameManager.PlayerIndex];
 
-                    Console.WriteLine("Play " + computerPlayIndex.ToAlgebraicNotation());
+                    DepthFirstSearch.GameStateNodeCollection.ClearBuffers();
+                    depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex);
+
+                    //Console.Write(gameManager.Turn);
+                    //gameManager.Draw();
+                    //Console.WriteLine("Play " + computerPlayIndex.ToAlgebraicNotation());
 
                     gameManager.PlacePiece(computerPlayIndex);
                     gameManager.NextTurn();
                 }
+
+                var winner = gameManager.WinnerIndex;
+
+                if (gameManager.GameState.IsDraw)
+                    winner = (short)random.Next(1);
+
+                Console.WriteLine("Game {0}, Time {1}", i, stopWatch.Elapsed);
                 Console.WriteLine(gameManager.GameOverMessage);
+                computerPlayers[winner].Draw();
+                Console.WriteLine();
 
-                ChangeWeightsForSelectedPlayer(gameManager.WinnerIndex, weights, random);
+                ChangeWeightsForSelectedPlayer(winner, computerPlayers, random);
 
-                SwapPlayers(weights);
+                SwapPlayers(computerPlayers);
+
+                stopWatch.Restart();
             }
             
             Console.ReadKey();
         }
 
-        private static void SwapPlayers(Dictionary<string, float>[] weights)
+        private static void SwapPlayers(ComputerPlayer[] computerPlayers)
         {
-            var tempWeights = new Dictionary<string, float>();
+            var temp = computerPlayers[0];
 
-            foreach (var weight in weights[0])
-                tempWeights[weight.Key] = weight.Value;
-
-            foreach (var key in weights[1].Keys.ToList())
-            {
-                weights[0][key] = weights[1][key];
-                weights[1][key] = tempWeights[key];
-            }
+            computerPlayers[0] = computerPlayers[1];
+            computerPlayers[1] = temp;
         }
 
-        private static void ChangeWeightsForSelectedPlayer(short winner, IList<Dictionary<string, float>> weights, Random random)
+        private static void ChangeWeightsForSelectedPlayer(short winner, ComputerPlayer[] computerPlayers, Random random)
         {
-            if (winner == -1)
-                winner = (short)random.Next(1);
-
             var playerToChange = 1 - winner;
 
-            foreach (var weight in weights[winner])
-                weights[playerToChange][weight.Key] = weight.Value;
+            var changingPlayer = computerPlayers[playerToChange];
 
-            var weightToChange = random.Next(weights[playerToChange].Count);
-            var keyToChange = weights[playerToChange].Keys.ElementAt(weightToChange);
-            weights[playerToChange][keyToChange] = (float)random.NextDouble();
+            var winnerPlayer = computerPlayers[winner];
+
+            for (short phase = 0; phase < changingPlayer.Weights.Length; phase++)
+            {
+                for (var weight = 0; weight < changingPlayer.Strategies.Count; weight++)
+                {
+                    var key = changingPlayer.Weights[phase].Keys.ElementAt(weight);
+                    changingPlayer.Weights[phase][key] = winnerPlayer.Weights[phase][key];
+                }
+            }
+            
+            ChangeOneStrategy(changingPlayer, random);
         }
 
+        private static void ChangeOneStrategy(ComputerPlayer changingPlayer, Random random)
+        {
+            var phase = random.Next(changingPlayer.GamePhases);
+            var weight = random.Next(changingPlayer.Strategies.Count);
+            var key = changingPlayer.Weights[phase].Keys.ElementAt(weight);
+            changingPlayer.Weights[phase][key] = (float)random.NextDouble();
+        }
 
         private static void DrawBoard(IDictionary<short, short> dic)
         {

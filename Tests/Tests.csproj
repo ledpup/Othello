@@ -72,7 +72,6 @@
     <Compile Include="GameStateNodeTest.cs" />
     <Compile Include="StabilityTests.cs" />
     <Compile Include="StatsTest.cs" />
-    <Compile Include="TestNode.cs" />
     <Compile Include="ValidPlaysTest.cs" />
     <Compile Include="GameManagerTest.cs" />
     <Compile Include="PlayResolutionTest.cs" />

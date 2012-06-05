@@ -237,9 +237,27 @@ namespace Reversi.Model
 			get { return Turn % 2; }
 		}
 
-	    public int Turn
+	    public short Turn
 	    {
-            get { return Plays.Count; }
+            get { return (short)Plays.Count; }
 	    }
+
+        public void Draw()
+        {
+            for (var i = 0; i < 64; i++)
+            {
+                if (i % 8 == 0)
+                    Console.WriteLine();
+
+                var pos = 1UL << i;
+                if ((BlackPieces & pos) > 0)
+                    Console.Write("x");
+                else if ((WhitePieces & pos) > 0)
+                    Console.Write("o");
+                else
+                    Console.Write(" ");
+            }
+            Console.WriteLine();
+        }
 	}
 }

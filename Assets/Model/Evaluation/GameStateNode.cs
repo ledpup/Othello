@@ -6,9 +6,7 @@ namespace Reversi.Model.Evaluation
 {
     public struct GameStateNode : INode
 	{
-        //public delegate float EvaluationMethod();
-        //public static EvaluationMethod Evaluation { get; set; }
-        GameState GameState { get; set; }
+        private GameState _gameState { get; set; }
         public short PlayIndex { get; private set; }
         private readonly Dictionary<string, float> _weights;
         private static readonly float[] PositionValues = new [] {  1f,    0f,    0.2f,  0.1f,  0.1f,  0.2f,  0f,    1f,
@@ -20,20 +18,18 @@ namespace Reversi.Model.Evaluation
                                                                    0f,    0f,    0.01f, 0.01f, 0.01f, 0.01f, 0f,    0f,
                                                                    1f,    0f,    0.20f, 0.1f,  0.1f,  0.20f, 0f,    1f};
 
-        public GameStateNode(GameState gameState, Dictionary<string, float> weights, short playIndex = (short)0) : this()
+        public GameStateNode(ref GameState gameState, Dictionary<string, float> weights, short playIndex = (short)0) : this()
 		{
-            GameState = gameState;
-            PlayIndex = playIndex;
-            _children = null;
-            //Evaluation = SimpleEval;
-
+            _gameState = gameState;
             _weights = weights;
+            PlayIndex = playIndex;
+            //_children = null;
 		}
 
         public void NextTurn()
         {
-            GameState = GameState.NextTurn();
-            _children = null;
+            _gameState = _gameState.NextTurn();
+            //_children = null;
         }
 
         public float Value
@@ -42,57 +38,85 @@ namespace Reversi.Model.Evaluation
             {
                 // If the game is finished, we don't need an heuristic because we know who has won.
                 if (IsGameOver)
-                    return GameState.PlayerWinning ? 1 : 0;
+                    return _gameState.PlayerWinning ? 1 : 0;
 
                 // This is the heuristic evaluation function.
-                return 1 - (1 / Evaluation());
+                return Standardise(Evaluation);
             }
         }
 
-        float Evaluation()
+        float Evaluation
 		{
-            return (Pieces + Mobility + PotentialMobility + Parity + Position);
+            get 
+            {
+                return (Pieces + Mobility + PotentialMobility + Parity + Position);
+            }
 		}
 		
         public bool IsGameOver
         {
-            get { return GameState.IsGameOver; }
+            get { return _gameState.IsGameOver; }
         }
 
-		private List<INode> _children;
+        public List<GameStateNodeReference> ChildNodeReferences
+        {
+            get
+            {
+                if (_childNodeReferences != null)
+                    return _childNodeReferences;
 
-		public IEnumerable<INode> Children 
-		{
-			get
-			{
-				if (_children != null)
-					return _children;
-
-				_children = new List<INode>();
-				foreach (var play in PlayerPlays)
-				{
-				    var gameState = GameState;
+                _childNodeReferences = new List<GameStateNodeReference>();
+                foreach (var play in PlayerPlays)
+                {
+                    var gameState = _gameState;
                     gameState.PlacePiece(play);
 
-				    var nextGameState = gameState.NextTurn();
+                    var nextGameState = gameState.NextTurn();
 
-                    var child = new GameStateNode(nextGameState, _weights, play);
-                    _children.Add(child);
-				}
-				return _children;
-			} 
-		}
+                    var child = new GameStateNode(ref nextGameState, _weights, play);
+
+                    var reference = DepthFirstSearch.GameStateNodeCollection.AddGameStateNode(ref child);
+
+                    _childNodeReferences.Add(reference);
+                    
+                }
+
+                return _childNodeReferences;
+            }
+        }
+        private List<GameStateNodeReference> _childNodeReferences;
+        //public IEnumerable<INode> Children 
+        //{
+        //    get
+        //    {
+        //        if (_children != null)
+        //            return _children;
+
+        //        _children = new List<INode>();
+        //        foreach (var play in PlayerPlays)
+        //        {
+        //            var gameState = _gameState;
+        //            gameState.PlacePiece(play);
+
+        //            var nextGameState = gameState.NextTurn();
+
+        //            var child = new GameStateNode(nextGameState, _weights, play);
+        //            _children.Add(child);
+        //        }
+        //        return _children;
+        //    } 
+        //}
 
         IEnumerable<short> PlayerPlays
         {
-            get { return GameState.PlayerPlays.Indices(); }
+            get { return _gameState.PlayerPlays.Indices(); }
         }
 
         public float Pieces
         {
             get 
             {
-                var pieces = GameState.NumberOfPlayerPieces - GameState.NumberOfOpponentPieces + 64;
+                var pieces = _gameState.NumberOfPlayerPieces - _gameState.NumberOfOpponentPieces + 64;
                 return pieces < 0 ? 0 : Standardise(pieces) * _weights["Pieces"];
             }
         }
@@ -101,7 +125,7 @@ namespace Reversi.Model.Evaluation
         {
             get
             {
-                var mobility = GameState.PlayerPlays.CountBits() - GameState.OpponentPlays.CountBits() + 64;
+                var mobility = _gameState.PlayerPlays.CountBits() - _gameState.OpponentPlays.CountBits() + 64;
                 return mobility == 0 ? 0 : Standardise(mobility) * _weights["Mobility"];
 			}
         }
@@ -110,8 +134,8 @@ namespace Reversi.Model.Evaluation
         {
             get
             {
-                var playerFrontier = Play.PotentialMobility(GameState.PlayerPieces, GameState.EmptySquares).CountBits();
-                var opponentFrontier = Play.PotentialMobility(GameState.OpponentPieces, GameState.EmptySquares).CountBits();
+                var playerFrontier = Play.PotentialMobility(_gameState.PlayerPieces, _gameState.EmptySquares).CountBits();
+                var opponentFrontier = Play.PotentialMobility(_gameState.OpponentPieces, _gameState.EmptySquares).CountBits();
                 var potentialMobility = opponentFrontier - playerFrontier + 64;
                 return potentialMobility == 0 ? 0 : Standardise(potentialMobility) * _weights["PotentialMobility"];
             }
@@ -121,7 +145,7 @@ namespace Reversi.Model.Evaluation
         {
             get 
             { 
-                var parity = GameState.AllPieces.CountBits() % 2 == 0 ? 0 : 1;
+                var parity = _gameState.AllPieces.CountBits() % 2 == 0 ? 0 : 1;
                 return parity * _weights["Parity"];
             }
         }
@@ -131,9 +155,9 @@ namespace Reversi.Model.Evaluation
             get { return PositionValues[PlayIndex] * _weights["PositionValues"]; }
         }
 
-        private static int Standardise(int value)
+        private static float Standardise(float value)
         {
-            return (1 - 1 / value);
+            return (1f - 1f / value);
         }
     }
 }

@@ -48,8 +48,8 @@ public class GameBehaviour : MonoBehaviour
     
     short? _computerPlayIndex;
     bool _computerStarted;
-    
-	public DisplayText DisplayText
+
+    public DisplayText DisplayText
 	{
 		get { return _displayText; }
 		set 
@@ -88,11 +88,11 @@ public class GameBehaviour : MonoBehaviour
 
     Dictionary<string, float> _weights = new Dictionary<string, float>
                            {
-                               { "Pieces", .8f },
-                               { "Mobility", .7f },
-                               { "PotentialMobility", .6f },
+                               { "Pieces", .7f },
+                               { "Mobility", 1f },
+                               { "PotentialMobility", 1f },
                                { "Parity", 1f },
-                               { "PositionValues", 1f }
+                               { "PositionValues", 1f },
 		                   };
 
     private List<GameStateNode> _savedGameStateNodes;
@@ -162,8 +162,10 @@ public class GameBehaviour : MonoBehaviour
         ShowBoardCoordinates = false;
         ShowValidPlays = true;
         
+        _depthFirstSearch = new DepthFirstSearch(new ComputerPlayer(true));
+
         Messenger<short>.AddListener("Tile clicked", OnTileSelected);
-        Messenger<float>.AddListener("Game speed changed", OnGameSpeedChanged);        
+        Messenger<float>.AddListener("Game speed changed", OnGameSpeedChanged);
     }
     
     void Update()
@@ -303,6 +305,8 @@ public class GameBehaviour : MonoBehaviour
         _tileInfo.Add(textObject);
     }
 
+    private DepthFirstSearch _depthFirstSearch;
+
     void ComputerPlay()
     {
         if (!IsComputerTurn) 
@@ -317,7 +321,8 @@ public class GameBehaviour : MonoBehaviour
 
             //DepthFirstSearch.GetPlay(_gameManager, _weights, ref _computerPlayIndex);
             //DepthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _weights, ref _computerPlayIndex, ref _computerStarted);
-			var thread = new Thread(() => DepthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _weights, ref _computerPlayIndex, ref _computerStarted));
+			DepthFirstSearch.GameStateNodeCollection.ClearBuffers();
+            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], ref _computerPlayIndex, ref _computerStarted));
             thread.Start();
         }
         else if (_computerPlayIndex != null)
