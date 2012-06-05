@@ -63,6 +63,8 @@ namespace Reversi.Model
 
         const long Debruijn64 = 0x07EDD5E59A4E28C2;
 
+        public static Func<ulong,ulong>[] Rotations = new Func<ulong, ulong>[] {x => x, x => x.Rotate90Clockwise(), x => x.Rotate180(), x => x.Rotate90AntiClockwise() };
+
         public static ulong Rotate90Clockwise(this ulong x)
         {
             return FlipVertical(FlipDiagA1H8(x));

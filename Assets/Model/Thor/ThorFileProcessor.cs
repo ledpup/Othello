@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Reversi.Model;
 
-namespace WtbProcessor
+namespace Reversi.Model.Thor
 {
     public class ThorFileProcessor
     {
@@ -35,7 +35,7 @@ namespace WtbProcessor
             files.ToList().ForEach(f => 
                 {
                     var databaseYear = ReadThorDb(f);
-                    _gameDatabase.Add(databaseYear.Item1, databaseYear.Item2);
+                    _gameDatabase.Add(databaseYear.Key, databaseYear.Value);
                 });
 
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -147,7 +147,7 @@ namespace WtbProcessor
             return dictionary;
         }
 
-        public static Tuple<int, List<ThorGame>> ReadThorDb(string f)
+        public static KeyValuePair<int, List<ThorGame>> ReadThorDb(string f)
         {
             const int fileHeaderLength = 16;
             int gameHeaderLength = 8;
@@ -185,7 +185,7 @@ namespace WtbProcessor
                 }
                 gameDatabase.Add(game);
             }
-            return Tuple.Create(year, gameDatabase);
+            return new KeyValuePair<int, List<ThorGame>>(year, gameDatabase);
         }
     }
 }

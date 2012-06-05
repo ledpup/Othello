@@ -25,6 +25,21 @@ namespace Reversi.Model
             return (short)(x * 8 + y);
         }
 
+        public static ulong ToBitBoard(this short index)
+        {
+            return 1UL << index;
+        }
+
+        public static ulong ToBitBoard(this string algebraicNotation)
+        {
+            if (string.IsNullOrEmpty(algebraicNotation))
+                throw new Exception("String is null or empty.");
+
+            var index = (short)algebraicNotation.ToIndex();
+
+            return index.ToBitBoard();
+        }
+
         public static string ToAlgebraicNotation(this short? playIndex)
         {
 			if (playIndex == null)
@@ -39,6 +54,16 @@ namespace Reversi.Model
             return ((char)(row + 96)).ToString() + column;
         }
 		
+        public static string ToAlgebraicNotation(this short playIndex)
+        {
+            return ((short?) playIndex).ToAlgebraicNotation();
+        }
+
+        public static List<string> ToAlgebraicNotationList(this ulong bitBoard)
+        {
+            return bitBoard.Indices().Select(x => x.ToAlgebraicNotation()).ToList();
+        }
+
 		public static Point ToCartesianCoordinate(this short index)
 		{
 			var x = index % 8;
@@ -57,7 +82,7 @@ namespace Reversi.Model
 			return ((char)(index + 48));
 		}
 
-        public static short ToInt(this char character)
+        public static short ToIndex(this char character)
         {
             return (short)(Convert.ToInt16(character) - 48);
         }
@@ -90,7 +115,7 @@ namespace Reversi.Model
         {
             var list = locations.Select(x => (short)x.ToIndex()).ToList();
             ulong board = 0;
-            list.ForEach(x => board |= 1UL << x);
+            list.ForEach(x => board |= x.ToBitBoard());
             return board;
         }
 	}

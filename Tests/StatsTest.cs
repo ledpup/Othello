@@ -25,12 +25,12 @@ namespace Tests
 
             var playStats = positionStats.GenerateStats(@"\MBJC[]ZUV^DRQb", gameArchive);
 
-            Assert.IsNotNull(playStats['Y'.ToInt()]);
-            Assert.AreEqual(5, playStats['Y'.ToInt()].SubsetCount);
-            Assert.AreEqual(2, playStats['Y'.ToInt()].BlackWins);
+            Assert.IsNotNull(playStats['Y'.ToIndex()]);
+            Assert.AreEqual(5, playStats['Y'.ToIndex()].SubsetCount);
+            Assert.AreEqual(2, playStats['Y'.ToIndex()].BlackWins);
 
-            Assert.IsNotNull(playStats['c'.ToInt()]);
-            Assert.AreEqual(2, playStats['c'.ToInt()].SubsetCount);
+            Assert.IsNotNull(playStats['c'.ToIndex()]);
+            Assert.AreEqual(2, playStats['c'.ToIndex()].SubsetCount);
         }
 
         [TestMethod]

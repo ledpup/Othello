@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{591EF001-F7EF-4257-ABD4-4F0D7817394D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WtbProcessor", "WtbProcessor\WtbProcessor.csproj", "{4189CF53-A39B-4FB9-8DAC-B6D13810856E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerTrainer", "WtbProcessor\ComputerTrainer.csproj", "{4189CF53-A39B-4FB9-8DAC-B6D13810856E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -119,7 +119,7 @@ namespace WtbProcessor
 
         private static void ChangeOneStrategy(ComputerPlayer changingPlayer, Random random)
         {
-            var phase = random.Next(changingPlayer.GamePhases);
+            var phase = random.Next(changingPlayer.NumberOfGamePhases);
             var weight = random.Next(changingPlayer.Strategies.Count);
             var key = changingPlayer.Weights[phase].Keys.ElementAt(weight);
             changingPlayer.Weights[phase][key] = (float)random.NextDouble();

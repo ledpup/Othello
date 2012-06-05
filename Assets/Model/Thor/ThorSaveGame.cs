@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WtbProcessor
+namespace Reversi.Model.Thor
 {
     public class ThorGame
     {
@@ -20,7 +20,7 @@ namespace WtbProcessor
         public List<string> Plays;
         public string SerialisedPlays
         {
-            get { return string.Join(",", Plays); }
+            get { return string.Join(",", Plays.ToArray()); }
         }
     }
 }

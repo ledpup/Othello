@@ -8,11 +8,11 @@ namespace Reversi.Model.Evaluation
 	public class ComputerPlayer
 	{
 	    public readonly Dictionary<string, float>[] Weights;
-	    public readonly short GamePhases;
+	    public readonly short NumberOfGamePhases;
 	    private const short TurnsPerPhase = 6;
 
 	    public readonly List<string> Strategies = new List<string>
-	                                    {"Pieces", "Mobility", "PotentialMobility", "Parity", "PositionValues",};
+	                                    {"Pieces", "Mobility", "PotentialMobility", "Parity", "PositionValues", "Pattern", };
 
 	    public bool UseOpeningBook;
 
@@ -22,11 +22,11 @@ namespace Reversi.Model.Evaluation
         {
             UseOpeningBook = useOpeningBook;
 
-            GamePhases = 60 / TurnsPerPhase;
+            NumberOfGamePhases = 60 / TurnsPerPhase;
 
-            SearchDepth = new int[GamePhases];
-            Weights = new Dictionary<string, float>[GamePhases];
-            for (var i = 0; i < GamePhases; i++)
+            SearchDepth = new int[NumberOfGamePhases];
+            Weights = new Dictionary<string, float>[NumberOfGamePhases];
+            for (var i = 0; i < NumberOfGamePhases; i++)
             {
                 SearchDepth[i] = 5;
                 Weights[i] = new Dictionary<string, float>();
@@ -64,7 +64,7 @@ namespace Reversi.Model.Evaluation
 
 	    int Phase(short turn)
 	    {
-            return turn / TurnsPerPhase;
+            return turn >= 60 ? NumberOfGamePhases - 1 : turn / TurnsPerPhase;
 	    }
 
         public Dictionary<string,float> GetWeights(short turn)
@@ -79,7 +79,7 @@ namespace Reversi.Model.Evaluation
 
         public void Draw()
         {
-            for (var i = 0; i < GamePhases; i++)
+            for (var i = 0; i < NumberOfGamePhases; i++)
             {
                 Console.WriteLine("Phase {0}", i);
                 foreach (var weight in Weights[i])
@@ -89,7 +89,7 @@ namespace Reversi.Model.Evaluation
 
 	    public int NumberOfWeights
 	    {
-            get { return GamePhases*Strategies.Count; }
+            get { return NumberOfGamePhases*Strategies.Count; }
 	    }
 	}
 }

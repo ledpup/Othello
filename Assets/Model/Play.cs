@@ -101,6 +101,7 @@ namespace Reversi.Model
                                                      "a7", "a8", "b8",
                                                      "g8", "h8", "h7" }).ToBitBoard();
 
+        // I haven't figured out how to do stability as yet.
         public static ulong StablePieces(ulong playerPieces, ulong opponentPieces)
         {
             // If no corners or edges adjacent to corners contain a piece, there can not be any stable pieces on the board
@@ -108,19 +109,8 @@ namespace Reversi.Model
             if ((playerPieces & _stabilityRequirement) == 0UL)
                 return 0UL;
             
-            ulong stablePieces = 0UL;
-            ulong newStablePieces = 0;
-
-            do
-            {
-                stablePieces = stablePieces | newStablePieces;
-                newStablePieces = newStablePieces & (Up(playerPieces) | (Down(playerPieces)));
-                newStablePieces = newStablePieces & (Left(playerPieces) | (Right(playerPieces)));
-                newStablePieces = newStablePieces & (UpLeft(playerPieces) | (DownRight(playerPieces)));
-                newStablePieces = newStablePieces & (UpRight(playerPieces) | (DownLeft(playerPieces)));
-            } while (newStablePieces > 0);
-
-            return stablePieces;
+            
+            return 0UL;
         }
     }
 }

@@ -75,7 +75,7 @@ namespace Reversi.Model
 
             var playStats = new Dictionary<short, PlayStats>();
 
-            plays.ForEach(x => playStats.Add(x.ToInt(), new PlayStats(numberOfGames, subset, position, x)));
+            plays.ForEach(x => playStats.Add(x.ToIndex(), new PlayStats(numberOfGames, subset, position, x)));
 
             return playStats;
         }

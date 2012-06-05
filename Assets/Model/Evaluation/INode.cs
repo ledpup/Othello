@@ -7,7 +7,7 @@ namespace Reversi.Model.Evaluation
 	    float Value { get; }
         bool IsGameOver { get; }
 	    void NextTurn();
-        //IEnumerable<INode> Children { get; }
+        IEnumerable<INode> Children { get; }
         List<GameStateNodeReference> ChildNodeReferences { get; }
         short PlayIndex { get; }
     }

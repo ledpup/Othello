@@ -8,8 +8,8 @@
     <ProjectGuid>{4189CF53-A39B-4FB9-8DAC-B6D13810856E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WtbProcessor</RootNamespace>
-    <AssemblyName>WtbProcessor</AssemblyName>
+    <RootNamespace>ComputerTrainer</RootNamespace>
+    <AssemblyName>ComputerTrainer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -62,8 +62,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThorFileProcessor.cs" />
-    <Compile Include="ThorSaveGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ArchiveData.txt">

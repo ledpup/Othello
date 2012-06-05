@@ -49,7 +49,8 @@ namespace Reversi.Model.Evaluation
 		{
             get 
             {
-                return (Pieces + Mobility + PotentialMobility + Parity + Position);
+                return (Pieces + Mobility + PotentialMobility + Pattern);
+                return (Pieces + Mobility + PotentialMobility + Parity + Position + Pattern);
             }
 		}
 		
@@ -85,27 +86,29 @@ namespace Reversi.Model.Evaluation
             }
         }
         private List<GameStateNodeReference> _childNodeReferences;
-        //public IEnumerable<INode> Children 
-        //{
-        //    get
-        //    {
-        //        if (_children != null)
-        //            return _children;
+        
+        public IEnumerable<INode> Children
+        {
+            get
+            {
+                if (_children != null)
+                    return _children;
 
-        //        _children = new List<INode>();
-        //        foreach (var play in PlayerPlays)
-        //        {
-        //            var gameState = _gameState;
-        //            gameState.PlacePiece(play);
+                _children = new List<INode>();
+                foreach (var play in PlayerPlays)
+                {
+                    var gameState = _gameState;
+                    gameState.PlacePiece(play);
 
-        //            var nextGameState = gameState.NextTurn();
+                    var nextGameState = gameState.NextTurn();
 
-        //            var child = new GameStateNode(nextGameState, _weights, play);
-        //            _children.Add(child);
-        //        }
-        //        return _children;
-        //    } 
-        //}
+                    var child = new GameStateNode(ref nextGameState, _weights, play);
+                    _children.Add(child);
+                }
+                return _children;
+            }
+        }
+        private List<INode> _children;
 
         IEnumerable<short> PlayerPlays
         {
@@ -153,6 +156,30 @@ namespace Reversi.Model.Evaluation
         public float Position
         {
             get { return PositionValues[PlayIndex] * _weights["PositionValues"]; }
+        }
+
+        public float Pattern
+        {
+            get
+            {
+                var corner = CompareBitboards(Patterns.Corner, _gameState.PlayerPieces, _gameState.OpponentPieces, 1);
+                var xSquare = CompareBitboards(Patterns.XSquare, _gameState.PlayerPieces, _gameState.OpponentPieces, -1);
+                var cornerAndXSquare = CompareBitboards(Patterns.CornerAndXSquare, _gameState.PlayerPieces, _gameState.OpponentPieces, 1);
+                var cSquare = CompareBitboards(Patterns.CSquare, _gameState.PlayerPieces, _gameState.OpponentPieces, -1);
+                var cornerAndCSquare = CompareBitboards(Patterns.CornerAndCSquare, _gameState.PlayerPieces, _gameState.OpponentPieces, 1);
+                
+                var edges = CompareBitboards(Patterns.Edges, _gameState.PlayerPieces, _gameState.OpponentPieces, 1);
+
+                return Standardise(corner + xSquare + cornerAndXSquare + (cSquare + cornerAndCSquare * .75f) + (edges * .5f)) * _weights["Pattern"];
+            }
+        }
+
+        public float CompareBitboards(List<ulong> bitBoards, ulong player, ulong opponent, int direction)
+        {
+            var playersCount = bitBoards.Count(x => (x & player) > 0);
+            var opponentsCount = bitBoards.Count(x => (x & opponent) > 0);
+
+            return ((playersCount * direction) - (opponentsCount * direction) + bitBoards.Count) / (float)(bitBoards.Count * 2);
         }
 
         private static float Standardise(float value)
