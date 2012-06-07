@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
+using Reversi.Model.Evaluation;
+using Reversi.Model.TranspositionTable;
 
 namespace Reversi.Model
 {
@@ -11,7 +13,9 @@ namespace Reversi.Model
 		public GameState GameState;
 		
 		public List<short?> Plays;
-		
+
+	    private ZobristHash _zobristHash;
+
 		public GameManager() : this (new List<short?>())
         {
         }
@@ -33,9 +37,11 @@ namespace Reversi.Model
 
             BlackName = "Black";
             WhiteName = "White";
+
+            _zobristHash = new ZobristHash();
 		}
 		
-		public bool HasPlays { get { return GameState.PlayerPlays.Indices().Any(); } }
+		public bool HasPlays { get { return GameState.HasPlays; } }
 		
 		public bool CanPlay(short position)
 		{
@@ -44,7 +50,7 @@ namespace Reversi.Model
 				
 		public void PlacePiece(short? index)
 		{
-			if (GameState.CanPlay && index == null)
+			if (GameState.HasPlays && index == null)
 				throw new Exception(string.Format("{0} can not pass.", Player));
 					
 			Plays.Add(index);
@@ -111,8 +117,11 @@ namespace Reversi.Model
             var data = File.ReadAllLines(fileName);
 
             var games = new List<GameManager>();
-
-            data.ToList().ForEach(x => games.Add(Load(x)));
+			
+			if (!data.Any())
+				games.Add(new GameManager());
+			else
+            	data.ToList().ForEach(x => games.Add(Load(x)));
 
             return games;
         }
@@ -191,12 +200,12 @@ namespace Reversi.Model
 
 	    public ulong BlackPieces
 	    {
-            get { return PlayerIndex == 0 ? GameState.PlayerPieces : GameState.OpponentPieces; }
+            get { return PlayerIsBlack ? GameState.PlayerPieces : GameState.OpponentPieces; }
 	    }
 
         public ulong WhitePieces
         {
-            get { return PlayerIndex == 1 ? GameState.PlayerPieces : GameState.OpponentPieces; }
+            get { return PlayerIsBlack ? GameState.OpponentPieces : GameState.PlayerPieces; }
         }
 
 	    public int BlackScore
@@ -222,14 +231,19 @@ namespace Reversi.Model
 	    public string BlackName;
 	    public string WhiteName;
 
+	    public bool PlayerIsBlack
+	    {
+	        get { return PlayerIndex == 0; }
+	    }
+
 	    public string Player
 		{
-            get { return PlayerIndex == 0 ? BlackName : WhiteName; }
+            get { return PlayerIsBlack ? BlackName : WhiteName; }
 		}
 
 		public string Opponent
 		{
-            get { return PlayerIndex == 1 ? BlackName : WhiteName; }
+            get { return PlayerIsBlack ? WhiteName : BlackName; }
 		}
 		
 		public int PlayerIndex
@@ -240,6 +254,11 @@ namespace Reversi.Model
 	    public short Turn
 	    {
             get { return (short)Plays.Count; }
+	    }
+
+	    public List<short> PlayerPlays
+	    {
+	        get { return GameState.PlayerPlays.Indices().ToList(); }
 	    }
 
         public void Draw()
@@ -259,5 +278,93 @@ namespace Reversi.Model
             }
             Console.WriteLine();
         }
-	}
+
+        public bool IsGameOver { get { return GameState.IsGameOver; } }
+
+	    public List<short> PlayerPieces
+	    {
+	        get {return GameState.PlayerPieces.Indices().ToList(); }
+	    }
+
+        public List<short> OpponentPieces
+        {
+            get { return GameState.OpponentPieces.Indices().ToList(); }
+        }
+
+        public short Placement
+        {
+            get { return GameState.Placement.Indices().Single(); }
+        }
+
+        public List<short> FlippedPieces
+        {
+            get { return GameState.FlippedPieces.Indices().ToList(); }
+        }
+
+	    public ulong GameStateHash
+	    {
+            get { return _zobristHash.Hash(GameState, PlayerIsBlack); }
+	    }
+
+        public bool IsDraw
+        {
+            get { return GameState.IsDraw; }
+        }
+
+        public string AnalysisInfo(short? infoPlayIndex, DepthFirstSearch depthFirstSearch)
+        {
+            var gameState = GameState;
+
+            var turn = Turn;
+
+            if (infoPlayIndex != null)
+            {
+                gameState.PlacePiece((short)infoPlayIndex);
+                gameState = gameState.NextTurn();
+                turn++;
+            }
+
+            var analysisNode = new AnalysisNode(ref gameState, depthFirstSearch.ComputerPlayer.GetWeights(turn));
+
+            var playerName = IsBlacksTurn(turn) ? "Black" : "White";
+
+            var stringBulider = new StringBuilder();
+            stringBulider.AppendLine();
+
+            stringBulider.AppendLine(playerName + " Score\t\t\t" + analysisNode.Value * 100);
+            stringBulider.AppendLine();
+            stringBulider.AppendLine("\t\t\t\t  Black\t  White");
+            stringBulider.AppendLine("Pieces\t\t\t" + BlackAndWhite(analysisNode.PlayerPieces, analysisNode.OpponentPieces, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("Mobility\t\t\t" + BlackAndWhite(analysisNode.PlayerPlayCount, analysisNode.OpponentPlayCount, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("Frontier\t\t\t" + BlackAndWhite(analysisNode.PlayerFrontier, analysisNode.OpponentFrontier, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("Corner\t\t\t" + BlackAndWhite(analysisNode.PlayerCorners, analysisNode.OpponentCorners, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("X Square\t\t" + BlackAndWhite(analysisNode.PlayerXSquares, analysisNode.OpponentXSquares, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("C Square\t\t" + BlackAndWhite(analysisNode.PlayerCSquares, analysisNode.OpponentCSquares, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("Edge\t\t\t\t" + BlackAndWhite(analysisNode.PlayerEdges, analysisNode.OpponentEdges, IsBlacksTurn(turn)));
+            return stringBulider.ToString();
+        }
+
+	    static bool IsBlacksTurn(short turn)
+        {
+            return turn % 2 == 0;
+        }
+
+        private static string BlackAndWhite(short p, short o, bool isBlacksTurn)
+        {
+            return isBlacksTurn ? FormatValues(p, o) : FormatValues(o, p);
+        }
+
+	    private static string FormatValues(short p, short o)
+        {
+            return StringSpacing(p) + "\t\t\t" + StringSpacing(o);
+        }
+
+        private static string StringSpacing(short value)
+        {
+            if (value.ToString().Length == 1)
+                return "  " + value;
+            return value.ToString();
+        }
+
+    }
 }

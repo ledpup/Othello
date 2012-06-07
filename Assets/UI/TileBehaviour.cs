@@ -20,6 +20,11 @@ public class TileBehaviour : MonoBehaviour
         Messenger<short>.Broadcast("Tile clicked", Tile.Index);
     }    
 
+    void OnMouseOver()
+    {
+        Messenger<short>.Broadcast("Tile hover", Tile.Index);
+    }
+
     void OnLastPlay(short index)
     {
         if (Tile.Index == index)

@@ -44,8 +44,8 @@ namespace Tests
         [TestMethod]
         public void AllCornerTest()
         {
-            Patterns.Corner.ForEach(x => x.Draw());
-            Patterns.Corner.ForEach(x => Assert.IsTrue(Patterns.Corner.Where(y => x == y).Count() == 1));
+            Patterns.Corners.ForEach(x => x.Draw());
+            Patterns.Corners.ForEach(x => Assert.IsTrue(Patterns.Corners.Where(y => x == y).Count() == 1));
         }
 
         [TestMethod]

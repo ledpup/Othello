@@ -47,11 +47,11 @@
      <Compile Include="Assets\Event\Callback.cs" />
      <Compile Include="Assets\Event\Messenger.cs" />
      <Compile Include="Assets\Model\BitBoardHelper.cs" />
+     <Compile Include="Assets\Model\Evaluation\AnalysisNode.cs" />
+     <Compile Include="Assets\Model\Evaluation\AnalysisNodeBuffer.cs" />
+     <Compile Include="Assets\Model\Evaluation\AnalysisNodeCollection.cs" />
      <Compile Include="Assets\Model\Evaluation\ComputerPlayer.cs" />
      <Compile Include="Assets\Model\Evaluation\DepthFirstSearch.cs" />
-     <Compile Include="Assets\Model\Evaluation\GameStateNode.cs" />
-     <Compile Include="Assets\Model\Evaluation\GameStateNodeBuffer.cs" />
-     <Compile Include="Assets\Model\Evaluation\GameStateNodeCollection.cs" />
      <Compile Include="Assets\Model\Evaluation\INode.cs" />
      <Compile Include="Assets\Model\Evaluation\Patterns.cs" />
      <Compile Include="Assets\Model\Evaluation\SearchAlgorithms.cs" />
@@ -59,6 +59,7 @@
      <Compile Include="Assets\Model\GameManager.cs" />
      <Compile Include="Assets\Model\GameState.cs" />
      <Compile Include="Assets\Model\GameStateStats.cs" />
+     <Compile Include="Assets\Model\HashNode.cs" />
      <Compile Include="Assets\Model\NotationHelper.cs" />
      <Compile Include="Assets\Model\Play.cs" />
      <Compile Include="Assets\Model\PlayStats.cs" />
@@ -68,6 +69,8 @@
      <Compile Include="Assets\Model\Thor\ThorFileProcessor.cs" />
      <Compile Include="Assets\Model\Thor\ThorSaveGame.cs" />
      <Compile Include="Assets\Model\Tile.cs" />
+     <Compile Include="Assets\Model\ZobristHash.cs" />
+     <Compile Include="Assets\Model\sasA.cs" />
      <Compile Include="Assets\Properties\AssemblyInfo.cs" />
      <Compile Include="Assets\UI\GameBehaviour.cs" />
      <Compile Include="Assets\UI\GamesController.cs" />

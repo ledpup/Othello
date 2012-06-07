@@ -41,7 +41,7 @@ namespace Reversi.Model
         public ulong PlayerPieces;
         public ulong OpponentPieces;
 
-		public void PlacePiece(int index)
+		public void PlacePiece(short index)
 		{
             //if (!PlayerPlays.Indices().Contains((short)index))
             //    throw new Exception("Invalid piece placement.");
@@ -81,7 +81,7 @@ namespace Reversi.Model
 		public ulong Placement;
 		public ulong FlippedPieces;
 		
-        public bool CanPlay { get { return PlayerPlays > 0; } }
+        public bool HasPlays { get { return PlayerPlays > 0; } }
 
         public GameState Rotate180()
         {

@@ -20,215 +20,215 @@ namespace Tests
                                { "Mobility", .9f },
                                { "PotentialMobility", .9f },
                                { "Parity", 1f },
-                               { "PositionValues", .8f },
+                               { "Pattern", .8f },
 		                   };
 
-        //static TestNode AlphaBetaTree
-        //{
-        //    get
-        //    {
-        //        var root = new TestNode(new List<INode> 
-        //        {
-        //            new TestNode(new List<INode>
-        //            {
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) {Value = 2},
-        //                    new TestNode(null) {Value = 3},
-        //                }), 
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) { Value = 5 },
-        //                    new TestNode(null) { Value = 10 },
-        //                })
-        //            }),
-        //            new TestNode(new List<INode> 
-        //            { 
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) { Value = 0 },
-        //                }),
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) { Value = 10 }, 
-        //                    new TestNode(null) { Value = 10 },
-        //                })
-        //            }),
-        //            new TestNode(new List<INode> 
-        //            {
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) { Value = 2 }, 
-        //                    new TestNode(null) { Value = 1 },
-        //                }),
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) { Value = 10 }, 
-        //                    new TestNode(null) { Value = 10 },
-        //                }) 
-        //            }),
-        //        }
-        //        );
+        static TestNode AlphaBetaTree
+        {
+            get
+            {
+                var root = new TestNode(new List<INode> 
+                {
+                    new TestNode(new List<INode>
+                    {
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) {Value = 2},
+                            new TestNode(null) {Value = 3},
+                        }), 
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) { Value = 5 },
+                            new TestNode(null) { Value = 10 },
+                        })
+                    }),
+                    new TestNode(new List<INode> 
+                    { 
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) { Value = 0 },
+                        }),
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) { Value = 10 }, 
+                            new TestNode(null) { Value = 10 },
+                        })
+                    }),
+                    new TestNode(new List<INode> 
+                    {
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) { Value = 2 }, 
+                            new TestNode(null) { Value = 1 },
+                        }),
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) { Value = 10 }, 
+                            new TestNode(null) { Value = 10 },
+                        }) 
+                    }),
+                }
+                );
 
-        //        return root;
-        //    }
-        //}
+                return root;
+            }
+        }
 
-        //static TestNode NegaScoutTree
-        //{
-        //    get
-        //    {
-        //        var root = new TestNode(new List<INode> 
-        //        {
-        //            new TestNode(new List<INode>
-        //            {
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) {Value = 5},
-        //                    new TestNode(null) {Value = 4},
-        //                }), 
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) { Value = 6 },
-        //                    new TestNode(null) { Value = 10 },
-        //                })
-        //            }),
-        //            new TestNode(new List<INode> 
-        //            { 
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) { Value = 7 },
-        //                    new TestNode(null) { Value = 10 },
-        //                }),
-        //                new TestNode(new List<INode>
-        //                {
-        //                    new TestNode(null) { Value = 4 }, 
-        //                    new TestNode(null) { Value = 4 },
-        //                })
-        //            }),
-        //        }
-        //        );
+        static TestNode NegaScoutTree
+        {
+            get
+            {
+                var root = new TestNode(new List<INode> 
+                {
+                    new TestNode(new List<INode>
+                    {
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) {Value = 5},
+                            new TestNode(null) {Value = 4},
+                        }), 
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) { Value = 6 },
+                            new TestNode(null) { Value = 10 },
+                        })
+                    }),
+                    new TestNode(new List<INode> 
+                    { 
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) { Value = 7 },
+                            new TestNode(null) { Value = 10 },
+                        }),
+                        new TestNode(new List<INode>
+                        {
+                            new TestNode(null) { Value = 4 }, 
+                            new TestNode(null) { Value = 4 },
+                        })
+                    }),
+                }
+                );
 
-        //        return root;
-        //    }
-        //}
+                return root;
+            }
+        }
 
-        //[TestMethod]
-        //public void NegaMaxTest()
-        //{
-        //    var root = AlphaBetaTree;
+        [TestMethod]
+        public void NegaMaxTest()
+        {
+            var root = AlphaBetaTree;
 
-        //    DepthFirstSearch.Search = SearchAlgorithms.NegaMax;
-        //    SearchAlgorithms.MaxDepth = 3;
+            DepthFirstSearch.Search = SearchAlgorithms.NegaMax;
+            SearchAlgorithms.MaxDepth = 3;
 
-        //    var nodesSearched = new List<INode>();
+            var nodesSearched = new List<INode>();
 
-        //    var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
+            var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
 
-        //    Assert.AreEqual(3, score);
-        //    Assert.AreEqual(21, nodesSearched.Count());
+            Assert.AreEqual(3, score);
+            Assert.AreEqual(21, nodesSearched.Count());
 
-        //}
+        }
 
-        //[TestMethod]
-        //public void AlphaBetaTest()
-        //{
-        //    var root = AlphaBetaTree;
+        [TestMethod]
+        public void AlphaBetaTest()
+        {
+            var root = AlphaBetaTree;
 
-        //    DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
-        //    SearchAlgorithms.MaxDepth = 3;
+            DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
+            SearchAlgorithms.MaxDepth = 3;
 
 
-        //    var nodesSearched = new List<INode>();
+            var nodesSearched = new List<INode>();
 
-        //    var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
+            var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
 
-        //    Assert.AreEqual(3, score);
-        //}
+            Assert.AreEqual(3, score);
+        }
 
-        //[TestMethod]
-        //public void AlphaBetaTest2()
-        //{
-        //    var root = NegaScoutTree;
+        [TestMethod]
+        public void AlphaBetaTest2()
+        {
+            var root = NegaScoutTree;
 
-        //    DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
-        //    SearchAlgorithms.MaxDepth = 3;
+            DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
+            SearchAlgorithms.MaxDepth = 3;
 
-        //    var nodesSearched = new List<INode>();
+            var nodesSearched = new List<INode>();
 
-        //    var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
+            var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
 
-        //    Assert.AreEqual(5, score);
-        //    Assert.AreEqual(14, nodesSearched.Count);
-        //}
+            Assert.AreEqual(5, score);
+            Assert.AreEqual(14, nodesSearched.Count);
+        }
 
-        //[TestMethod]
-        //public void NegaScoutTest()
-        //{
-        //    var root = NegaScoutTree;
+        [TestMethod]
+        public void NegaScoutTest()
+        {
+            var root = NegaScoutTree;
 
-        //    DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
-        //    SearchAlgorithms.MaxDepth = 3;
+            DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
+            SearchAlgorithms.MaxDepth = 3;
 
-        //    var nodesSearched = new List<INode>();
+            var nodesSearched = new List<INode>();
 
-        //    var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
+            var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
 
-        //    Assert.AreEqual(5, score);
-        //    Assert.AreEqual(13, nodesSearched.Count);
-        //}
+            Assert.AreEqual(5, score);
+            Assert.AreEqual(13, nodesSearched.Count);
+        }
 
-        //[TestMethod]
-        //public void NegaMaxReversiTest()
-        //{
-        //    DepthFirstSearch.Search = SearchAlgorithms.NegaMax;
-        //    SearchAlgorithms.MaxDepth = 10;
+        [TestMethod]
+        public void NegaMaxReversiTest()
+        {
+            DepthFirstSearch.Search = SearchAlgorithms.NegaMax;
+            SearchAlgorithms.MaxDepth = 10;
 
-        //    var node = new GameStateNode(_game1.GameState, _weights);
+            var node = new AnalysisNode(ref _game1.GameState, _weights);
 
-        //    var score = DepthFirstSearch.Search(node);
+            var score = DepthFirstSearch.Search(node);
 
-        //    Assert.AreEqual(1, score);
-        //}
+            Assert.AreEqual(1, score);
+        }
 
-        //[TestMethod]
-        //public void AlphaBetaReversiTest()
-        //{
-        //    DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
-        //    SearchAlgorithms.MaxDepth = 10;
+        [TestMethod]
+        public void AlphaBetaReversiTest()
+        {
+            DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
+            SearchAlgorithms.MaxDepth = 10;
 
-        //    var node = new GameStateNode(_game1.GameState, _weights);
+            var node = new AnalysisNode(ref _game1.GameState, _weights);
 
-        //    var score = DepthFirstSearch.Search(node);
+            var score = DepthFirstSearch.Search(node);
 
-        //    Assert.AreEqual(1, score);
-        //}
+            Assert.AreEqual(1, score);
+        }
 
-        //[TestMethod]
-        //public void NegaScoutReversiTest()
-        //{
-        //    DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
-        //    SearchAlgorithms.MaxDepth = 10;
+        [TestMethod]
+        public void NegaScoutReversiTest()
+        {
+            DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
+            SearchAlgorithms.MaxDepth = 10;
 
-        //    var node = new GameStateNode(_game1.GameState, _weights);
+            var node = new AnalysisNode(ref _game1.GameState, _weights);
 
-        //    var score = DepthFirstSearch.Search(node);
+            var score = DepthFirstSearch.Search(node);
 
-        //    Assert.AreEqual(1, score);
-        //}
+            Assert.AreEqual(1, score);
+        }
 
-        //[TestMethod]
-        //public void AlphaBetaReversiGame2Test()
-        //{
-        //    DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
-        //    SearchAlgorithms.MaxDepth = 10;
+        [TestMethod]
+        public void NegaScoutReversiGame2Test()
+        {
+            //DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
+            //SearchAlgorithms.MaxDepth = 10;
 
-        //    var node = new GameStateNode(_game3.GameState, _weights);
+            //var node = new AnalysisNode(ref _game3.GameState, _weights);
 
-        //    var score = DepthFirstSearch.Search(node);
+            //var score = DepthFirstSearch.Search(node);
 
-        //    Assert.AreEqual(0, score);
-        //}
+            //Assert.AreEqual(0, score);
+        }
 
         [TestMethod]
         public void SelectResultTest()

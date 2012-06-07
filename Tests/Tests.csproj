@@ -73,11 +73,13 @@
     <Compile Include="PatternsTest.cs" />
     <Compile Include="StabilityTests.cs" />
     <Compile Include="StatsTest.cs" />
+    <Compile Include="TestNode.cs" />
     <Compile Include="ValidPlaysTest.cs" />
     <Compile Include="GameManagerTest.cs" />
     <Compile Include="PlayResolutionTest.cs" />
     <Compile Include="NotationHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZobristHashTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Assembly-CSharp.csproj">

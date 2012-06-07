@@ -46,7 +46,7 @@ namespace WtbProcessor
             {
                 var gameManager = new GameManager();
 
-                while (!gameManager.GameState.IsGameOver)
+                while (!gameManager.IsGameOver)
                 {
                     if (!gameManager.HasPlays)
                     {
@@ -58,7 +58,7 @@ namespace WtbProcessor
 
                     depthFirstSearch.ComputerPlayer = computerPlayers[gameManager.PlayerIndex];
 
-                    DepthFirstSearch.GameStateNodeCollection.ClearBuffers();
+                    DepthFirstSearch.AnalysisNodeCollection.ClearBuffers();
                     depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex);
 
                     //Console.Write(gameManager.Turn);
@@ -71,7 +71,7 @@ namespace WtbProcessor
 
                 var winner = gameManager.WinnerIndex;
 
-                if (gameManager.GameState.IsDraw)
+                if (gameManager.IsDraw)
                     winner = (short)random.Next(1);
 
                 Console.WriteLine("Game {0}, Time {1}", i, stopWatch.Elapsed);

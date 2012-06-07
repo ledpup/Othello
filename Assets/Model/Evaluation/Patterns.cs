@@ -7,15 +7,18 @@ namespace Reversi.Model.Evaluation
 {
 	public static class Patterns
 	{
-	    public static List<ulong> Corner = AllPermutations("a1".ToBitBoard());
-        public static List<ulong> XSquare = AllPermutations("b2".ToBitBoard());
+        public static ulong Corner = CombinedSymmetries("a1".ToBitBoard());
+        public static ulong XSquare = CombinedSymmetries("b2".ToBitBoard());
+        public static ulong CSquare = CombinedSymmetries("a2".ToBitBoard() | "b1".ToBitBoard());
+        public static ulong Edge = CombinedSymmetries(255);
+
+	    public static List<ulong> Corners = AllPermutations("a1".ToBitBoard());
+        public static List<ulong> XSquares = AllPermutations("b2".ToBitBoard());
         public static List<ulong> CornerAndXSquare = AllPermutations("a1".ToBitBoard() | "b2".ToBitBoard());
-        public static List<ulong> CSquare = AllPermutations("a2".ToBitBoard() | "b1".ToBitBoard());
+        public static List<ulong> CSquares = AllPermutations("a2".ToBitBoard() | "b1".ToBitBoard());
         public static List<ulong> CornerAndCSquare = AllPermutations("a1".ToBitBoard() | "a2".ToBitBoard() | "b1".ToBitBoard());
 
         public static List<ulong> Edges = AllPermutations(255);
-
-	    public static ulong Edge = CombinedSymmetries(255);
 
         public static int NumberOfEdgeSquares = Edge.CountBits();
 

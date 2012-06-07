@@ -12,7 +12,7 @@ namespace Reversi.Model.Evaluation
 	    private const short TurnsPerPhase = 6;
 
 	    public readonly List<string> Strategies = new List<string>
-	                                    {"Pieces", "Mobility", "PotentialMobility", "Parity", "PositionValues", "Pattern", };
+	                                    {"Pieces", "Mobility", "PotentialMobility", "Parity", "Pattern", };
 
 	    public bool UseOpeningBook;
 
@@ -53,13 +53,9 @@ namespace Reversi.Model.Evaluation
 
             Weights[8]["Mobility"] = .1f;
             Weights[8]["PotentialMobility"] = .1f;
-            Weights[8]["Parity"] = .5f;
-            Weights[8]["PositionValues"] = .1f;
 
             Weights[9]["Mobility"] = .1f;
             Weights[9]["PotentialMobility"] = .1f;
-            Weights[9]["Parity"] = .5f;
-            Weights[9]["PositionValues"] = .1f;
         }
 
 	    int Phase(short turn)

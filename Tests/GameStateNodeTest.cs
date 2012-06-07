@@ -17,7 +17,7 @@ namespace Tests
                                { "Mobility", .9f },
                                { "PotentialMobility", .9f },
                                { "Parity", 1f },
-                               { "PositionValues", .8f },
+                               { "Pattern", .8f },
 		                   };
 
         [TestMethod]
@@ -25,17 +25,17 @@ namespace Tests
         {
 
             var gameManager = new GameManager();
-            var gameStateNode = new GameStateNode(ref gameManager.GameState, _weights);
+            var gameStateNode = new AnalysisNode(ref gameManager.GameState, _weights);
 
             ValidateNode(gameStateNode);
         }
 
-        private void ValidateNode(GameStateNode gameStateNode)
+        private void ValidateNode(AnalysisNode gameStateNode)
         {
             Assert.IsTrue(gameStateNode.Pieces >= 0 && gameStateNode.Pieces <= 1);
             Assert.IsTrue(gameStateNode.Mobility >= 0 && gameStateNode.Mobility <= 1);
             Assert.IsTrue(gameStateNode.Parity >= 0 && gameStateNode.Parity <= 1);
-            Assert.IsTrue(gameStateNode.Position >= 0 && gameStateNode.Position <= 1);
+            Assert.IsTrue(gameStateNode.Pattern >= 0 && gameStateNode.Pattern <= 1);
         }
 
         [TestMethod]
@@ -48,14 +48,14 @@ namespace Tests
                                    { "Mobility", 1f },
                                    { "PotentialMobility", 1f },
                                    { "Parity", 1f },
-                                   { "PositionValues", 1f },
+                                   { "Pattern", 1f },
 		                       },
                                new Dictionary<string, float>{
                                    { "Pieces", 1f },
                                    { "Mobility", 1f },
                                    { "PotentialMobility", 1f },
                                    { "Parity", 1f },
-                                   { "PositionValues", 1f },
+                                   { "Pattern", 1f },
 		                       },
                            };
 
@@ -77,7 +77,7 @@ namespace Tests
                 gameManager.PlacePiece(computerPlayIndex);
                 gameManager.NextTurn();
 
-                var gameStateNode = new GameStateNode(ref gameManager.GameState, _weights);
+                var gameStateNode = new AnalysisNode(ref gameManager.GameState, _weights);
                 ValidateNode(gameStateNode);
             }
         }

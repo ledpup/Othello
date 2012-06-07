@@ -5,15 +5,15 @@ using System.Text;
 
 namespace Reversi.Model.Evaluation
 {
-    public class GameStateNodeBuffer
+    public class AnalysisNodeBuffer
     {
-        public GameStateNode[] Entries;
+        public AnalysisNode[] Entries;
         public ushort LowestFreeSlot;
         public static int ArraySize = ushort.MaxValue;
 
-        public GameStateNodeBuffer()
+        public AnalysisNodeBuffer()
         {
-            Entries = new GameStateNode[ArraySize];
+            Entries = new AnalysisNode[ArraySize];
         }
     }
 }

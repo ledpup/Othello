@@ -8,7 +8,7 @@ namespace Reversi.Model.Evaluation
         bool IsGameOver { get; }
 	    void NextTurn();
         IEnumerable<INode> Children { get; }
-        List<GameStateNodeReference> ChildNodeReferences { get; }
-        short PlayIndex { get; }
+        bool HasChildren { get; }
+        short? PlayIndex { get; }
     }
 }

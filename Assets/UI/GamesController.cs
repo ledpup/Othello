@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using Reversi.Model;
 
@@ -23,7 +24,7 @@ public class GamesController : MonoBehaviour
 	
 	private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
-	float _globalGameSpeed = .5f;
+	float _globalAnimationSpeed = .5f;
 
     private List<string> _gameArchive;
 	
@@ -35,7 +36,7 @@ public class GamesController : MonoBehaviour
 
 	    _games = new List<GameBehaviour>();
 
-	    var gameManagers = GameManager.LoadGamesFromFile(SavePath + "Games Archive.txt");
+	    var gameManagers = GameManager.LoadGamesFromFile(SavePath + "CurrentGame.txt");
 		
         //gameManagers.ForEach(x => _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, GuiSkin, BoardTile, Piece, Text, gameManagers.IndexOf(x).ToCartesianCoordinate(), x)));
 
@@ -46,11 +47,6 @@ public class GamesController : MonoBehaviour
 		_activeGame = _games.First();
 		
 	}
-
-    private void LoadTrieData()
-    {
-        
-    }
 	
 	void OnApplicationQuit()
 	{
@@ -67,6 +63,15 @@ public class GamesController : MonoBehaviour
 			GamePersistenceGui();
 			TurnInfoGui();
 			UndoRedoGui();
+		    GUI.TextArea(new Rect(20, 350, 200, 20), "Nodes searched: " + _activeGame.NodesSearched);
+
+
+
+		    GuiSkin.textArea.alignment = TextAnchor.UpperLeft;
+
+		    //var style = new GUIStyle {alignment = TextAnchor.UpperLeft, };
+
+		    GUI.TextArea(new Rect(20, 370, 200, 200), _activeGame.AnalysisInfo());
 		}
 		GameSpeedGui();
 	}
@@ -79,22 +84,19 @@ public class GamesController : MonoBehaviour
 		_activeGame.WhiteIsHuman = GUI.Toggle (new Rect (20, 70, 200, 20), _activeGame.WhiteIsHuman, "White is a human player");
 		_activeGame.ShowValidPlays = GUI.Toggle (new Rect (20, 90, 200, 20), _activeGame.ShowValidPlays, "Show valid plays");
 		_activeGame.ShowBoardCoordinates = GUI.Toggle (new Rect (20, 110, 200, 20), _activeGame.ShowBoardCoordinates, "Show board coordinates");
-		
-		var blah = new GUIContent[1];
-		
-		_selection = GUI.SelectionGrid(new Rect (20, 150, 150, 80), _selection, new string[3] { "No Tile Info", "Show Archive Stats", "Show Evaluation Data" }, 1);
+				
+		_selection = GUI.SelectionGrid(new Rect (20, 150, 150, 60), _selection, new [] { "No Tile Info", "Show Archive Stats", "Show Evaluation Data" }, 1);
 		
 		_games.ForEach(x => x.DisplayText = (DisplayText)_selection);
 	}
 	
 	void GamePersistenceGui()
 	{
-//		if (GUI.Button(new Rect(20, 20, 80, 20), "New Game"))
-//		{
-//			_activeGame.Plays = new List<int?>();
-//			_activeGame.GameManager = new GameManager();
-//        	_activeGame.CreatePieces();
-//		}
+        if (GUI.Button(new Rect(20, 20, 80, 20), "New Game"))
+        {
+            _activeGame.Plays = new List<short?>();
+            _activeGame.StartGameBehavour(new GameManager());
+        }
 //		else if (GUI.Button(new Rect(100, 20, 80, 20), "Load"))
 //		{
 //			_gameManager.Load(@"Save\CurrentGame.txt");
@@ -155,8 +157,8 @@ public class GamesController : MonoBehaviour
 	            continue;
 
 	        var column = i % 2 == 0 ? 60 : 20;
-	        var row = (i / 2) * 20;
-	        if (GUI.Button(new Rect(Screen.width - 100 - column, 20 + row, 40, 20), _activeGame.Plays[i].ToAlgebraicNotation()))
+	        var row = (i / 2) * 18;
+	        if (GUI.Button(new Rect(Screen.width - 100 - column, 20 + row, 40, 18), _activeGame.Plays[i].ToAlgebraicNotation()))
 	        {
 				_activeGame.PlayTo(i);
 	        }
@@ -165,11 +167,12 @@ public class GamesController : MonoBehaviour
 	
 	void GameSpeedGui()
 	{
-		var oldGameSpeed = _globalGameSpeed;
-		_globalGameSpeed = GUI.HorizontalSlider (new Rect (25, 250, 100, 30), _globalGameSpeed, 0.0f, 1.0f);
-		if (oldGameSpeed != _globalGameSpeed)
+		var oldGameSpeed = _globalAnimationSpeed;
+        GUI.TextField(new Rect(20, 240, 130, 25), "Animation Speed");
+		_globalAnimationSpeed = GUI.HorizontalSlider (new Rect (20, 270, 130, 30), _globalAnimationSpeed, 0.0f, 1.0f);
+		if (oldGameSpeed != _globalAnimationSpeed)
 		{
-			Messenger<float>.Broadcast("Game speed changed", _globalGameSpeed);
+			Messenger<float>.Broadcast("Game speed changed", _globalAnimationSpeed);
 		}
 	}
 	

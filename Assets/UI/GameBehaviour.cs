@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Reversi.Model.Evaluation;
 using UnityEngine;
 using Reversi.Model;
@@ -36,7 +37,7 @@ public class GameBehaviour : MonoBehaviour
     System.Random _random;
     
     System.Diagnostics.Stopwatch _stopwatch;
-    float _gameSpeed = .5f;
+    float _animationSpeed = .5f;
 
     public List<string> GameArchive;
     private Dictionary<string, GameStateStats> _positionStats;
@@ -86,21 +87,7 @@ public class GameBehaviour : MonoBehaviour
     }
     bool _showBoardCoordinates;
 
-    Dictionary<string, float> _weights = new Dictionary<string, float>
-                           {
-                               { "Pieces", .7f },
-                               { "Mobility", 1f },
-                               { "PotentialMobility", 1f },
-                               { "Parity", 1f },
-                               { "PositionValues", 1f },
-		                   };
-
-    private List<GameStateNode> _savedGameStateNodes;
-
-    //public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GUISkin guiSkin, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, List<string> gameArchive)
-    //{
-    //    return GameBehaviour.CreateGameBehaviour(gameObject, guiSkin, boardTile, piece, text, boardLocation, null, gameArchive);
-    //}
+    private List<AnalysisNode> _savedGameStateNodes;
 
     public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GUISkin guiSkin, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, GameManager gameManager, List<string> gameArchive)
     {
@@ -165,6 +152,7 @@ public class GameBehaviour : MonoBehaviour
         _depthFirstSearch = new DepthFirstSearch(new ComputerPlayer(true));
 
         Messenger<short>.AddListener("Tile clicked", OnTileSelected);
+        Messenger<short>.AddListener("Tile hover", OnTileHover);
         Messenger<float>.AddListener("Game speed changed", OnGameSpeedChanged);
     }
     
@@ -172,7 +160,7 @@ public class GameBehaviour : MonoBehaviour
     {
         if (IsReplaying)
         {
-            if (_stopwatch.ElapsedMilliseconds > 350 * (1 / _gameSpeed))
+            if (_stopwatch.ElapsedMilliseconds > 350 * (1 / _animationSpeed))
             {
                 if (_gameManager.Turn < Plays.Count())
                 {
@@ -200,8 +188,6 @@ public class GameBehaviour : MonoBehaviour
         
         Play(index);
         Plays = _gameManager.Plays;
-
-        
     }
     
     void Play(short? index)
@@ -215,7 +201,18 @@ public class GameBehaviour : MonoBehaviour
         _gameManager.NextTurn();
         DisplayPlays();
     }
-    
+
+    private short? _infoPlayIndex;
+
+    void OnTileHover(short index)
+    {
+        _infoPlayIndex = null;
+        if (_gameManager.CanPlay(index))
+        {
+            _infoPlayIndex = index;
+        }
+    }
+
     bool _canDrawStats;
     
     void DrawStats()
@@ -234,10 +231,8 @@ public class GameBehaviour : MonoBehaviour
         
         if (!_positionStats.ContainsKey(position))
             throw new Exception("This should never happen");
-        
-        DeleteTileInfo();
                     
-        var playerPlays = _gameManager.GameState.PlayerPlays.Indices().ToList();
+        var playerPlays = _gameManager.PlayerPlays;
         
         playerPlays.ForEach(p => 
                         {
@@ -289,7 +284,7 @@ public class GameBehaviour : MonoBehaviour
         if (!ShowValidPlays || IsReplaying)
             return;
 
-        var playerPlays = _gameManager.GameState.PlayerPlays.Indices().ToList();
+        var playerPlays = _gameManager.PlayerPlays;
 
         playerPlays.ForEach(p => CreatePiece(p, _gameManager.PlayerIndex, .3f, 0));
     }
@@ -309,8 +304,10 @@ public class GameBehaviour : MonoBehaviour
 
     void ComputerPlay()
     {
-        if (!IsComputerTurn) 
+        if (!IsComputerTurn)
+        {
             return;
+        }
 
         if (!_gameManager.HasPlays) 
             return;
@@ -321,7 +318,7 @@ public class GameBehaviour : MonoBehaviour
 
             //DepthFirstSearch.GetPlay(_gameManager, _weights, ref _computerPlayIndex);
             //DepthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _weights, ref _computerPlayIndex, ref _computerStarted);
-			DepthFirstSearch.GameStateNodeCollection.ClearBuffers();
+			DepthFirstSearch.AnalysisNodeCollection.ClearBuffers();
             var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], ref _computerPlayIndex, ref _computerStarted));
             thread.Start();
         }
@@ -337,12 +334,12 @@ public class GameBehaviour : MonoBehaviour
 
     private short RandomPlay()
     {
-        var playerPlays = _gameManager.GameState.PlayerPlays.Indices().ToArray();
+        var playerPlays = _gameManager.PlayerPlays;
         
         if (!_gameManager.HasPlays)
             throw new Exception();
 
-        var index = _random.Next(0, playerPlays.Length);
+        var index = _random.Next(0, playerPlays.Count);
         return playerPlays[index];
     }
 
@@ -362,10 +359,7 @@ public class GameBehaviour : MonoBehaviour
     }
     
     void PlaceAndFlipPieces()
-    {
-        var placement = _gameManager.GameState.Placement.Indices().Single();
-        var flippedPieces = _gameManager.GameState.FlippedPieces.Indices().ToList();
-        
+    {        
         var toDestroy = _gamePieces.Where(p => p.transform.localScale.x < .5f).ToList();
         toDestroy.ForEach(p => 
                           {
@@ -375,9 +369,9 @@ public class GameBehaviour : MonoBehaviour
         
         var playerColour = 1 - _gameManager.PlayerIndex;
 
-        CreatePiece(placement, playerColour, .95f, -PieceStartingHeight);
+        CreatePiece(_gameManager.Placement, playerColour, .95f, -PieceStartingHeight);
         
-        FlipPieces(flippedPieces, placement, playerColour);
+        FlipPieces(_gameManager.FlippedPieces, _gameManager.Placement, playerColour);
     }
     
     void FlipPieces(List<short> flippedPieces, short placement, int playerColour)
@@ -389,22 +383,18 @@ public class GameBehaviour : MonoBehaviour
             });
     }
     
-    public void CreatePieces()
+    private void CreatePieces()
     {
         if (_gamePieces == null)
             _gamePieces = new List<GameObject>();
 
-        _gamePieces.ForEach(Destroy);
-
-        var playerPieces = _gameManager.GameState.PlayerPieces.Indices().ToList();
-        var opponentPieces = _gameManager.GameState.OpponentPieces.Indices().ToList();
-        
+        _gamePieces.ForEach(Destroy);        
         _gamePieces = new List<GameObject>();
 
         var opponentColour = _gameManager.PlayerIndex - 1;
-        
-        playerPieces.ForEach(p => CreatePiece(p, _gameManager.PlayerIndex, .95f, 0));
-        opponentPieces.ForEach(p => CreatePiece(p, opponentColour, .95f, 0));
+
+        _gameManager.PlayerPieces.ForEach(p => CreatePiece(p, _gameManager.PlayerIndex, .95f, 0));
+        _gameManager.OpponentPieces.ForEach(p => CreatePiece(p, opponentColour, .95f, 0));
         DisplayPlays();
     }
 
@@ -421,7 +411,7 @@ public class GameBehaviour : MonoBehaviour
         pieceTransform.Rotate(0, rotation, 0);
         var pb = ((PieceBehaviour)pieceTransform.GetComponent("PieceBehaviour"));
         pb.Index = pieceIndex;
-        pb.OnGameSpeedChanged(_gameSpeed);
+        pb.OnGameSpeedChanged(_animationSpeed);
         pb.Drop(colour);
         
         _gamePieces.Add(gamePiece);
@@ -490,7 +480,7 @@ public class GameBehaviour : MonoBehaviour
 
     public void OnGameSpeedChanged(float gameSpeed)
     {
-        _gameSpeed = gameSpeed;
+        _animationSpeed = gameSpeed;
     }
     
     public string Player
@@ -500,12 +490,12 @@ public class GameBehaviour : MonoBehaviour
     
     public bool CanPlay
     {
-        get { return _gameManager.GameState.CanPlay; }
+        get { return _gameManager.HasPlays; }
     }
     
     public bool IsGameOver
     {
-        get { return _gameManager.GameState.IsGameOver; }
+        get { return _gameManager.IsGameOver; }
     }
     
     public string GameOverMessage
@@ -525,14 +515,42 @@ public class GameBehaviour : MonoBehaviour
 		DeleteTileInfo();
         DrawBoardCoordinates();
         CreatePieces();
-    
-        if (IsReplaying)
+
+        if (!IsReplaying)
+            return;
+
+        if (_gameManager.IsGameOver)
         {
-            if (_gameManager.GameState.IsGameOver)
-            {
-                RestartGame();
-            }
-            _stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            RestartGame();
         }
+        _stopwatch = System.Diagnostics.Stopwatch.StartNew();
+    }
+
+    public int NodesSearched
+    {
+        get 
+        { 
+            if (_computerPlayIndex == null)
+                _nodesSearched = DepthFirstSearch.AnalysisNodeCollection.NumberOfNodes;
+            return _nodesSearched;
+        }
+    }
+    private int _nodesSearched;
+    
+    
+
+
+
+
+    //private AnalysisNode AddNode(ulong gamesStateHash)
+    //{
+    //    AnalysisNode? analysisNode = new AnalysisNode(ref _gameManager.GameState, _depthFirstSearch.ComputerPlayer.GetWeights(_gameManager.Turn));
+    //    HashNodes[gamesStateHash].AnalysisNodes.Add(analysisNode);
+    //    return (AnalysisNode)analysisNode;
+    //}
+
+    internal string AnalysisInfo()
+    {
+        return _gameManager.AnalysisInfo(_infoPlayIndex, _depthFirstSearch);
     }
 }

@@ -101,7 +101,7 @@ namespace Reversi.Model.Thor
 
             Console.WriteLine(GameManager.SerialsePlays(plays));
 
-            if (gameManager.GameState.IsGameOver)
+            if (gameManager.IsGameOver)
             {
                 if (game.BlackScore != gameManager.BlackScore)
                     throw new Exception(string.Format("At gameover, calculated score ({0}) does not match recorded score ({1}).", gameManager.BlackScore, game.BlackScore));
