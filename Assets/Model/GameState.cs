@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Assets.Model;
+using Reversi.Model.TranspositionTable;
 
 namespace Reversi.Model
 {
@@ -156,5 +157,7 @@ namespace Reversi.Model
             }
             return roatatedIndices;
         }
+
+
     }
 }

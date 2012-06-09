@@ -14,8 +14,6 @@ namespace Reversi.Model
 		
 		public List<short?> Plays;
 
-	    private ZobristHash _zobristHash;
-
 		public GameManager() : this (new List<short?>())
         {
         }
@@ -37,8 +35,6 @@ namespace Reversi.Model
 
             BlackName = "Black";
             WhiteName = "White";
-
-            _zobristHash = new ZobristHash();
 		}
 		
 		public bool HasPlays { get { return GameState.HasPlays; } }
@@ -301,10 +297,7 @@ namespace Reversi.Model
             get { return GameState.FlippedPieces.Indices().ToList(); }
         }
 
-	    public ulong GameStateHash
-	    {
-            get { return _zobristHash.Hash(GameState, PlayerIsBlack); }
-	    }
+
 
         public bool IsDraw
         {
@@ -329,10 +322,10 @@ namespace Reversi.Model
             var playerName = IsBlacksTurn(turn) ? "Black" : "White";
 
             var stringBulider = new StringBuilder();
-            stringBulider.AppendLine();
+            //stringBulider.AppendLine();
 
-            stringBulider.AppendLine(playerName + " Score\t\t\t" + analysisNode.Value * 100);
-            stringBulider.AppendLine();
+            //stringBulider.AppendLine(playerName + " Score\t\t\t" + analysisNode.Value * 100);
+            //stringBulider.AppendLine();
             stringBulider.AppendLine("\t\t\t\t  Black\t  White");
             stringBulider.AppendLine("Pieces\t\t\t" + BlackAndWhite(analysisNode.PlayerPieces, analysisNode.OpponentPieces, IsBlacksTurn(turn)));
             stringBulider.AppendLine("Mobility\t\t\t" + BlackAndWhite(analysisNode.PlayerPlayCount, analysisNode.OpponentPlayCount, IsBlacksTurn(turn)));

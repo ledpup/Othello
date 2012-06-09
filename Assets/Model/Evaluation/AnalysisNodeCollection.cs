@@ -14,9 +14,11 @@ namespace Reversi.Model.Evaluation
             _analysisNodeBuffers = new List<AnalysisNodeBuffer>();
         }
 
-        public void ClearBuffers()
+        public void ClearMemory()
         {
             _analysisNodeBuffers.ForEach(x => x.LowestFreeSlot = 0);
+            DepthFirstSearch.TranspositionTable.Clear();
+            GameBehaviour.Transpositions = 0;
         }
 
         public AnalysisNodeReference AddAnalysisNode(ref AnalysisNode gameStateNode)

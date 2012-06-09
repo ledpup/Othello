@@ -18,17 +18,18 @@ namespace Reversi.Model.TranspositionTable
     {
         private const int BoardSize = 64;
 
-        private Dictionary<short, ulong[]> _randomNumbers;
-        private ulong blackRandom;
+        private static Dictionary<short, ulong[]> _randomNumbers;
+        private static ulong _blackRandom;
 
         public ZobristHash()
         {
-            
             // Generate random numbers for each position on the board, for possible state (empty, player, opponent)
-            if (_randomNumbers == null)
-                _randomNumbers = new Dictionary<short, ulong[]>();
+            if (_randomNumbers != null)
+                return;
+            
+            _randomNumbers = new Dictionary<short, ulong[]>();
 
-            var random = new Random(0); // Always use the same seed (so we can persist the hashes)
+            var random = new Random(1654465432); // Always use the same seed (so we can persist the hashes)
 
             for (var i = (short) 0; i < 3; i++)
             {
@@ -40,11 +41,11 @@ namespace Reversi.Model.TranspositionTable
                 _randomNumbers.Add(i, boardRandomNumbers);
             }
 
-            blackRandom = random.NextUlong();
+            _blackRandom = random.NextUlong();
         }
 
         
-        public ulong Hash(GameState gameState, bool blackToPlay)
+        public static ulong Hash(GameState gameState, bool blackToPlay)
         {
             var pieces = new[]
                              {
@@ -54,18 +55,21 @@ namespace Reversi.Model.TranspositionTable
                              };
 
             var hash = 0UL;
-            for (var boardIndex = 0; boardIndex < BoardSize; boardIndex++)
+            for (var squareIndex = 0; squareIndex < BoardSize; squareIndex++)
             {
-                var position = 1UL << boardIndex;
+                var position = 1UL << squareIndex;
                 for (var pieceTypeIndex = (short)0; pieceTypeIndex < 3; pieceTypeIndex++)
                 {
                     if ((pieces[pieceTypeIndex] & position) > 0)
-                        hash ^= _randomNumbers[pieceTypeIndex][boardIndex];
+                    {
+                        hash ^= _randomNumbers[pieceTypeIndex][squareIndex];
+                        break;
+                    }
                 }
             }
 
             if (blackToPlay)
-                hash ^= blackRandom;
+                hash ^= _blackRandom;
 
             return hash;
         }

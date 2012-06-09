@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Reversi.Model;
 using Reversi.Model.Evaluation;
 
 namespace Tests
@@ -19,6 +20,7 @@ namespace Tests
         public bool HasChildren { get { return Children.Any(); } }
         public bool IsGameOver { get { return false; } }
         public short? PlayIndex { get; set; }
+        public GameState GameState { get; set; }
 
         public void NextTurn()
         {

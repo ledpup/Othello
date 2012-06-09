@@ -9,7 +9,7 @@ using Reversi.Model.Evaluation;
 namespace Tests
 {
     [TestClass]
-    public class GameStateNodeTest
+    public class AnalysisNodeTest
     {
         Dictionary<string, float> _weights = new Dictionary<string, float>
                            {
@@ -41,24 +41,6 @@ namespace Tests
         [TestMethod]
         public void FullGameTest()
         {
-            var weights = new[]
-                           { 
-                               new Dictionary<string, float>{
-                                   { "Pieces", 1f },
-                                   { "Mobility", 1f },
-                                   { "PotentialMobility", 1f },
-                                   { "Parity", 1f },
-                                   { "Pattern", 1f },
-		                       },
-                               new Dictionary<string, float>{
-                                   { "Pieces", 1f },
-                                   { "Mobility", 1f },
-                                   { "PotentialMobility", 1f },
-                                   { "Parity", 1f },
-                                   { "Pattern", 1f },
-		                       },
-                           };
-
             var gameManager = new GameManager();
 
             while (!gameManager.GameState.IsGameOver)

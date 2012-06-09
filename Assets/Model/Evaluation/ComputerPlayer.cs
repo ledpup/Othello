@@ -38,7 +38,7 @@ namespace Reversi.Model.Evaluation
 
         private void SetDefaults()
         {
-            SearchDepth[8] = 7;
+            SearchDepth[8] = 10;
             SearchDepth[9] = 10;
 
             Weights[0]["Pieces"] = .1f;

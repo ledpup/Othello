@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reversi.Model.Evaluation;
+using Reversi.Model.TranspositionTable;
 
 namespace Reversi.Model.Evaluation
 {
@@ -45,7 +46,24 @@ namespace Reversi.Model.Evaluation
 
             var bestScore = Minimum;
 
-            var scores = node.Children.Select(child => -AlphaBetaNegaMax(child, 1 - colour, depth + 1, -beta, -alpha, nodesSearched));
+            var scores = new List<float>();
+
+            foreach (var child in node.Children)
+            {
+                var hash = ZobristHash.Hash(child.GameState, colour == 0);
+                if (DepthFirstSearch.TranspositionTable.ContainsKey(hash))
+                {
+                    scores.Add(DepthFirstSearch.TranspositionTable[hash]);
+                    GameBehaviour.Transpositions++;
+                }
+                else
+                {
+                    var score = -AlphaBetaNegaMax(child, 1 - colour, depth + 1, -beta, -alpha, nodesSearched);
+                    scores.Add(score);
+					if (!DepthFirstSearch.TranspositionTable.ContainsKey(hash))
+                    	DepthFirstSearch.TranspositionTable.Add(hash, score);
+                }
+            }
 
             foreach (var score in scores)
             {
@@ -59,6 +77,32 @@ namespace Reversi.Model.Evaluation
                     alpha = score;
             }
             return bestScore;
+        }
+
+        private static IEnumerable<INode> FilterOutTranspositions(IEnumerable<INode> children, int colour, out List<float> scores)
+        {
+            scores = new List<float>();
+
+            if (DepthFirstSearch.TranspositionTable == null)
+                return children;
+
+            var childrenToSearch = new List<INode>();
+
+            foreach (var child in children)
+            {
+                var hash = ZobristHash.Hash(child.GameState, colour == 0);
+                if (DepthFirstSearch.TranspositionTable.ContainsKey(hash))
+                {
+                    scores.Add(DepthFirstSearch.TranspositionTable[hash]);
+                    GameBehaviour.Transpositions++;
+                }
+                else
+                {
+                    childrenToSearch.Add(child);
+                }
+            }
+
+            return childrenToSearch;
         }
 
         public static float NegaScout(INode node, int colour, int depth, IList<INode> nodesSearched = null)

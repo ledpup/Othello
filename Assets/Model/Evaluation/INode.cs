@@ -10,5 +10,7 @@ namespace Reversi.Model.Evaluation
         IEnumerable<INode> Children { get; }
         bool HasChildren { get; }
         short? PlayIndex { get; }
+
+        GameState GameState { get; }
     }
 }

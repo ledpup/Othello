@@ -7,13 +7,13 @@ namespace Reversi.Model.Evaluation
 {
     public struct AnalysisNode : INode
 	{
-        private GameState _gameState { get; set; }
+        public GameState GameState { get; private set; }
         public short? PlayIndex { get; private set; }
         private readonly Dictionary<string, float> _weights;
 
         public AnalysisNode(ref GameState gameState, Dictionary<string, float> weights, short? playIndex = null) : this()
 		{
-            _gameState = gameState;
+            GameState = gameState;
             _weights = weights;
             PlayIndex = playIndex;
             _children = null;
@@ -21,7 +21,7 @@ namespace Reversi.Model.Evaluation
 
         public void NextTurn()
         {
-            _gameState = _gameState.NextTurn();
+            GameState = GameState.NextTurn();
             _children = null;
         }
 
@@ -31,7 +31,7 @@ namespace Reversi.Model.Evaluation
             {
                 // If the game is finished, we don't need an heuristic because we know who has won.
                 if (IsGameOver)
-                    return _gameState.PlayerWinning ? 1 : 0;
+                    return GameState.PlayerWinning ? 1 : 0;
 
                 // This is the heuristic evaluation function.
                 return Standardise(Evaluation);
@@ -48,7 +48,7 @@ namespace Reversi.Model.Evaluation
 		
         public bool IsGameOver
         {
-            get { return _gameState.IsGameOver; }
+            get { return GameState.IsGameOver; }
         }
 
         private List<AnalysisNodeReference> ChildNodeReferences
@@ -61,7 +61,7 @@ namespace Reversi.Model.Evaluation
                 _childNodeReferences = new List<AnalysisNodeReference>();
                 foreach (var play in PlayerPlays)
                 {
-                    var gameState = _gameState;
+                    var gameState = GameState;
                     gameState.PlacePiece(play);
 
                     var nextGameState = gameState.NextTurn();
@@ -113,12 +113,12 @@ namespace Reversi.Model.Evaluation
 
         public bool HasChildren
         {
-            get { return ChildNodeReferences.Any(); }
+            get { return ChildNodeReferences.Count > 0; }
         }
         
         IEnumerable<short> PlayerPlays
         {
-            get { return _gameState.PlayerPlays.Indices(); }
+            get { return GameState.PlayerPlays.Indices(); }
         }
 
         public float Pieces
@@ -132,12 +132,12 @@ namespace Reversi.Model.Evaluation
 
         public short OpponentPieces
         {
-            get { return _gameState.NumberOfOpponentPieces; }
+            get { return GameState.NumberOfOpponentPieces; }
         }
 
         public short PlayerPieces
         {
-            get { return _gameState.NumberOfPlayerPieces; }
+            get { return GameState.NumberOfPlayerPieces; }
         }
 
         public float Mobility
@@ -151,12 +151,12 @@ namespace Reversi.Model.Evaluation
 
         public short OpponentPlayCount
         {
-            get { return _gameState.OpponentPlays.CountBits(); }
+            get { return GameState.OpponentPlays.CountBits(); }
         }
 
         public short PlayerPlayCount
         {
-            get { return _gameState.PlayerPlays.CountBits(); }
+            get { return GameState.PlayerPlays.CountBits(); }
         }
 
         public float PotentialMobility
@@ -170,12 +170,12 @@ namespace Reversi.Model.Evaluation
 
         public short PlayerFrontier
         {
-            get { return Play.PotentialMobility(_gameState.PlayerPieces, _gameState.EmptySquares).CountBits(); }
+            get { return Play.PotentialMobility(GameState.PlayerPieces, GameState.EmptySquares).CountBits(); }
         }
 
         public short OpponentFrontier
         {
-            get { return Play.PotentialMobility(_gameState.OpponentPieces, _gameState.EmptySquares).CountBits(); }
+            get { return Play.PotentialMobility(GameState.OpponentPieces, GameState.EmptySquares).CountBits(); }
         }
 
 
@@ -183,62 +183,62 @@ namespace Reversi.Model.Evaluation
         {
             get 
             { 
-                var parity = _gameState.AllPieces.CountBits() % 2 == 0 ? 0 : 1;
+                var parity = GameState.AllPieces.CountBits() % 2 == 0 ? 0 : 1;
                 return parity * _weights["Parity"];
             }
         }
 
         public short PlayerCorners
         {
-            get { return (Patterns.Corner & _gameState.PlayerPieces).CountBits(); }
+            get { return (Patterns.Corner & GameState.PlayerPieces).CountBits(); }
         }
 
         public short OpponentCorners
         {
-            get { return (Patterns.Corner & _gameState.OpponentPieces).CountBits(); }
+            get { return (Patterns.Corner & GameState.OpponentPieces).CountBits(); }
         }
 
         public short PlayerXSquares
         {
-            get { return (Patterns.XSquare & _gameState.PlayerPieces).CountBits(); }
+            get { return (Patterns.XSquare & GameState.PlayerPieces).CountBits(); }
         }
 
         public short OpponentXSquares
         {
-            get { return (Patterns.XSquare & _gameState.OpponentPieces).CountBits(); }
+            get { return (Patterns.XSquare & GameState.OpponentPieces).CountBits(); }
         }
 
         public short PlayerCSquares
         {
-            get { return (Patterns.CSquare & _gameState.PlayerPieces).CountBits(); }
+            get { return (Patterns.CSquare & GameState.PlayerPieces).CountBits(); }
         }
 
         public short OpponentCSquares
         {
-            get { return (Patterns.CSquare & _gameState.OpponentPieces).CountBits(); }
+            get { return (Patterns.CSquare & GameState.OpponentPieces).CountBits(); }
         }
 
         public short PlayerEdges
         {
-            get { return (Patterns.Edge & _gameState.PlayerPieces).CountBits(); }
+            get { return (Patterns.Edge & GameState.PlayerPieces).CountBits(); }
         }
 
         public short OpponentEdges
         {
-            get { return (Patterns.Edge & _gameState.OpponentPieces).CountBits(); }
+            get { return (Patterns.Edge & GameState.OpponentPieces).CountBits(); }
         }
 
         public float Pattern
         {
             get
             {
-                var corner = CompareBitboards(Patterns.Corners, _gameState.PlayerPieces, _gameState.OpponentPieces, 1);
-                var xSquare = CompareBitboards(Patterns.XSquares, _gameState.PlayerPieces, _gameState.OpponentPieces, -1);
-                var cornerAndXSquare = CompareBitboards(Patterns.CornerAndXSquare, _gameState.PlayerPieces, _gameState.OpponentPieces, 1);
-                var cSquare = CompareBitboards(Patterns.CSquares, _gameState.PlayerPieces, _gameState.OpponentPieces, -1);
-                var cornerAndCSquare = CompareBitboards(Patterns.CornerAndCSquare, _gameState.PlayerPieces, _gameState.OpponentPieces, 1);
+                var corner = CompareBitboards(Patterns.Corners, GameState.PlayerPieces, GameState.OpponentPieces, 1);
+                var xSquare = CompareBitboards(Patterns.XSquares, GameState.PlayerPieces, GameState.OpponentPieces, -1);
+                var cornerAndXSquare = CompareBitboards(Patterns.CornerAndXSquare, GameState.PlayerPieces, GameState.OpponentPieces, 1);
+                var cSquare = CompareBitboards(Patterns.CSquares, GameState.PlayerPieces, GameState.OpponentPieces, -1);
+                var cornerAndCSquare = CompareBitboards(Patterns.CornerAndCSquare, GameState.PlayerPieces, GameState.OpponentPieces, 1);
                 
-                var edges = CompareBitboards(Patterns.Edges, _gameState.PlayerPieces, _gameState.OpponentPieces, 1);
+                var edges = CompareBitboards(Patterns.Edges, GameState.PlayerPieces, GameState.OpponentPieces, 1);
 
                 return Standardise(corner + xSquare + cornerAndXSquare + (cSquare + cornerAndCSquare * .75f) + (edges * .5f)) * _weights["Pattern"];
             }
@@ -256,7 +256,5 @@ namespace Reversi.Model.Evaluation
         {
             return (1f - 1f / value);
         }
-
-
     }
 }

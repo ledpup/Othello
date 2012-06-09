@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}</ProjectGuid>
+	<ProjectGuid>{56B2E4F7-C7EC-39D8-064C-B747DBC36A85}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<AssemblyName>Assembly-UnityScript-Editor</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,39 +44,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Event\Callback.cs" />
-     <Compile Include="Assets\Event\Messenger.cs" />
-     <Compile Include="Assets\Model\BitBoardHelper.cs" />
-     <Compile Include="Assets\Model\Evaluation\AnalysisNode.cs" />
-     <Compile Include="Assets\Model\Evaluation\AnalysisNodeBuffer.cs" />
-     <Compile Include="Assets\Model\Evaluation\AnalysisNodeCollection.cs" />
-     <Compile Include="Assets\Model\Evaluation\ComputerPlayer.cs" />
-     <Compile Include="Assets\Model\Evaluation\DepthFirstSearch.cs" />
-     <Compile Include="Assets\Model\Evaluation\INode.cs" />
-     <Compile Include="Assets\Model\Evaluation\Patterns.cs" />
-     <Compile Include="Assets\Model\Evaluation\SearchAlgorithms.cs" />
-     <Compile Include="Assets\Model\GameBoard.cs" />
-     <Compile Include="Assets\Model\GameManager.cs" />
-     <Compile Include="Assets\Model\GameState.cs" />
-     <Compile Include="Assets\Model\GameStateStats.cs" />
-     <Compile Include="Assets\Model\NotationHelper.cs" />
-     <Compile Include="Assets\Model\Play.cs" />
-     <Compile Include="Assets\Model\PlayStats.cs" />
-     <Compile Include="Assets\Model\Point.cs" />
-     <Compile Include="Assets\Model\Rotation.cs" />
-     <Compile Include="Assets\Model\SpacialObject.cs" />
-     <Compile Include="Assets\Model\Thor\ThorFileProcessor.cs" />
-     <Compile Include="Assets\Model\Thor\ThorSaveGame.cs" />
-     <Compile Include="Assets\Model\Tile.cs" />
-     <Compile Include="Assets\Model\TranspositionTable\HashNode.cs" />
-     <Compile Include="Assets\Model\TranspositionTable\ZobristHash.cs" />
-     <Compile Include="Assets\Properties\AssemblyInfo.cs" />
-     <Compile Include="Assets\UI\GameBehaviour.cs" />
-     <Compile Include="Assets\UI\GamesController.cs" />
-     <Compile Include="Assets\UI\KeyboardCameraControl.cs" />
-     <Compile Include="Assets\UI\MouseCameraControl.cs" />
-     <Compile Include="Assets\UI\PieceBehaviour.cs" />
-     <Compile Include="Assets\UI\TileBehaviour.cs" />
+     <Compile Include="Assets\Editor\NewBehaviourScript.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-vs.csproj">
+      <Project>{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

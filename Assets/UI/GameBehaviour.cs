@@ -145,8 +145,8 @@ public class GameBehaviour : MonoBehaviour
         transform.position = new Vector3(cameraX, cameraY, _cameraZ);
         
         BlackIsHuman = true;
-        WhiteIsHuman = true;
-        ShowBoardCoordinates = false;
+        WhiteIsHuman = false;
+        ShowBoardCoordinates = true;
         ShowValidPlays = true;
         
         _depthFirstSearch = new DepthFirstSearch(new ComputerPlayer(true));
@@ -318,7 +318,7 @@ public class GameBehaviour : MonoBehaviour
 
             //DepthFirstSearch.GetPlay(_gameManager, _weights, ref _computerPlayIndex);
             //DepthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _weights, ref _computerPlayIndex, ref _computerStarted);
-			DepthFirstSearch.AnalysisNodeCollection.ClearBuffers();
+			DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
             var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], ref _computerPlayIndex, ref _computerStarted));
             thread.Start();
         }
@@ -552,5 +552,38 @@ public class GameBehaviour : MonoBehaviour
     internal string AnalysisInfo()
     {
         return _gameManager.AnalysisInfo(_infoPlayIndex, _depthFirstSearch);
+    }
+
+    public static int Transpositions { get; set; }
+
+    internal string ArchiveInfo()
+    {
+        if (_infoPlayIndex ==  null)
+            return "";
+        if (!_statsAvailable)
+            return "";
+		
+		
+		
+        var position = _gameManager.Plays.ToChars();
+		
+		var stringBuilder = new StringBuilder();
+		stringBuilder.AppendLine("Archive statistics:");
+		
+		if (!_positionStats[position].PlayStats.ContainsKey(((short)_infoPlayIndex)))
+		{
+			return stringBuilder.AppendLine(string.Format("0 of {0} games made this play.", GameArchive.Count)).ToString();
+		}
+        
+
+        var stats = _positionStats[position].PlayStats[((short)_infoPlayIndex)];
+		
+        stringBuilder.AppendLine(string.Format("{0} of {1} games ({2}%) made this play.", stats.SubsetCount, GameArchive.Count, stats.PercentageOfGames));
+        //stringBuilder.AppendLine();
+        stringBuilder.AppendLine(string.Format("Black won {0} ({1}%)", stats.BlackWins, stats.PercentageOfWinsForBlack));
+        stringBuilder.AppendLine(string.Format("White won {0} ({1}%)", stats.WhiteWins, stats.PercentageOfWinsForWhite));
+        stringBuilder.AppendLine(string.Format("Draws = {0} ({1}%)", stats.Draws, stats.PercentageOfDraws));
+
+        return stringBuilder.ToString();
     }
 }

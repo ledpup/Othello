@@ -58,7 +58,7 @@ namespace WtbProcessor
 
                     depthFirstSearch.ComputerPlayer = computerPlayers[gameManager.PlayerIndex];
 
-                    DepthFirstSearch.AnalysisNodeCollection.ClearBuffers();
+                    DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
                     depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex);
 
                     //Console.Write(gameManager.Turn);

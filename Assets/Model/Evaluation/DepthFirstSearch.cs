@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Reversi.Model.TranspositionTable;
 
 namespace Reversi.Model.Evaluation
 {
@@ -11,6 +12,10 @@ namespace Reversi.Model.Evaluation
 
         public ComputerPlayer ComputerPlayer;
 
+        public static Dictionary<ulong, float> TranspositionTable;
+
+        //private ZobristHash _zobristHash;
+
         public DepthFirstSearch() : this(new ComputerPlayer(true))
         {
             
@@ -20,6 +25,8 @@ namespace Reversi.Model.Evaluation
         {
             ComputerPlayer = computerPlayer;
             Search = SearchAlgorithms.AlphaBetaNegaMax;
+            new ZobristHash();
+            TranspositionTable = new Dictionary<ulong, float>();
         }
 
         public static AnalysisNodeCollection AnalysisNodeCollection

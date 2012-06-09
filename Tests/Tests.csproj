@@ -69,9 +69,8 @@
   <ItemGroup>
     <Compile Include="DepthFirstSearchTest.cs" />
     <Compile Include="BitBoardHelperTest.cs" />
-    <Compile Include="GameStateNodeTest.cs" />
+    <Compile Include="AnalysisNodeTest.cs" />
     <Compile Include="PatternsTest.cs" />
-    <Compile Include="StabilityTests.cs" />
     <Compile Include="StatsTest.cs" />
     <Compile Include="TestNode.cs" />
     <Compile Include="ValidPlaysTest.cs" />

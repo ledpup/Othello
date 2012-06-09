@@ -31,7 +31,7 @@ public class GamesController : MonoBehaviour
 	public static string SavePath = @"Save\";
 	
 	void Start()
-	{
+	{	
 	    _gameArchive = File.ReadAllLines(SavePath + "ArchiveData.txt").ToList();
 
 	    _games = new List<GameBehaviour>();
@@ -63,7 +63,7 @@ public class GamesController : MonoBehaviour
 			GamePersistenceGui();
 			TurnInfoGui();
 			UndoRedoGui();
-		    GUI.TextArea(new Rect(20, 350, 200, 20), "Nodes searched: " + _activeGame.NodesSearched);
+		    GUI.TextArea(new Rect(20, 300, 180, 40), "Nodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions);
 
 
 
@@ -71,7 +71,8 @@ public class GamesController : MonoBehaviour
 
 		    //var style = new GUIStyle {alignment = TextAnchor.UpperLeft, };
 
-		    GUI.TextArea(new Rect(20, 370, 200, 200), _activeGame.AnalysisInfo());
+            GUI.TextArea(new Rect(20, 340, 180, 100), _activeGame.ArchiveInfo());
+		    GUI.TextArea(new Rect(20, 440, 180, 130), _activeGame.AnalysisInfo());
 		}
 		GameSpeedGui();
 	}
@@ -143,7 +144,7 @@ public class GamesController : MonoBehaviour
 
 	void UndoRedoGui()
 	{
-		if (GUI.Button(new Rect(Screen.width - 160, 0, 80, 20), "Start"))
+		if (GUI.Button(new Rect(Screen.width - 140, 0, 80, 20), "Start"))
 		{
 			_activeGame.RestartGame();
 		}
@@ -158,7 +159,7 @@ public class GamesController : MonoBehaviour
 
 	        var column = i % 2 == 0 ? 60 : 20;
 	        var row = (i / 2) * 18;
-	        if (GUI.Button(new Rect(Screen.width - 100 - column, 20 + row, 40, 18), _activeGame.Plays[i].ToAlgebraicNotation()))
+	        if (GUI.Button(new Rect(Screen.width - 80 - column, 20 + row, 40, 18), _activeGame.Plays[i].ToAlgebraicNotation()))
 	        {
 				_activeGame.PlayTo(i);
 	        }
@@ -178,7 +179,7 @@ public class GamesController : MonoBehaviour
 	
 	void Replay()
 	{
-        if (GUI.Button(new Rect(Screen.width - 260, 0, 80, 20), _activeGame.IsReplaying ? "Stop" : "Replay"))
+        if (GUI.Button(new Rect(Screen.width - 240, 0, 80, 20), _activeGame.IsReplaying ? "Stop" : "Replay"))
 		{
 		    //_activeGame.Replay();
 			_games.ForEach(x => x.Replay());

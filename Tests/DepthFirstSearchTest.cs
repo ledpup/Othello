@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Reversi.Model;
 using Reversi.Model.Evaluation;
+using Reversi.Model.TranspositionTable;
 
 namespace Tests
 {
@@ -138,7 +139,6 @@ namespace Tests
             DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
             SearchAlgorithms.MaxDepth = 3;
 
-
             var nodesSearched = new List<INode>();
 
             var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
@@ -194,6 +194,8 @@ namespace Tests
         [TestMethod]
         public void AlphaBetaReversiTest()
         {
+            new DepthFirstSearch();
+            
             DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
             SearchAlgorithms.MaxDepth = 10;
 
@@ -220,6 +222,7 @@ namespace Tests
         [TestMethod]
         public void NegaScoutReversiGame2Test()
         {
+            //new DepthFirstSearch();
             //DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
             //SearchAlgorithms.MaxDepth = 10;
 

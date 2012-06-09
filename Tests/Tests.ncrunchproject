@@ -18,5 +18,8 @@
     <NamedTestSelector>
       <TestName>Tests.GameStateNodeTest.FullGameTest</TestName>
     </NamedTestSelector>
+    <NamedTestSelector>
+      <TestName>Tests.AnalysisNodeTest.FullGameTest</TestName>
+    </NamedTestSelector>
   </IgnoredTests>
 </ProjectConfiguration>
