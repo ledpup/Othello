@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Model.Evaluation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Reversi.Model;
 using Reversi.Model.Evaluation;
-using Reversi.Model.TranspositionTable;
 
 namespace Tests
 {
@@ -119,16 +119,29 @@ namespace Tests
         {
             var root = AlphaBetaTree;
 
-            DepthFirstSearch.Search = SearchAlgorithms.NegaMax;
-            SearchAlgorithms.MaxDepth = 3;
+            var computerPlayer = new ComputerPlayer(false, false) {Search = SearchAlgorithms.NegaMax};
 
             var nodesSearched = new List<INode>();
 
-            var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
+            var score = computerPlayer.Search(root, new SearchConfig(0, 0, 3, false, nodesSearched));
 
             Assert.AreEqual(3, score);
             Assert.AreEqual(21, nodesSearched.Count());
+        }
 
+        [TestMethod]
+        public void NegaMaxTest2()
+        {
+            var root = NegaScoutTree;
+
+            var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.NegaMax };
+
+            var nodesSearched = new List<INode>();
+
+            var score = computerPlayer.Search(root, new SearchConfig(0, 0, 3, false, nodesSearched));
+
+            Assert.AreEqual(5, score);
+            Assert.AreEqual(15, nodesSearched.Count());
         }
 
         [TestMethod]
@@ -136,12 +149,9 @@ namespace Tests
         {
             var root = AlphaBetaTree;
 
-            DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
-            SearchAlgorithms.MaxDepth = 3;
+            var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.AlphaBetaNegaMax };
 
-            var nodesSearched = new List<INode>();
-
-            var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
+            var score = computerPlayer.Search(root, new SearchConfig(0, 0, 3));
 
             Assert.AreEqual(3, score);
         }
@@ -151,12 +161,11 @@ namespace Tests
         {
             var root = NegaScoutTree;
 
-            DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
-            SearchAlgorithms.MaxDepth = 3;
+            var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.AlphaBetaNegaMax };
 
             var nodesSearched = new List<INode>();
 
-            var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
+            var score = computerPlayer.Search(root, new SearchConfig(0, 0, 3, false, nodesSearched));
 
             Assert.AreEqual(5, score);
             Assert.AreEqual(14, nodesSearched.Count);
@@ -167,12 +176,11 @@ namespace Tests
         {
             var root = NegaScoutTree;
 
-            DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
-            SearchAlgorithms.MaxDepth = 3;
+            var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.NegaScout };
 
             var nodesSearched = new List<INode>();
 
-            var score = DepthFirstSearch.Search(root, 0, 0, nodesSearched);
+            var score = computerPlayer.Search(root, new SearchConfig(0, 0, 3, false, nodesSearched));
 
             Assert.AreEqual(5, score);
             Assert.AreEqual(13, nodesSearched.Count);
@@ -181,12 +189,11 @@ namespace Tests
         [TestMethod]
         public void NegaMaxReversiTest()
         {
-            DepthFirstSearch.Search = SearchAlgorithms.NegaMax;
-            SearchAlgorithms.MaxDepth = 10;
+            var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.NegaMax };
 
             var node = new AnalysisNode(ref _game1.GameState, _weights);
 
-            var score = DepthFirstSearch.Search(node);
+            var score = computerPlayer.Search(node, new SearchConfig(0, 0, 3));
 
             Assert.AreEqual(1, score);
         }
@@ -195,13 +202,12 @@ namespace Tests
         public void AlphaBetaReversiTest()
         {
             new DepthFirstSearch();
-            
-            DepthFirstSearch.Search = SearchAlgorithms.AlphaBetaNegaMax;
-            SearchAlgorithms.MaxDepth = 10;
+
+            var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.AlphaBetaNegaMax };
 
             var node = new AnalysisNode(ref _game1.GameState, _weights);
 
-            var score = DepthFirstSearch.Search(node);
+            var score = computerPlayer.Search(node, new SearchConfig(0, 0, 3));
 
             Assert.AreEqual(1, score);
         }
@@ -209,12 +215,11 @@ namespace Tests
         [TestMethod]
         public void NegaScoutReversiTest()
         {
-            DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
-            SearchAlgorithms.MaxDepth = 10;
+            var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.NegaScout };
 
             var node = new AnalysisNode(ref _game1.GameState, _weights);
 
-            var score = DepthFirstSearch.Search(node);
+            var score = computerPlayer.Search(node, new SearchConfig(0, 0, 3));
 
             Assert.AreEqual(1, score);
         }
@@ -222,15 +227,13 @@ namespace Tests
         [TestMethod]
         public void NegaScoutReversiGame2Test()
         {
-            //new DepthFirstSearch();
-            //DepthFirstSearch.Search = SearchAlgorithms.NegaScout;
-            //SearchAlgorithms.MaxDepth = 10;
+            var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.NegaScout };
 
-            //var node = new AnalysisNode(ref _game3.GameState, _weights);
+            var node = new AnalysisNode(ref _game3.GameState, _weights);
 
-            //var score = DepthFirstSearch.Search(node);
+            var score = computerPlayer.Search(node, new SearchConfig(0, 0, 10));
 
-            //Assert.AreEqual(0, score);
+            Assert.AreEqual(0, score);
         }
 
         [TestMethod]
@@ -238,7 +241,7 @@ namespace Tests
         {
             var depthFirstSearch = new DepthFirstSearch();
 
-            var result = depthFirstSearch.GetPlay(_game3);
+            var result = depthFirstSearch.GetPlay(_game3, new ComputerPlayer());
 
             Assert.AreEqual(30, result);
             //var index = DepthFirstSearch.GetMoveIndex(node, score);

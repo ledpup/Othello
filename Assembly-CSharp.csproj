@@ -55,6 +55,8 @@
      <Compile Include="Assets\Model\Evaluation\INode.cs" />
      <Compile Include="Assets\Model\Evaluation\Patterns.cs" />
      <Compile Include="Assets\Model\Evaluation\SearchAlgorithms.cs" />
+     <Compile Include="Assets\Model\Evaluation\SearchConfig.cs" />
+     <Compile Include="Assets\Model\Evaluation\ZobristHash.cs" />
      <Compile Include="Assets\Model\GameBoard.cs" />
      <Compile Include="Assets\Model\GameManager.cs" />
      <Compile Include="Assets\Model\GameState.cs" />
@@ -64,18 +66,19 @@
      <Compile Include="Assets\Model\PlayStats.cs" />
      <Compile Include="Assets\Model\Point.cs" />
      <Compile Include="Assets\Model\Rotation.cs" />
+     <Compile Include="Assets\Model\Serialiser.cs" />
      <Compile Include="Assets\Model\SpacialObject.cs" />
      <Compile Include="Assets\Model\Thor\ThorFileProcessor.cs" />
      <Compile Include="Assets\Model\Thor\ThorSaveGame.cs" />
      <Compile Include="Assets\Model\Tile.cs" />
-     <Compile Include="Assets\Model\TranspositionTable\HashNode.cs" />
-     <Compile Include="Assets\Model\TranspositionTable\ZobristHash.cs" />
      <Compile Include="Assets\Properties\AssemblyInfo.cs" />
+     <Compile Include="Assets\UI\ComboBox.cs" />
      <Compile Include="Assets\UI\GameBehaviour.cs" />
      <Compile Include="Assets\UI\GamesController.cs" />
      <Compile Include="Assets\UI\KeyboardCameraControl.cs" />
      <Compile Include="Assets\UI\MouseCameraControl.cs" />
      <Compile Include="Assets\UI\PieceBehaviour.cs" />
+     <Compile Include="Assets\UI\PlayerUiSettings.cs" />
      <Compile Include="Assets\UI\TileBehaviour.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

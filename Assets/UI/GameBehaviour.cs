@@ -42,54 +42,75 @@ public class GameBehaviour : MonoBehaviour
     public List<string> GameArchive;
     private Dictionary<string, GameStateStats> _positionStats;
     
-    public bool BlackIsHuman;
-    public bool WhiteIsHuman;
 
+
+    public bool UseTranspositionTable
+	{ 
+		get { return PlayerUiSettings.UseTranspositionTable; } 
+        set { PlayerUiSettings.UseTranspositionTable = value; } 
+    }
+	
+    public bool UseOpeningBook 
+	{ 
+		get { return PlayerUiSettings.UseOpeningBook; } 
+        set { PlayerUiSettings.UseOpeningBook = value; } 
+    }
+	
+    public int SearchMethod
+	{ 
+		get { return PlayerUiSettings.SearchMethod; } 
+        set { PlayerUiSettings.SearchMethod = value; } 
+    }
+	
+    public int SearchDepth 
+	{ 
+		get { return _computerPlayer.BaseSearchDepth; } 
+        set { _computerPlayer.BaseSearchDepth = value; } 
+    }
+	
     public bool IsReplaying;
-    
+
+    private ComputerPlayer _computerPlayer;
     short? _computerPlayIndex;
     bool _computerStarted;
 
-    public DisplayText DisplayText
+    public bool ShowArchiveStats
 	{
-		get { return _displayText; }
+        get { return PlayerUiSettings.ShowArchiveStats; }
 		set 
-		{ 
-			_displayText = value; 
+		{
+            PlayerUiSettings.ShowArchiveStats = value; 
 			GeneratePositionStats();
 		}
 	}
-    DisplayText _displayText;
 		
     public bool ShowValidPlays
     {
-        get { return _showValidPlays; }
+        get { return PlayerUiSettings.ShowValidPlays; }
         set
-        { 
-            if (_showValidPlays == value)
+        {
+            if (PlayerUiSettings.ShowValidPlays == value)
                 return;
-            _showValidPlays = value; 
+            PlayerUiSettings.ShowValidPlays = value; 
             CreatePieces();
         }
     }
-    bool _showValidPlays;
     
     public bool ShowBoardCoordinates
     {
-        get { return _showBoardCoordinates; }
+        get { return PlayerUiSettings.ShowBoardCoordinates; }
         set 
         {
-            if (_showBoardCoordinates == value)
+            if (PlayerUiSettings.ShowBoardCoordinates == value)
                 return;
-            _showBoardCoordinates = value;
+            PlayerUiSettings.ShowBoardCoordinates = value;
             DrawBoardCoordinates();
         }
     }
-    bool _showBoardCoordinates;
 
     private List<AnalysisNode> _savedGameStateNodes;
 
-    public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GUISkin guiSkin, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, GameManager gameManager, List<string> gameArchive)
+    public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GUISkin guiSkin, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, GameManager gameManager, List<string> gameArchive, PlayerUiSettings playerUiSettings)
     {
         var gameBehaviour = gameObject.AddComponent<GameBehaviour>();
         
@@ -99,6 +120,7 @@ public class GameBehaviour : MonoBehaviour
         gameBehaviour.Text = text;
         gameBehaviour.BoardLocation = boardLocation;
         gameBehaviour.GameArchive = gameArchive;
+        gameBehaviour.PlayerUiSettings = playerUiSettings;
         
         gameBehaviour.StartGameBehavour(gameManager);
         
@@ -107,11 +129,13 @@ public class GameBehaviour : MonoBehaviour
     
     public bool IsComputerTurn
     {
-        get { return ((_gameManager.PlayerIndex == 0 && !BlackIsHuman) || (_gameManager.PlayerIndex == 1 && !WhiteIsHuman)); }
+        get { return ((_gameManager.PlayerIndex == 0 && !PlayerUiSettings.BlackIsHuman) || (_gameManager.PlayerIndex == 1 && !PlayerUiSettings.WhiteIsHuman)); }
     }
     
     public void StartGameBehavour(GameManager gameManager)
     {
+		_computerPlayer = new ComputerPlayer(PlayerUiSettings);
+		
         _positionStats = new Dictionary<string, GameStateStats>();
         
         if (gameManager != null)
@@ -133,8 +157,11 @@ public class GameBehaviour : MonoBehaviour
         Plays = _gameManager.Plays;
         
         CreateBoard();
+		CreatePieces();
         _boardCoordinates = new List<GameObject>();
+		DrawBoardCoordinates();
         _tileInfo = new List<GameObject>();
+		DrawStats();
         
         _random = new System.Random();
         
@@ -144,13 +171,8 @@ public class GameBehaviour : MonoBehaviour
         
         transform.position = new Vector3(cameraX, cameraY, _cameraZ);
         
-        BlackIsHuman = true;
-        WhiteIsHuman = false;
-        ShowBoardCoordinates = true;
-        ShowValidPlays = true;
+        _depthFirstSearch = new DepthFirstSearch();
         
-        _depthFirstSearch = new DepthFirstSearch(new ComputerPlayer(true));
-
         Messenger<short>.AddListener("Tile clicked", OnTileSelected);
         Messenger<short>.AddListener("Tile hover", OnTileHover);
         Messenger<float>.AddListener("Game speed changed", OnGameSpeedChanged);
@@ -194,10 +216,7 @@ public class GameBehaviour : MonoBehaviour
     {
         _gameManager.PlacePiece(index);
         if (index != null)
-        {
             PlaceAndFlipPieces();
-            Messenger<short>.Broadcast("Last play", (short)index);
-        }
         _gameManager.NextTurn();
         DisplayPlays();
     }
@@ -221,8 +240,8 @@ public class GameBehaviour : MonoBehaviour
             return;
         
 		DeleteTileInfo();
-		
-        if (DisplayText != DisplayText.ArchiveStats || !ShowValidPlays || IsReplaying)
+
+        if (!PlayerUiSettings.ShowArchiveStats || !ShowValidPlays || IsReplaying)
             return;
 		
         _canDrawStats = false;
@@ -242,7 +261,10 @@ public class GameBehaviour : MonoBehaviour
                                 return;
 
                             DrawTileInfo(coord.X, coord.Y, -.45f, -.45f, _positionStats[position].PlayStats[p].PercentageOfGames + "%");
-                            DrawTileInfo(coord.X, coord.Y, -.45f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForBlack + "%");
+							if (_gameManager.PlayerIsBlack)
+                            	DrawTileInfo(coord.X, coord.Y, -.45f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForBlack + "%");
+							else
+								DrawTileInfo(coord.X, coord.Y, -.45f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForWhite + "%");
                         });
         
     }
@@ -316,10 +338,8 @@ public class GameBehaviour : MonoBehaviour
         {
             _computerStarted = true;
 
-            //DepthFirstSearch.GetPlay(_gameManager, _weights, ref _computerPlayIndex);
-            //DepthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _weights, ref _computerPlayIndex, ref _computerStarted);
 			DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
-            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], ref _computerPlayIndex, ref _computerStarted));
+            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], ref _computerPlayIndex, ref _computerStarted, _computerPlayer));
             thread.Start();
         }
         else if (_computerPlayIndex != null)
@@ -353,9 +373,9 @@ public class GameBehaviour : MonoBehaviour
 
     public void RestartGame()
     {
+        Plays = new List<short?>();
         _gameManager = new GameManager();
         CreatePieces();
-        Messenger<short>.Broadcast("Last play", -1);
     }
     
     void PlaceAndFlipPieces()
@@ -383,7 +403,7 @@ public class GameBehaviour : MonoBehaviour
             });
     }
     
-    private void CreatePieces()
+    public void CreatePieces()
     {
         if (_gamePieces == null)
             _gamePieces = new List<GameObject>();
@@ -536,6 +556,7 @@ public class GameBehaviour : MonoBehaviour
         }
     }
     private int _nodesSearched;
+    public PlayerUiSettings PlayerUiSettings;
     
     
 
@@ -551,7 +572,7 @@ public class GameBehaviour : MonoBehaviour
 
     internal string AnalysisInfo()
     {
-        return _gameManager.AnalysisInfo(_infoPlayIndex, _depthFirstSearch);
+        return _gameManager.AnalysisInfo(_infoPlayIndex, _computerPlayer);
     }
 
     public static int Transpositions { get; set; }
@@ -559,25 +580,20 @@ public class GameBehaviour : MonoBehaviour
     internal string ArchiveInfo()
     {
         if (_infoPlayIndex ==  null)
-            return "";
+            return null;
         if (!_statsAvailable)
-            return "";
+            return null;
 		
 		
 		
         var position = _gameManager.Plays.ToChars();
 		
-		var stringBuilder = new StringBuilder();
-		stringBuilder.AppendLine("Archive statistics:");
-		
 		if (!_positionStats[position].PlayStats.ContainsKey(((short)_infoPlayIndex)))
-		{
-			return stringBuilder.AppendLine(string.Format("0 of {0} games made this play.", GameArchive.Count)).ToString();
-		}
+			return null;
         
-
         var stats = _positionStats[position].PlayStats[((short)_infoPlayIndex)];
-		
+		var stringBuilder = new StringBuilder();
+		//stringBuilder.AppendLine("Archive statistics:");
         stringBuilder.AppendLine(string.Format("{0} of {1} games ({2}%) made this play.", stats.SubsetCount, GameArchive.Count, stats.PercentageOfGames));
         //stringBuilder.AppendLine();
         stringBuilder.AppendLine(string.Format("Black won {0} ({1}%)", stats.BlackWins, stats.PercentageOfWinsForBlack));

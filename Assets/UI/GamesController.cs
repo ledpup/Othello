@@ -3,15 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reversi.Assets.UI;
 using UnityEngine;
 using Reversi.Model;
-
-public enum DisplayText
-{
-	None,
-	ArchiveStats,
-	EvaluationData,
-}
 
 public class GamesController : MonoBehaviour
 {
@@ -20,8 +14,6 @@ public class GamesController : MonoBehaviour
 	public GameObject Text;
 	public GUISkin GuiSkin;
 	
-	
-	
 	private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
 	float _globalAnimationSpeed = .5f;
@@ -29,27 +21,50 @@ public class GamesController : MonoBehaviour
     private List<string> _gameArchive;
 	
 	public static string SavePath = @"Save\";
-	
+
+    GUIContent[] _searchMethods, _searchDepths;
+    private ComboBox _searchComboBox = new ComboBox();
+    private ComboBox _depthComboBox = new ComboBox();
+    private GUIStyle listStyle = new GUIStyle();
+
+    private PlayerUiSettings _playerUiSettings;
+
 	void Start()
-	{	
-	    _gameArchive = File.ReadAllLines(SavePath + "ArchiveData.txt").ToList();
+	{
+        _gameArchive = File.ReadAllLines(SavePath + "ArchiveData.txt").ToList();
 
 	    _games = new List<GameBehaviour>();
 
 	    var gameManagers = GameManager.LoadGamesFromFile(SavePath + "CurrentGame.txt");
 		
-        //gameManagers.ForEach(x => _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, GuiSkin, BoardTile, Piece, Text, gameManagers.IndexOf(x).ToCartesianCoordinate(), x)));
+		_playerUiSettings = PlayerUiSettings.Load();
+        _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, GuiSkin, BoardTile, Piece, Text, ((short)0).ToCartesianCoordinate(), gameManagers.First(), _gameArchive, _playerUiSettings));
 
-        _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, GuiSkin, BoardTile, Piece, Text, ((short)0).ToCartesianCoordinate(), gameManagers.First(), _gameArchive));
-		
-		//_games.Add(GameBehaviour.CreateGameBehaviour(gameObject, GuiSkin, BoardTile, Piece, Text, new Point(0, 0)));
-		
 		_activeGame = _games.First();
-		
+
+        _searchMethods = new[] { new GUIContent("NegaMax"), new GUIContent("NegaMax w/ Alpha-Beta") };
+        _searchDepths = new[] 
+		{ 
+			new GUIContent("Search Depth 0"), 
+			new GUIContent("Search Depth 1"), 
+			new GUIContent("Search Depth 2"), 
+			new GUIContent("Search Depth 3"), 
+			new GUIContent("Search Depth 4"), 
+			new GUIContent("Search Depth 5"), 
+			new GUIContent("Search Depth 6"),
+            new GUIContent("Search Depth 7"),
+		};
+        _searchComboBox.SelectedItemIndex = _playerUiSettings.SearchMethod;
+        _depthComboBox.SelectedItemIndex = _playerUiSettings.SearchDepth;
+
+        listStyle.normal.textColor = Color.white;
+        listStyle.onHover.background = listStyle.hover.background = new Texture2D(2, 2);
+        listStyle.padding.left = listStyle.padding.right = listStyle.padding.top = listStyle.padding.bottom = 4;
 	}
 	
 	void OnApplicationQuit()
 	{
+	    _playerUiSettings.Save();
 	}
 	
 	void OnGUI()
@@ -57,46 +72,53 @@ public class GamesController : MonoBehaviour
 		GUI.skin = GuiSkin;
 			
 		Replay();
-		if (!_activeGame.IsReplaying)
-		{
-			OptionsGui();
-			GamePersistenceGui();
-			TurnInfoGui();
-			UndoRedoGui();
-		    GUI.TextArea(new Rect(20, 300, 180, 40), "Nodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions);
+		
+	    if (_activeGame.IsReplaying)
+            return;
 
-
-
-		    GuiSkin.textArea.alignment = TextAnchor.UpperLeft;
-
-		    //var style = new GUIStyle {alignment = TextAnchor.UpperLeft, };
-
-            GUI.TextArea(new Rect(20, 340, 180, 100), _activeGame.ArchiveInfo());
-		    GUI.TextArea(new Rect(20, 440, 180, 130), _activeGame.AnalysisInfo());
-		}
-		GameSpeedGui();
+	    OptionsGui();
+	    GamePersistenceGui();
+	    TurnInfoGui();
+	    UndoRedoGui();
+	    InfoGui();
+	    //GameSpeedGui();
 	}
-	
-	int _selection;
+
+    private void InfoGui()
+    {
+        if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
+        	GUI.TextArea(new Rect(20, 260, 180, 40), "Nodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions);
+
+        GuiSkin.textArea.alignment = TextAnchor.UpperLeft;
+
+        if (!_depthComboBox.IsClickedComboButton)
+            GUI.TextArea(new Rect(20, 300, 180, 130), _activeGame.AnalysisInfo());
+        if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
+            GUI.TextArea(new Rect(20, 430, 180, 80), _activeGame.ArchiveInfo());
+    }
 	
 	void OptionsGui()
 	{
-		_activeGame.BlackIsHuman = GUI.Toggle (new Rect (20, 50, 200, 20), _activeGame.BlackIsHuman, "Black is a human player");
-		_activeGame.WhiteIsHuman = GUI.Toggle (new Rect (20, 70, 200, 20), _activeGame.WhiteIsHuman, "White is a human player");
-		_activeGame.ShowValidPlays = GUI.Toggle (new Rect (20, 90, 200, 20), _activeGame.ShowValidPlays, "Show valid plays");
-		_activeGame.ShowBoardCoordinates = GUI.Toggle (new Rect (20, 110, 200, 20), _activeGame.ShowBoardCoordinates, "Show board coordinates");
-				
-		_selection = GUI.SelectionGrid(new Rect (20, 150, 150, 60), _selection, new [] { "No Tile Info", "Show Archive Stats", "Show Evaluation Data" }, 1);
-		
-		_games.ForEach(x => x.DisplayText = (DisplayText)_selection);
+        _playerUiSettings.BlackIsHuman = GUI.Toggle(new Rect(20, 50, 200, 20), _playerUiSettings.BlackIsHuman, "Black is a human player");
+        _playerUiSettings.WhiteIsHuman = GUI.Toggle(new Rect(20, 70, 200, 20), _playerUiSettings.WhiteIsHuman, "White is a human player");
+        _activeGame.ShowValidPlays = GUI.Toggle(new Rect(20, 90, 200, 20), _activeGame.ShowValidPlays, "Show valid plays");
+        _activeGame.ShowBoardCoordinates = GUI.Toggle(new Rect(20, 110, 200, 20), _activeGame.ShowBoardCoordinates, "Show board coordinates");
+        _activeGame.ShowArchiveStats = GUI.Toggle(new Rect(20, 130, 200, 20), _activeGame.ShowArchiveStats, "Show archive stats");
+        _activeGame.UseTranspositionTable = GUI.Toggle(new Rect(20, 150, 200, 20), _activeGame.UseTranspositionTable, "Use transposition table");
+        _activeGame.UseOpeningBook = GUI.Toggle(new Rect(20, 170, 200, 20), _activeGame.UseOpeningBook, "Use opening book");
+
+        _activeGame.SearchMethod = _searchComboBox.List(new Rect(20, 200, 150, 20), _searchMethods[_activeGame.SearchMethod].text, _searchMethods, listStyle);
+        if (!_searchComboBox.IsClickedComboButton)
+            _activeGame.SearchDepth = _depthComboBox.List(new Rect(20, 220, 150, 20), _searchDepths[_activeGame.SearchDepth].text, _searchDepths, listStyle);
+
+        //_games.ForEach(x => x.PlayerUiSettings.ShowArchiveStats = _playerUiSettings.ShowArchiveStats);
 	}
 	
 	void GamePersistenceGui()
 	{
         if (GUI.Button(new Rect(20, 20, 80, 20), "New Game"))
         {
-            _activeGame.Plays = new List<short?>();
-            _activeGame.StartGameBehavour(new GameManager());
+            _activeGame.RestartGame();
         }
 //		else if (GUI.Button(new Rect(100, 20, 80, 20), "Load"))
 //		{
@@ -144,7 +166,7 @@ public class GamesController : MonoBehaviour
 
 	void UndoRedoGui()
 	{
-		if (GUI.Button(new Rect(Screen.width - 140, 0, 80, 20), "Start"))
+		if (GUI.Button(new Rect(Screen.width - 100, 0, 80, 20), "Start"))
 		{
 			_activeGame.RestartGame();
 		}
@@ -159,7 +181,7 @@ public class GamesController : MonoBehaviour
 
 	        var column = i % 2 == 0 ? 60 : 20;
 	        var row = (i / 2) * 18;
-	        if (GUI.Button(new Rect(Screen.width - 80 - column, 20 + row, 40, 18), _activeGame.Plays[i].ToAlgebraicNotation()))
+	        if (GUI.Button(new Rect(Screen.width - 40 - column, 20 + row, 40, 18), _activeGame.Plays[i].ToAlgebraicNotation()))
 	        {
 				_activeGame.PlayTo(i);
 	        }
@@ -179,9 +201,8 @@ public class GamesController : MonoBehaviour
 	
 	void Replay()
 	{
-        if (GUI.Button(new Rect(Screen.width - 240, 0, 80, 20), _activeGame.IsReplaying ? "Stop" : "Replay"))
+        if (GUI.Button(new Rect(Screen.width - 200, 0, 80, 20), _activeGame.IsReplaying ? "Stop" : "Replay"))
 		{
-		    //_activeGame.Replay();
 			_games.ForEach(x => x.Replay());
 		}
 	}

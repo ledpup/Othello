@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Reversi.Model;
 
-namespace Reversi.Model.TranspositionTable
+namespace Reversi.Model.Evaluation
 {
     /// <summary>
     /// Zobrist hash to take the two ulong bitboard of the GameState and transform it to a single ulong.
@@ -29,7 +29,7 @@ namespace Reversi.Model.TranspositionTable
             
             _randomNumbers = new Dictionary<short, ulong[]>();
 
-            var random = new Random(1654465432); // Always use the same seed (so we can persist the hashes)
+            var random = new Random(769865452); // Always use the same seed (so we can persist the hashes)
 
             for (var i = (short) 0; i < 3; i++)
             {

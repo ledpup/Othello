@@ -54,7 +54,7 @@ namespace Tests
                 short? computerPlayIndex = null;
 
                 var depthFirstSearch = new DepthFirstSearch();
-                depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex);
+                depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex, new ComputerPlayer());
 
                 gameManager.PlacePiece(computerPlayIndex);
                 gameManager.NextTurn();

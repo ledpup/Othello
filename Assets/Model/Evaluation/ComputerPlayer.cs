@@ -11,29 +11,72 @@ namespace Reversi.Model.Evaluation
 	    public readonly short NumberOfGamePhases;
 	    private const short TurnsPerPhase = 6;
 
-	    public readonly List<string> Strategies = new List<string>
-	                                    {"Pieces", "Mobility", "PotentialMobility", "Parity", "Pattern", };
+        public SearchAlgorithms.SearchMethod Search
+        { 
+            get
+            {
+                switch (PlayerUiSettings.SearchMethod)
+                {
+                    case 0:
+                        return SearchAlgorithms.NegaMax;
+                    case 1:
+                        return SearchAlgorithms.AlphaBetaNegaMax;
+                    case 2:
+                        return SearchAlgorithms.NegaScout;
+                }
+                return SearchAlgorithms.NegaMax;
+            }
+            set
+            {
+                if (value == SearchAlgorithms.NegaMax)
+                        PlayerUiSettings.SearchMethod = 0;
+                if (value == SearchAlgorithms.AlphaBetaNegaMax)
+                    PlayerUiSettings.SearchMethod = 1;
+                if (value == SearchAlgorithms.NegaScout)
+                    PlayerUiSettings.SearchMethod = 2;
+            }
+        }
+        public int BaseSearchDepth
+        {
+            get { return PlayerUiSettings.SearchDepth; }
+            set
+            {
+                PlayerUiSettings.SearchDepth = value;
+                for (var i = 0; i < NumberOfGamePhases; i++)
+                {
+                    SearchDepth[i] = PlayerUiSettings.SearchDepth;
+                }
+                SetDefaults();
+            }   
+        }
+		
+		public PlayerUiSettings PlayerUiSettings;
+		
+        public static Dictionary<ulong, float> TranspositionTable;
 
-	    public bool UseOpeningBook;
+	    public readonly List<string> Strategies = new List<string>
+	                                    {"Pieces", "Mobility", "PotentialMobility", "Pattern", };
 
 	    private readonly int[] SearchDepth;
 
-        public ComputerPlayer(bool useOpeningBook)
+        public ComputerPlayer(PlayerUiSettings playerUiSettings)
         {
-            UseOpeningBook = useOpeningBook;
-
+			PlayerUiSettings = playerUiSettings;
+			
             NumberOfGamePhases = 60 / TurnsPerPhase;
 
             SearchDepth = new int[NumberOfGamePhases];
             Weights = new Dictionary<string, float>[NumberOfGamePhases];
             for (var i = 0; i < NumberOfGamePhases; i++)
             {
-                SearchDepth[i] = 5;
                 Weights[i] = new Dictionary<string, float>();
                 Strategies.ForEach(x => Weights[i].Add(x, 1));
             }
 
             SetDefaults();
+
+            new ZobristHash();
+            TranspositionTable = new Dictionary<ulong, float>();
         }
 
         private void SetDefaults()
@@ -60,7 +103,9 @@ namespace Reversi.Model.Evaluation
 
 	    int Phase(short turn)
 	    {
-            return turn >= 60 ? NumberOfGamePhases - 1 : turn / TurnsPerPhase;
+			if (turn >= 60)
+				return NumberOfGamePhases - 1;
+            return turn / TurnsPerPhase;
 	    }
 
         public Dictionary<string,float> GetWeights(short turn)
@@ -79,7 +124,7 @@ namespace Reversi.Model.Evaluation
             {
                 Console.WriteLine("Phase {0}", i);
                 foreach (var weight in Weights[i])
-                    Console.WriteLine("{0}     {1}", weight.Key, weight.Value);
+                    Console.WriteLine("{0}  {1}", weight.Key, weight.Value);
             }
         }
 

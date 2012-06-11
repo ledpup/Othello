@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Reversi.Model;
-using Reversi.Model.TranspositionTable;
+using Reversi.Model.Evaluation;
 
 namespace Tests
 {

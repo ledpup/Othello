@@ -17,7 +17,7 @@ namespace Reversi.Model.Evaluation
         public void ClearMemory()
         {
             _analysisNodeBuffers.ForEach(x => x.LowestFreeSlot = 0);
-            DepthFirstSearch.TranspositionTable.Clear();
+            ComputerPlayer.TranspositionTable.Clear();
             GameBehaviour.Transpositions = 0;
         }
 

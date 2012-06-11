@@ -4,7 +4,6 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using Reversi.Model.Evaluation;
-using Reversi.Model.TranspositionTable;
 
 namespace Reversi.Model
 {
@@ -252,6 +251,11 @@ namespace Reversi.Model
             get { return (short)Plays.Count; }
 	    }
 
+		public short TurnExcludingPasses
+	    {
+            get { return (short)Plays.Where(x => x != null).Count(); }
+	    }
+		
 	    public List<short> PlayerPlays
 	    {
 	        get { return GameState.PlayerPlays.Indices().ToList(); }
@@ -304,7 +308,7 @@ namespace Reversi.Model
             get { return GameState.IsDraw; }
         }
 
-        public string AnalysisInfo(short? infoPlayIndex, DepthFirstSearch depthFirstSearch)
+        public string AnalysisInfo(short? infoPlayIndex, ComputerPlayer computerPlayer)
         {
             var gameState = GameState;
 
@@ -317,7 +321,7 @@ namespace Reversi.Model
                 turn++;
             }
 
-            var analysisNode = new AnalysisNode(ref gameState, depthFirstSearch.ComputerPlayer.GetWeights(turn));
+            var analysisNode = new AnalysisNode(ref gameState, computerPlayer.GetWeights(turn));
 
             var playerName = IsBlacksTurn(turn) ? "Black" : "White";
 

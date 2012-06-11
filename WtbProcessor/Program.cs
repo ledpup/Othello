@@ -56,10 +56,8 @@ namespace WtbProcessor
 
                     short? computerPlayIndex = null;
 
-                    depthFirstSearch.ComputerPlayer = computerPlayers[gameManager.PlayerIndex];
-
                     DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
-                    depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex);
+                    depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex, computerPlayers[gameManager.PlayerIndex]);
 
                     //Console.Write(gameManager.Turn);
                     //gameManager.Draw();

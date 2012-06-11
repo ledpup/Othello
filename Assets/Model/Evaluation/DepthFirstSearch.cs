@@ -1,45 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Reversi.Model.TranspositionTable;
+using Assets.Model.Evaluation;
 
 namespace Reversi.Model.Evaluation
 {
     public class DepthFirstSearch
     {
-        public delegate float SearchMethod(INode node, int colour = 0, int depth = 0, IList<INode> nodesSearched = null /* Only used if we want to record which nodes were searched */);
-        public static SearchMethod Search { get; set; }
-
-        public ComputerPlayer ComputerPlayer;
-
-        public static Dictionary<ulong, float> TranspositionTable;
-
-        //private ZobristHash _zobristHash;
-
-        public DepthFirstSearch() : this(new ComputerPlayer(true))
-        {
-            
-        }
-
-        public DepthFirstSearch(ComputerPlayer computerPlayer)
-        {
-            ComputerPlayer = computerPlayer;
-            Search = SearchAlgorithms.AlphaBetaNegaMax;
-            new ZobristHash();
-            TranspositionTable = new Dictionary<ulong, float>();
-        }
-
         public static AnalysisNodeCollection AnalysisNodeCollection
         {
             get { return _analysisNodeCollection ?? (_analysisNodeCollection = new AnalysisNodeCollection()); }
         }
         private static AnalysisNodeCollection _analysisNodeCollection;
 
-        public short GetPlay(GameManager gameManager)
+        public short GetPlay(GameManager gameManager, ComputerPlayer computerPlayer)
         {
-            SearchAlgorithms.MaxDepth = ComputerPlayer.GetSearchDepth(gameManager.Turn);
-
-            var node = new AnalysisNode(ref gameManager.GameState, ComputerPlayer.GetWeights(gameManager.Turn));
+            var node = new AnalysisNode(ref gameManager.GameState, computerPlayer.GetWeights(gameManager.TurnExcludingPasses));
 
             var indexesAndScores = new List<KeyValuePair<short, float>>();
 
@@ -50,9 +26,11 @@ namespace Reversi.Model.Evaluation
             //                                      indexesAndScores.Add(new KeyValuePair<short, float>(child.PlayIndex, score));
             //                                  });
 
+            var maxDepth = computerPlayer.GetSearchDepth(gameManager.TurnExcludingPasses);
+			
             node.Children.ToList().ForEach(x =>
             {
-                var score = Search(x, gameManager.PlayerIndex);
+                var score = computerPlayer.Search(x, new SearchConfig(gameManager.PlayerIndex, 0, maxDepth, computerPlayer.PlayerUiSettings.UseTranspositionTable));
                 indexesAndScores.Add(new KeyValuePair<short, float>((short)x.PlayIndex, score));
             });
 
@@ -60,14 +38,14 @@ namespace Reversi.Model.Evaluation
             return rankedScores.First().Key;
         }
 
-        public void GetPlay(GameManager gameManager, ref short? computerPlayIndex)
+        public void GetPlay(GameManager gameManager, ref short? computerPlayIndex, ComputerPlayer computerPlayer)
         {
-            computerPlayIndex = GetPlay(gameManager);
+            computerPlayIndex = GetPlay(gameManager, computerPlayer);
         }
 
-        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ref short? computerPlayIndex, ref bool computerStarted)
+        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ref short? computerPlayIndex, ref bool computerStarted, ComputerPlayer computerPlayer)
         {
-            if (ComputerPlayer.UseOpeningBook)
+            if (computerPlayer.PlayerUiSettings.UseOpeningBook)
             {
                 computerPlayIndex = BestBookPlay(gameStateStats.PlayStats, gameManager.PlayerIndex);
                 if (computerPlayIndex != null) // Found a play in the opening book
@@ -76,7 +54,7 @@ namespace Reversi.Model.Evaluation
                 }
             }
 
-            computerPlayIndex = GetPlay(gameManager);
+            computerPlayIndex = GetPlay(gameManager, computerPlayer);
         }
 
         public short? BestBookPlay(Dictionary<short, PlayStats> playStats, int playerIndex)
