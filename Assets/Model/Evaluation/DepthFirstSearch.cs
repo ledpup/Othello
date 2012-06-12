@@ -38,12 +38,7 @@ namespace Reversi.Model.Evaluation
             return rankedScores.First().Key;
         }
 
-        public void GetPlay(GameManager gameManager, ref short? computerPlayIndex, ComputerPlayer computerPlayer)
-        {
-            computerPlayIndex = GetPlay(gameManager, computerPlayer);
-        }
-
-        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ref short? computerPlayIndex, ref bool computerStarted, ComputerPlayer computerPlayer)
+        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ComputerPlayer computerPlayer, ref short? computerPlayIndex)
         {
             if (computerPlayer.PlayerUiSettings.UseOpeningBook)
             {

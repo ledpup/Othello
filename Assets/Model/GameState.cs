@@ -8,9 +8,19 @@ namespace Reversi.Model
 {
     public struct GameState
     {
-        static Func<ulong, ulong> flipDiagA1H8 = x => x.FlipDiagA1H8();
-        static Func<ulong, ulong> flipDiagA8H1 = x => x.FlipDiagA8H1();
-        static Func<ulong, ulong> rotate180 = x => x.Rotate180();
+        public ulong PlayerPieces;
+        public ulong OpponentPieces;
+        public readonly short NumberOfOpponentPieces;
+        public readonly short NumberOfPlayerPieces;
+        public readonly ulong PlayerPlays;
+        public readonly ulong OpponentPlays;
+
+        static readonly Func<ulong, ulong> flipDiagA1H8 = x => x.FlipDiagA1H8();
+        static readonly Func<ulong, ulong> flipDiagA8H1 = x => x.FlipDiagA8H1();
+        static readonly Func<ulong, ulong> rotate180 = x => x.Rotate180();
+
+        //public ulong Placement;
+        //public ulong FlippedPieces;
 
         public static Dictionary<string, Rotation> RotateDictionary = new Dictionary<string, Rotation>
                                        { 
@@ -23,12 +33,12 @@ namespace Reversi.Model
         {
             PlayerPieces = playerPieces;
             OpponentPieces = opponentPieces;
-            EmptySquares = AllPieces ^ ulong.MaxValue;
             NumberOfPlayerPieces = PlayerPieces.CountBits();
             NumberOfOpponentPieces = OpponentPieces.CountBits();
-            
-            PlayerPlays = Play.ValidPlays(PlayerPieces, OpponentPieces, EmptySquares);
-            OpponentPlays = Play.ValidPlays(OpponentPieces, PlayerPieces, EmptySquares);            
+
+            var emptySquares = AllPieces ^ ulong.MaxValue;
+            PlayerPlays = Play.ValidPlays(PlayerPieces, OpponentPieces, emptySquares);
+            OpponentPlays = Play.ValidPlays(OpponentPieces, PlayerPieces, emptySquares);            
         }
 
         //public IEnumerable<INode> Children;
@@ -38,21 +48,17 @@ namespace Reversi.Model
 		{
 			return new GameState(1UL << 28 | 1UL << 35, 1UL << 27 | 1UL << 36);
 		}
-		
-        public ulong PlayerPieces;
-        public ulong OpponentPieces;
 
-		public void PlacePiece(short index)
+        public List<short> PlacePiece(short index)
 		{
-            //if (!PlayerPlays.Indices().Contains((short)index))
-            //    throw new Exception("Invalid piece placement.");
+            var placement = 1UL << index;
 
-            Placement = 1UL << index;
+            var flippedPieces = Play.PlacePiece(placement, PlayerPieces, OpponentPieces);
 
-			FlippedPieces = Play.PlacePiece(Placement, PlayerPieces, OpponentPieces);
+            PlayerPieces |= flippedPieces | placement;
+            OpponentPieces ^= flippedPieces;
 
-		    PlayerPieces |= FlippedPieces | Placement;
-		    OpponentPieces ^= FlippedPieces;
+            return flippedPieces.Indices().ToList();
 		}
 
         public GameState NextTurn()
@@ -65,22 +71,13 @@ namespace Reversi.Model
             get { return PlayerPieces | OpponentPieces; }
         }
 
-        public readonly ulong EmptySquares;
+        public ulong EmptySquares { get { return AllPieces ^ ulong.MaxValue; } }
 
         public bool IsGameOver { get { return PlayerPlays == 0 && OpponentPlays == 0; } }
-
-        public readonly short NumberOfOpponentPieces;
-        public readonly short NumberOfPlayerPieces;
 
         public bool PlayerWinning { get { return NumberOfPlayerPieces > NumberOfOpponentPieces; } }
         public bool OpponentWinning { get { return NumberOfPlayerPieces < NumberOfOpponentPieces; } }
         public bool IsDraw { get { return NumberOfPlayerPieces == NumberOfOpponentPieces; } }
-
-        public readonly ulong PlayerPlays;
-        public readonly ulong OpponentPlays;
-
-		public ulong Placement;
-		public ulong FlippedPieces;
 		
         public bool HasPlays { get { return PlayerPlays > 0; } }
 
@@ -123,20 +120,6 @@ namespace Reversi.Model
         {
             var comparedGameState = (GameState)obj;
             return PlayerPieces == comparedGameState.PlayerPieces && OpponentPieces == comparedGameState.OpponentPieces;
-        }
-
-        public Rotation RotateSymmetry(GameState gameState)
-        {            
-            if (Equals(gameState.FlipDiagA1H8()))
-                return RotateDictionary["FlipDiagA1H8"];
-
-            if (Equals(gameState.FlipDiagA8H1()))
-                return RotateDictionary["FlipDiagA8H1"];
-
-            if (Equals(gameState.Rotate180()))
-                return RotateDictionary["Rotate180"];
-
-            return null;
         }
 
         public GameState Rotate(Func<ulong, ulong> rotateFunc)

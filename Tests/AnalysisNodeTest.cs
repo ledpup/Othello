@@ -51,10 +51,8 @@ namespace Tests
                     continue;
                 }
 
-                short? computerPlayIndex = null;
-
                 var depthFirstSearch = new DepthFirstSearch();
-                depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex, new ComputerPlayer());
+                var computerPlayIndex = depthFirstSearch.GetPlay(gameManager, new ComputerPlayer());
 
                 gameManager.PlacePiece(computerPlayIndex);
                 gameManager.NextTurn();

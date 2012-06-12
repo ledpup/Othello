@@ -58,7 +58,8 @@ namespace Reversi.Model
 			if (!CanPlay(play))
 				throw new Exception(string.Format("Play to {0} (index {1}) is not a valid play.", index.ToAlgebraicNotation(), play));
 			
-			GameState.PlacePiece(play);
+			FlippedPieces = GameState.PlacePiece(play);
+		    Placement = play;
 		}
 		
 		public void NextTurn()
@@ -291,15 +292,15 @@ namespace Reversi.Model
             get { return GameState.OpponentPieces.Indices().ToList(); }
         }
 
-        public short Placement
-        {
-            get { return GameState.Placement.Indices().Single(); }
-        }
+	    public short Placement;
+        //{
+        //    get { return GameState.Placement.Indices().Single(); }
+        //}
 
-        public List<short> FlippedPieces
-        {
-            get { return GameState.FlippedPieces.Indices().ToList(); }
-        }
+	    public List<short> FlippedPieces;
+        //{
+        //    get { return GameState.FlippedPieces.Indices().ToList(); }
+        //}
 
 
 

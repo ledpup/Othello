@@ -4,6 +4,7 @@ using UnityEngine;
 public class TileBehaviour : MonoBehaviour
 {
     public Tile Tile;
+	Color _oldColour;
     
     void Start()
     {
@@ -19,21 +20,28 @@ public class TileBehaviour : MonoBehaviour
     {
         Messenger<short>.Broadcast("Tile clicked", Tile.Index);
     }    
-
-    void OnMouseOver()
+	
+    void OnMouseEnter()
     {
         Messenger<short>.Broadcast("Tile hover", Tile.Index);
+		_oldColour = renderer.material.color;
+		renderer.material.color = Color.cyan;
     }
-
+	
+	void OnMouseExit()
+	{
+		renderer.material.color = _oldColour;
+	}
+	
     void OnLastPlay(short index)
     {
         if (Tile.Index == index)
         {
-            renderer.material.color = Color.green;
+            _oldColour = renderer.material.color = Color.green;
         }
         else
         {
-            renderer.material.color = Color.white;
+            _oldColour = renderer.material.color = Color.white;
         }
     }
 }

@@ -87,14 +87,14 @@ public class GamesController : MonoBehaviour
     private void InfoGui()
     {
         if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
-        	GUI.TextArea(new Rect(20, 260, 180, 40), "Nodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions);
+            GUI.TextArea(new Rect(20, 260, 180, 50), "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions);
 
         GuiSkin.textArea.alignment = TextAnchor.UpperLeft;
 
         if (!_depthComboBox.IsClickedComboButton)
-            GUI.TextArea(new Rect(20, 300, 180, 130), _activeGame.AnalysisInfo());
+            GUI.TextArea(new Rect(20, 310, 180, 130), _activeGame.AnalysisInfo());
         if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
-            GUI.TextArea(new Rect(20, 430, 180, 80), _activeGame.ArchiveInfo());
+            GUI.TextArea(new Rect(20, 440, 180, 80), _activeGame.ArchiveInfo());
     }
 	
 	void OptionsGui()
@@ -120,13 +120,6 @@ public class GamesController : MonoBehaviour
         {
             _activeGame.RestartGame();
         }
-//		else if (GUI.Button(new Rect(100, 20, 80, 20), "Load"))
-//		{
-//			_gameManager.Load(@"Save\CurrentGame.txt");
-//			CreatePieces();
-//		}
-//		else if (GUI.Button(new Rect(180, 20, 80, 20), "Save"))
-//			_gameManager.Save(@"Save\CurrentGame.txt");
 	}
 	
 	void TurnInfoGui()
@@ -168,13 +161,13 @@ public class GamesController : MonoBehaviour
 	{
 		if (GUI.Button(new Rect(Screen.width - 100, 0, 80, 20), "Start"))
 		{
-			_activeGame.RestartGame();
+			_activeGame.PlayToStart();
 		}
 		
 		if (!_activeGame.Plays.Any())
             return;
 		
-	    for (var i = 0; i < _activeGame.Plays.Count; i++) 
+	    for (short i = 0; i < _activeGame.Plays.Count; i++) 
 	    { 
 	        if (_activeGame.Plays[i] == null)
 	            continue;

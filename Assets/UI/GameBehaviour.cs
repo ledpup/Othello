@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reversi.Model.Evaluation;
@@ -134,6 +135,10 @@ public class GameBehaviour : MonoBehaviour
     
     public void StartGameBehavour(GameManager gameManager)
     {
+		Messenger<short>.AddListener("Tile clicked", OnTileSelected);
+        Messenger<short>.AddListener("Tile hover", OnTileHover);
+        Messenger<float>.AddListener("Game speed changed", OnGameSpeedChanged);
+		
 		_computerPlayer = new ComputerPlayer(PlayerUiSettings);
 		
         _positionStats = new Dictionary<string, GameStateStats>();
@@ -173,9 +178,7 @@ public class GameBehaviour : MonoBehaviour
         
         _depthFirstSearch = new DepthFirstSearch();
         
-        Messenger<short>.AddListener("Tile clicked", OnTileSelected);
-        Messenger<short>.AddListener("Tile hover", OnTileHover);
-        Messenger<float>.AddListener("Game speed changed", OnGameSpeedChanged);
+        StopWatch = new Stopwatch();
     }
     
     void Update()
@@ -216,7 +219,10 @@ public class GameBehaviour : MonoBehaviour
     {
         _gameManager.PlacePiece(index);
         if (index != null)
+		{
             PlaceAndFlipPieces();
+			Messenger<short>.Broadcast("Last play", (short)index);
+		}
         _gameManager.NextTurn();
         DisplayPlays();
     }
@@ -323,6 +329,7 @@ public class GameBehaviour : MonoBehaviour
     }
 
     private DepthFirstSearch _depthFirstSearch;
+    public Stopwatch StopWatch;
 
     void ComputerPlay()
     {
@@ -337,15 +344,18 @@ public class GameBehaviour : MonoBehaviour
         if (_computerPlayIndex == null && !_computerStarted && _statsAvailable)
         {
             _computerStarted = true;
+            StopWatch.Reset();
+            StopWatch.Start();
 
 			DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
-            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], ref _computerPlayIndex, ref _computerStarted, _computerPlayer));
+            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _computerPlayer, ref _computerPlayIndex));
             thread.Start();
         }
         else if (_computerPlayIndex != null)
         {
             OnTileSelected((short)_computerPlayIndex);
             _computerStarted = false;
+            StopWatch.Stop();
             _computerPlayIndex = null;
         }
         //OnTileSelected(RandomPlay());
@@ -376,6 +386,7 @@ public class GameBehaviour : MonoBehaviour
         Plays = new List<short?>();
         _gameManager = new GameManager();
         CreatePieces();
+		Messenger<short>.Broadcast("Last play", -1);
     }
     
     void PlaceAndFlipPieces()
@@ -490,7 +501,14 @@ public class GameBehaviour : MonoBehaviour
         return new Vector3(x * Spacing + (_width * Spacing * boardLocation.X * 1.075f), -y * Spacing + (_height * Spacing * boardLocation.Y * 1.075f), z);
     }
     
-    public void PlayTo(int index)
+	public void PlayToStart()
+	{
+		_gameManager = new GameManager();
+        CreatePieces();
+		Messenger<short>.Broadcast("Last play", -1);
+	}
+	
+    public void PlayTo(short index)
     {
         var plays = Plays.GetRange(0, index).Select(x => (short?)x).ToList();
         _gameManager = new GameManager(plays);
@@ -584,8 +602,6 @@ public class GameBehaviour : MonoBehaviour
         if (!_statsAvailable)
             return null;
 		
-		
-		
         var position = _gameManager.Plays.ToChars();
 		
 		if (!_positionStats[position].PlayStats.ContainsKey(((short)_infoPlayIndex)))
@@ -593,9 +609,7 @@ public class GameBehaviour : MonoBehaviour
         
         var stats = _positionStats[position].PlayStats[((short)_infoPlayIndex)];
 		var stringBuilder = new StringBuilder();
-		//stringBuilder.AppendLine("Archive statistics:");
-        stringBuilder.AppendLine(string.Format("{0} of {1} games ({2}%) made this play.", stats.SubsetCount, GameArchive.Count, stats.PercentageOfGames));
-        //stringBuilder.AppendLine();
+        stringBuilder.AppendLine(string.Format("{0} of {1} games ({2}%) play {3}.", stats.SubsetCount, GameArchive.Count, stats.PercentageOfGames, _infoPlayIndex.ToAlgebraicNotation()));
         stringBuilder.AppendLine(string.Format("Black won {0} ({1}%)", stats.BlackWins, stats.PercentageOfWinsForBlack));
         stringBuilder.AppendLine(string.Format("White won {0} ({1}%)", stats.WhiteWins, stats.PercentageOfWinsForWhite));
         stringBuilder.AppendLine(string.Format("Draws = {0} ({1}%)", stats.Draws, stats.PercentageOfDraws));

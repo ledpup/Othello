@@ -13,6 +13,13 @@ namespace Reversi.Model
 			PlayStats = new Dictionary<short, PlayStats>();
 		}
 
+        public void GenerateStats(GameManager gameManager, List<string> games)
+        {
+            var canDrawStats = false;
+            var statsAvailable = false;
+            GenerateStats(gameManager, games, ref canDrawStats, ref statsAvailable);
+        }
+
         public void GenerateStats(GameManager gameManager, List<string> games, ref bool canDrawStats, ref bool statsAvailable)
         {
             if (gameManager == null)
@@ -24,14 +31,14 @@ namespace Reversi.Model
             var position = gameManager.Plays.ToChars();
             PlayStats = GenerateStats(position, games);
 
-            Symmetry(gameManager, games, "FlipDiagA1H8");
-            Symmetry(gameManager, games, "FlipDiagA8H1");
-            Symmetry(gameManager, games, "Rotate180");
+            BoardSymmetries(gameManager, games, "FlipDiagA1H8");
+            BoardSymmetries(gameManager, games, "FlipDiagA8H1");
+            BoardSymmetries(gameManager, games, "Rotate180");
 
             statsAvailable = canDrawStats = true;
         }
 
-	    private void Symmetry(GameManager gameManager, List<string> games, string rotation)
+	    private void BoardSymmetries(GameManager gameManager, List<string> games, string rotation)
 	    {
 	        var newPlayList = new List<short?>();
 	        gameManager.Plays.ForEach(x =>

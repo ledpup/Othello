@@ -119,7 +119,7 @@ namespace Tests
         {
             var root = AlphaBetaTree;
 
-            var computerPlayer = new ComputerPlayer(false, false) {Search = SearchAlgorithms.NegaMax};
+            var computerPlayer = new ComputerPlayer {Search = SearchAlgorithms.NegaMax};
 
             var nodesSearched = new List<INode>();
 

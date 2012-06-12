@@ -15,25 +15,10 @@ namespace WtbProcessor
     {
         static void Main(string[] args)
         {
-            //var gameArchive = File.ReadAllLines("ArchiveData.txt").ToList();
+            var gameArchive = File.ReadAllLines("ArchiveData.txt").ToList();
+            var gameStateStats = new GameStateStats();
 
-            //var positionStats = new GameStateStats(@"\]U", gameArchive);
-
-            //positionStats = new GameStateStats(@"\MBJ", gameArchive);
-
-            //positionStats = new GameStateStats(@"\MCJD", gameArchive);
-            
-
-            //new ThorFileProcessor();
-            //var function = new Func<ulong, ulong>(x => x);
-
-
-            //DrawBoard(RotateIndices(function));
-            //DrawBoard(RotateIndices(flipDiagA1H8));
-            //DrawBoard(RotateIndices(function2));
-            //DrawBoard(RotateIndices(rotate180));
-
-            var computerPlayers = new[] { new ComputerPlayer(false), new ComputerPlayer(false) };
+            var computerPlayers = new[] { new ComputerPlayer(), new ComputerPlayer() };
 
             var random = new Random();
 
@@ -46,34 +31,33 @@ namespace WtbProcessor
             {
                 var gameManager = new GameManager();
 
-                while (!gameManager.IsGameOver)
+                Console.WriteLine("Game {0} ", i);
+
+                var score = 0;
+                for (var round = 0; round < 2; round++)
                 {
-                    if (!gameManager.HasPlays)
-                    {
-                        gameManager.NextTurn();
-                        continue;
-                    }
+                    Console.WriteLine("Round {0}", round);
 
-                    short? computerPlayIndex = null;
+                    PlayGame(gameManager, gameStateStats, gameArchive, depthFirstSearch, computerPlayers);
 
-                    DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
-                    depthFirstSearch.GetPlay(gameManager, ref computerPlayIndex, computerPlayers[gameManager.PlayerIndex]);
+                    score += GetScore(round, gameManager);
 
-                    //Console.Write(gameManager.Turn);
-                    //gameManager.Draw();
-                    //Console.WriteLine("Play " + computerPlayIndex.ToAlgebraicNotation());
+                    Console.WriteLine("Score {0} ", score);
+                    Console.WriteLine(gameManager.GameOverMessage);
 
-                    gameManager.PlacePiece(computerPlayIndex);
-                    gameManager.NextTurn();
+                    SwapPlayers(computerPlayers);
                 }
 
-                var winner = gameManager.WinnerIndex;
-
-                if (gameManager.IsDraw)
+                short winner;
+                if (score == 0)
                     winner = (short)random.Next(1);
+                else if (score > 0)
+                    winner = 1;
+                else
+                    winner = 0;
 
-                Console.WriteLine("Game {0}, Time {1}", i, stopWatch.Elapsed);
-                Console.WriteLine(gameManager.GameOverMessage);
+                Console.WriteLine("Time {0}", stopWatch.Elapsed);
+                
                 computerPlayers[winner].Draw();
                 Console.WriteLine();
 
@@ -87,10 +71,48 @@ namespace WtbProcessor
             Console.ReadKey();
         }
 
+        private static int GetScore(int round, GameManager gameManager)
+        {
+            if (gameManager.IsDraw)
+                return 0;
+
+            var winner = gameManager.WinnerIndex;
+
+            if (round == 0)
+                return (int)SearchAlgorithms.Sign[winner];
+            
+            return (int)SearchAlgorithms.Sign[winner] * -1;
+        }
+
+        private static void PlayGame(GameManager gameManager, GameStateStats gameStateStats, List<string> gameArchive, DepthFirstSearch depthFirstSearch, ComputerPlayer[] computerPlayers)
+        {
+            while (!gameManager.IsGameOver)
+            {
+                if (!gameManager.HasPlays)
+                {
+                    gameManager.NextTurn();
+                    continue;
+                }
+
+                short? computerPlayIndex = null;
+
+                gameStateStats.GenerateStats(gameManager, gameArchive);
+
+                DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
+                depthFirstSearch.GetPlayWithBook(gameManager, gameStateStats, computerPlayers[gameManager.PlayerIndex], ref computerPlayIndex);
+
+                //Console.Write(gameManager.Turn);
+                //gameManager.Draw();
+                //Console.WriteLine("Play " + computerPlayIndex.ToAlgebraicNotation());
+
+                gameManager.PlacePiece(computerPlayIndex);
+                gameManager.NextTurn();
+            }
+        }
+
         private static void SwapPlayers(ComputerPlayer[] computerPlayers)
         {
             var temp = computerPlayers[0];
-
             computerPlayers[0] = computerPlayers[1];
             computerPlayers[1] = temp;
         }

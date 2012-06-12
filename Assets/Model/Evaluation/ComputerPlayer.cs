@@ -59,6 +59,10 @@ namespace Reversi.Model.Evaluation
 
 	    private readonly int[] SearchDepth;
 
+
+        public ComputerPlayer() : this(new PlayerUiSettings())
+        {}
+
         public ComputerPlayer(PlayerUiSettings playerUiSettings)
         {
 			PlayerUiSettings = playerUiSettings;
@@ -69,6 +73,7 @@ namespace Reversi.Model.Evaluation
             Weights = new Dictionary<string, float>[NumberOfGamePhases];
             for (var i = 0; i < NumberOfGamePhases; i++)
             {
+                SearchDepth[i] = PlayerUiSettings.SearchDepth;
                 Weights[i] = new Dictionary<string, float>();
                 Strategies.ForEach(x => Weights[i].Add(x, 1));
             }
