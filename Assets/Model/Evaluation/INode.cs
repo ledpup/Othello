@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Reversi.Model.Evaluation
+namespace Othello.Model.Evaluation
 {
 	public interface INode
 	{

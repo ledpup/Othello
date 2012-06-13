@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Reversi.Model;
+using Othello.Model;
 
-namespace Reversi.Model.Thor
+namespace Othello.Model.Thor
 {
     public class ThorFileProcessor
     {

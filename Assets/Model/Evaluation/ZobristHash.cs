@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Reversi.Model;
+using Othello.Model;
 
-namespace Reversi.Model.Evaluation
+namespace Othello.Model.Evaluation
 {
     /// <summary>
     /// Zobrist hash to take the two ulong bitboard of the GameState and transform it to a single ulong.

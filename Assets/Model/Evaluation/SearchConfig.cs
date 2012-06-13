@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Reversi.Model.Evaluation;
+﻿using System.Collections.Generic;
 
-namespace Assets.Model.Evaluation
+namespace Othello.Model.Evaluation
 {
     public struct SearchConfig
     {
         public int Colour;
         public int Depth;
         public int MaxDepth;
-        //public float Alpha;
-        //public float Beta;
         public bool UseTranspositionTable;
         public IList<INode> NodesSearched; /* Only used if we want to record which nodes were searched */
 
@@ -23,8 +17,6 @@ namespace Assets.Model.Evaluation
             MaxDepth = maxDepth;
             UseTranspositionTable = useTranspositionTable;
             NodesSearched = nodesSearched;
-            //Alpha = -SearchAlgorithms.InitialAlphaBeta;
-            //Beta = SearchAlgorithms.InitialAlphaBeta;
         }
     }
 }

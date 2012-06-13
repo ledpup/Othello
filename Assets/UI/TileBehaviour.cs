@@ -1,4 +1,4 @@
-﻿using Reversi.Model;
+﻿using Othello.Model;
 using UnityEngine;
 
 public class TileBehaviour : MonoBehaviour

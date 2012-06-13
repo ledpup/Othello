@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Reversi.Model;
+using Othello.Model;
 
 namespace Tests
 {

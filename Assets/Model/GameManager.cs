@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
-using Reversi.Model.Evaluation;
+using Othello.Model.Evaluation;
 
-namespace Reversi.Model
+namespace Othello.Model
 {
 	public class GameManager
 	{

@@ -1,5 +1,5 @@
 using System;
-using Reversi.Model;
+using Othello.Model;
 using UnityEngine;
 
 

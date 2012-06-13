@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using Assets.Model;
-using Reversi.Model;
-using Reversi.Model.Evaluation;
+using Othello.Model;
+using Othello.Model.Evaluation;
 
 namespace WtbProcessor
 {

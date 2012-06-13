@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using Reversi.Model;
+using Othello.Model;
 
 namespace Tests
 {

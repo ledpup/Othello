@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reversi.Model
+namespace Othello.Model
 {
 	public class GameStateStats
 	{

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Assets.Model;
 
-
-namespace Reversi.Model
+namespace Othello.Model
 {
     public struct GameState
     {

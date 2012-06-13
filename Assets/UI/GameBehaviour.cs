@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Reversi.Model.Evaluation;
+using Othello.Model.Evaluation;
 using UnityEngine;
-using Reversi.Model;
+using Othello.Model;
 using System;
 using System.Threading;
 
@@ -576,18 +576,6 @@ public class GameBehaviour : MonoBehaviour
     private int _nodesSearched;
     public PlayerUiSettings PlayerUiSettings;
     
-    
-
-
-
-
-    //private AnalysisNode AddNode(ulong gamesStateHash)
-    //{
-    //    AnalysisNode? analysisNode = new AnalysisNode(ref _gameManager.GameState, _depthFirstSearch.ComputerPlayer.GetWeights(_gameManager.Turn));
-    //    HashNodes[gamesStateHash].AnalysisNodes.Add(analysisNode);
-    //    return (AnalysisNode)analysisNode;
-    //}
-
     internal string AnalysisInfo()
     {
         return _gameManager.AnalysisInfo(_infoPlayIndex, _computerPlayer);

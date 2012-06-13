@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Reversi.Assets.UI;
+using Othello.Assets.UI;
 using UnityEngine;
-using Reversi.Model;
+using Othello.Model;
 
 public class GamesController : MonoBehaviour
 {

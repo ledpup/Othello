@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Model.Evaluation;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using Reversi.Model;
-using Reversi.Model.Evaluation;
+using Othello.Model;
+using Othello.Model.Evaluation;
 
 namespace Tests
 {

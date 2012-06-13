@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Popup list created by Eric Haines
 // ComboBox Extended by Hyungseok Seo.(Jerry) sdragoon@nate.com
@@ -51,7 +47,7 @@ using UnityEngine;
 // }
 //
 // =================================================
-namespace Reversi.Assets.UI
+namespace Othello.Assets.UI
 {
     public class ComboBox
     {

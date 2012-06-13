@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Reversi.Model;
+using Othello.Model;
 using System.Diagnostics.Contracts;
-using Reversi.Model.Evaluation;
+using Othello.Model.Evaluation;
 
 namespace Tests
 {

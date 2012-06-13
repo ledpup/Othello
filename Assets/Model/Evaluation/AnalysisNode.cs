@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Reversi.Model.Evaluation
+namespace Othello.Model.Evaluation
 {
     public struct AnalysisNode : INode
 	{
@@ -16,13 +14,11 @@ namespace Reversi.Model.Evaluation
             GameState = gameState;
             _weights = weights;
             PlayIndex = playIndex;
-            _children = null;
 		}
 
         public void NextTurn()
         {
             GameState = GameState.NextTurn();
-            _children = null;
         }
 
         public float Value
@@ -78,29 +74,6 @@ namespace Reversi.Model.Evaluation
         }
         private List<AnalysisNodeReference> _childNodeReferences;
         
-        //public IEnumerable<INode> Children
-        //{
-        //    get
-        //    {
-        //        if (_children != null)
-        //            return _children;
-
-        //        _children = new List<INode>();
-        //        foreach (var play in PlayerPlays)
-        //        {
-        //            var gameState = _gameState;
-        //            gameState.PlacePiece(play);
-
-        //            var nextGameState = gameState.NextTurn();
-
-        //            var child = new AnalysisNode(ref nextGameState, _weights, play);
-        //            _children.Add(child);
-        //        }
-        //        return _children;
-        //    }
-        //}
-        private List<INode> _children;
-
         public IEnumerable<INode> Children
         {
             get
