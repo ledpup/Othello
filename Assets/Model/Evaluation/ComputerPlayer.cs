@@ -51,8 +51,8 @@ namespace Othello.Model.Evaluation
         }
 		
 		public PlayerUiSettings PlayerUiSettings;
-		
-        public static Dictionary<ulong, float> TranspositionTable;
+
+        public static Dictionary<GameState, float> TranspositionTable;
 
 	    public readonly List<string> Strategies = new List<string>
 	                                    {"Pieces", "Mobility", "PotentialMobility", "Pattern", };
@@ -80,8 +80,7 @@ namespace Othello.Model.Evaluation
 
             SetDefaults();
 
-            new ZobristHash();
-            TranspositionTable = new Dictionary<ulong, float>();
+            TranspositionTable = new Dictionary<GameState, float>();
         }
 
         private void SetDefaults()

@@ -28,11 +28,11 @@ namespace Othello.Model.Evaluation
             var bestScore = Minimum;
             foreach (var child in node.Children)
             {
-                ulong? hash;
+				var gameState = child.GameState;
+				
+                var score = GetScore(config.UseTranspositionTable, gameState) ?? -NegaMax(child, config);
 
-                var score = GetScore(child.GameState, config.Colour, config.UseTranspositionTable, out hash) ?? -NegaMax(child, config);
-
-                AddHashToTranspositionTable(hash, score);
+                AddHashToTranspositionTable(config.UseTranspositionTable, gameState, score);
 
                 if (score > bestScore)
                     bestScore = score;
@@ -62,11 +62,11 @@ namespace Othello.Model.Evaluation
             var bestScore = Minimum;
             foreach (var child in node.Children)
             {
-                ulong? hash;
+				var gameState = child.GameState;
+				
+                var score = GetScore(config.UseTranspositionTable, gameState) ?? -AlphaBetaNegaMax(child, config, -beta, -alpha);
 
-                var score = GetScore(child.GameState, config.Colour, config.UseTranspositionTable, out hash) ?? -AlphaBetaNegaMax(child, config, -beta, -alpha);
-
-                AddHashToTranspositionTable(hash, score);
+                AddHashToTranspositionTable(config.UseTranspositionTable, gameState, score);
 
                 if (score >= beta)
                     return score;
@@ -79,28 +79,26 @@ namespace Othello.Model.Evaluation
             }
             return bestScore;
         }
-
-        private static void AddHashToTranspositionTable(ulong? hash, float score)
+        
+        private static float? GetScore(bool useTranspositionTable, GameState gameState)
         {
-            if (hash != null)
-                if (!ComputerPlayer.TranspositionTable.ContainsKey((ulong)hash))
-                    ComputerPlayer.TranspositionTable.Add((ulong)hash, score);
-        }
-
-        private static float? GetScore(GameState gameState, int colour, bool useTranspositionTable, out ulong? hash)
-        {
-            hash = null;
             if (useTranspositionTable)
             {
-                hash = ZobristHash.Hash(gameState, colour == 0);
-                if (ComputerPlayer.TranspositionTable.ContainsKey((ulong)hash))
+                if (ComputerPlayer.TranspositionTable.ContainsKey(gameState))
                 {
                     GameBehaviour.Transpositions++;
-                    return ComputerPlayer.TranspositionTable[(ulong)hash];
+                    return ComputerPlayer.TranspositionTable[gameState];
                 }
                 return null;
             }
             return null;
+        }
+
+        private static void AddHashToTranspositionTable(bool useTranspositionTable, GameState gameState, float score)
+        {
+            if (useTranspositionTable)
+                if (!ComputerPlayer.TranspositionTable.ContainsKey(gameState))
+                    ComputerPlayer.TranspositionTable.Add(gameState, score);
         }
 
         public static float NegaScout(INode node, SearchConfig config)

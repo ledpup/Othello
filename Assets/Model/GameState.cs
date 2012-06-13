@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Othello.Model.Evaluation;
 
 namespace Othello.Model
 {
@@ -36,7 +37,7 @@ namespace Othello.Model
 
             var emptySquares = AllPieces ^ ulong.MaxValue;
             PlayerPlays = Play.ValidPlays(PlayerPieces, OpponentPieces, emptySquares);
-            OpponentPlays = Play.ValidPlays(OpponentPieces, PlayerPieces, emptySquares);            
+            OpponentPlays = Play.ValidPlays(OpponentPieces, PlayerPieces, emptySquares);
         }
 
         //public IEnumerable<INode> Children;
@@ -114,10 +115,15 @@ namespace Othello.Model
             Console.WriteLine();
         }
 
-        public new bool Equals(object obj)
+        public override bool Equals(object obj)
         {
             var comparedGameState = (GameState)obj;
-            return PlayerPieces == comparedGameState.PlayerPieces && OpponentPieces == comparedGameState.OpponentPieces;
+            return (PlayerPieces == comparedGameState.PlayerPieces) && (OpponentPieces == comparedGameState.OpponentPieces);
+        }
+
+        public override int GetHashCode()
+        {
+            return (PlayerPieces | OpponentPieces).GetHashCode();
         }
 
         public GameState Rotate(Func<ulong, ulong> rotateFunc)

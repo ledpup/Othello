@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using Othello.Model;
 
 namespace Othello.Model.Evaluation
 {
@@ -19,7 +15,6 @@ namespace Othello.Model.Evaluation
         private const int BoardSize = 64;
 
         private static Dictionary<short, ulong[]> _randomNumbers;
-        private static ulong _blackRandom;
 
         public ZobristHash()
         {
@@ -40,12 +35,10 @@ namespace Othello.Model.Evaluation
                 }
                 _randomNumbers.Add(i, boardRandomNumbers);
             }
-
-            _blackRandom = random.NextUlong();
         }
 
         
-        public static ulong Hash(GameState gameState, bool blackToPlay)
+        public static ulong Hash(GameState gameState)
         {
             var pieces = new[]
                              {
@@ -67,9 +60,6 @@ namespace Othello.Model.Evaluation
                     }
                 }
             }
-
-            if (blackToPlay)
-                hash ^= _blackRandom;
 
             return hash;
         }
