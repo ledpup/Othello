@@ -76,7 +76,7 @@ public class GamesController : MonoBehaviour
             return;
 
 	    OptionsGui();
-	    GamePersistenceGui();
+	    GameGui();
 	    TurnInfoGui();
 	    UndoRedoGui();
 	    InfoGui();
@@ -109,15 +109,17 @@ public class GamesController : MonoBehaviour
         _activeGame.SearchMethod = _searchComboBox.List(new Rect(20, 200, 150, 20), _searchMethods[_activeGame.SearchMethod].text, _searchMethods, listStyle);
         if (!_searchComboBox.IsClickedComboButton)
             _activeGame.SearchDepth = _depthComboBox.List(new Rect(20, 220, 150, 20), _searchDepths[_activeGame.SearchDepth].text, _searchDepths, listStyle);
-
-        //_games.ForEach(x => x.PlayerUiSettings.ShowArchiveStats = _playerUiSettings.ShowArchiveStats);
 	}
 	
-	void GamePersistenceGui()
+	void GameGui()
 	{
         if (GUI.Button(new Rect(20, 20, 80, 20), "New Game"))
         {
             _activeGame.RestartGame();
+        }
+		if (GUI.Button(new Rect(120, 20, 80, 20), "Quit"))
+        {
+            Application.Quit();
         }
 	}
 	

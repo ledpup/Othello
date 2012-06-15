@@ -43,8 +43,6 @@ public class GameBehaviour : MonoBehaviour
     public List<string> GameArchive;
     private Dictionary<string, GameStateStats> _positionStats;
     
-
-
     public bool UseTranspositionTable
 	{ 
 		get { return PlayerUiSettings.UseTranspositionTable; } 
@@ -181,8 +179,19 @@ public class GameBehaviour : MonoBehaviour
         StopWatch = new Stopwatch();
     }
     
+	bool _firstUpdate = true;
+	
     void Update()
     {
+		// This is a horrible hack to get the last played piece to highlight!!!!
+		// I should find a better way... one day.
+		if (_firstUpdate)
+		{
+			_firstUpdate = false;
+			if (Plays.Count > 0)
+				Messenger<short>.Broadcast("Last play", (short)Plays.Last());
+		}
+		
         if (IsReplaying)
         {
             if (_stopwatch.ElapsedMilliseconds > 350 * (1 / _animationSpeed))

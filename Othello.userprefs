@@ -1,24 +1,29 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Model\GameState.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UI\GamesController.cs">
     <Files>
-      <File FileName="Assets\UI\GameBehaviour.cs" Line="1" Column="1" />
+      <File FileName="Assets\UI\GameBehaviour.cs" Line="187" Column="44" />
       <File FileName="Assets\Model\GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\UI\GamesController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Model\Evaluation\SearchAlgorithms.cs" Line="89" Column="3" />
+      <File FileName="Assets\UI\GamesController.cs" Line="114" Column="16" />
+      <File FileName="Assets\Model\Evaluation\SearchAlgorithms.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\Evaluation\AnalysisNode.cs" Line="1" Column="1" />
-      <File FileName="Assets\Model\Evaluation\ComputerPlayer.cs" Line="28" Column="14" />
+      <File FileName="Assets\Model\Evaluation\ComputerPlayer.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\PlayStats.cs" Line="1" Column="1" />
-      <File FileName="Assets\UI\PlayerUiSettings.cs" Line="28" Column="6" />
+      <File FileName="Assets\UI\PlayerUiSettings.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\Serialiser.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\Evaluation\DepthFirstSearch.cs" Line="1" Column="1" />
       <File FileName="Assets\UI\TileBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\Model\Evaluation\AnalysisNodeCollection.cs" Line="58" Column="1" />
-      <File FileName="Assets\Model\GameState.cs" Line="126" Column="55" />
+      <File FileName="Assets\Model\Evaluation\AnalysisNodeCollection.cs" Line="1" Column="1" />
+      <File FileName="Assets\Model\GameState.cs" Line="1" Column="1" />
+      <File FileName="Assets\Model\Evaluation\Patterns.cs" Line="1" Column="1" />
+      <File FileName="Assets\Event\Messenger.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\ledpup\Documents\GitHub\Othello\Assets\UI\TileBehaviour.cs" line="37" />
+      <Breakpoint file="C:\Users\ledpup\Documents\GitHub\Othello\Assets\Event\Messenger.cs" line="63" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="..\..\..\SkyDrive\Programming\Reversi\Assets\UI\PieceBehaviour.cs" line="34" offsetX="660" offsetY="528" expression="translation" liveUpdate="False" />
