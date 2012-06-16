@@ -37,7 +37,7 @@ public class GameBehaviour : MonoBehaviour
 
     System.Random _random;
     
-    System.Diagnostics.Stopwatch _stopwatch;
+    Stopwatch _stopwatch;
     float _animationSpeed = .5f;
 
     public List<string> GameArchive;
@@ -198,7 +198,7 @@ public class GameBehaviour : MonoBehaviour
             {
                 if (_gameManager.Turn < Plays.Count())
                 {
-                    Play(Plays[_gameManager.Turn]);
+                    PlacePiece(Plays[_gameManager.Turn]);
                     _stopwatch = System.Diagnostics.Stopwatch.StartNew();
                 }
             }
@@ -217,14 +217,22 @@ public class GameBehaviour : MonoBehaviour
     
     void OnTileSelected(short index)
     {
+        if (IsComputerTurn)
+            return;
+
         if (!_gameManager.CanPlay(index))
             return;
         
-        Play(index);
-        Plays = _gameManager.Plays;
+		Play(index);
     }
+	
+	void Play(short? index)
+	{
+		PlacePiece(index);
+        Plays = _gameManager.Plays;
+	}
     
-    void Play(short? index)
+    void PlacePiece(short? index)
     {
         _gameManager.PlacePiece(index);
         if (index != null)
@@ -362,13 +370,11 @@ public class GameBehaviour : MonoBehaviour
         }
         else if (_computerPlayIndex != null)
         {
-            OnTileSelected((short)_computerPlayIndex);
+            Play((short)_computerPlayIndex);
             _computerStarted = false;
             StopWatch.Stop();
             _computerPlayIndex = null;
-        }
-        //OnTileSelected(RandomPlay());
-        
+        }        
     }
 
     private short RandomPlay()
@@ -522,7 +528,7 @@ public class GameBehaviour : MonoBehaviour
         var plays = Plays.GetRange(0, index).Select(x => (short?)x).ToList();
         _gameManager = new GameManager(plays);
         CreatePieces();
-        Play(Plays[index]);
+        PlacePiece(Plays[index]);
     }
 
     public void OnGameSpeedChanged(float gameSpeed)
