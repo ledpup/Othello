@@ -15,7 +15,7 @@ namespace Tests
 
         public float Value { get; set; }
 
-        public List<AnalysisNodeReference> ChildNodeReferences { get { throw new NotImplementedException(); } }
+        public List<EvaluationNodeReference> ChildNodeReferences { get { throw new NotImplementedException(); } }
         public IEnumerable<INode> Children { get; private set; }
         public bool HasChildren { get { return Children.Any(); } }
         public bool IsGameOver { get { return false; } }

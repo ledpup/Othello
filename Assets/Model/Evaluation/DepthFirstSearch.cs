@@ -6,15 +6,15 @@ namespace Othello.Model.Evaluation
 {
     public class DepthFirstSearch
     {
-        public static AnalysisNodeCollection AnalysisNodeCollection
+        public static EvaluationNodeCollection AnalysisNodeCollection
         {
-            get { return _analysisNodeCollection ?? (_analysisNodeCollection = new AnalysisNodeCollection()); }
+            get { return _analysisNodeCollection ?? (_analysisNodeCollection = new EvaluationNodeCollection()); }
         }
-        private static AnalysisNodeCollection _analysisNodeCollection;
+        private static EvaluationNodeCollection _analysisNodeCollection;
 
         public short GetPlay(GameManager gameManager, ComputerPlayer computerPlayer)
         {
-            var node = new AnalysisNode(ref gameManager.GameState, computerPlayer.GetWeights(gameManager.TurnExcludingPasses));
+            var node = new EvaluationNode(ref gameManager.GameState, computerPlayer.GetWeights(gameManager.TurnExcludingPasses));
 
             var indexesAndScores = new List<KeyValuePair<short, float>>();
 

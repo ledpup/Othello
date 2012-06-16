@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace Othello.Model.Evaluation
 {
-    public struct AnalysisNode : INode
+    public struct EvaluationNode : INode
 	{
         public GameState GameState { get; private set; }
         public short? PlayIndex { get; private set; }
         private readonly Dictionary<string, float> _weights;
 
-        public AnalysisNode(ref GameState gameState, Dictionary<string, float> weights, short? playIndex = null) : this()
+        public EvaluationNode(ref GameState gameState, Dictionary<string, float> weights, short? playIndex = null) : this()
 		{
             GameState = gameState;
             _weights = weights;
@@ -47,14 +47,14 @@ namespace Othello.Model.Evaluation
             get { return GameState.IsGameOver; }
         }
 
-        private List<AnalysisNodeReference> ChildNodeReferences
+        private List<EvaluationNodeReference> ChildNodeReferences
         {
             get
             {
                 if (_childNodeReferences != null)
                     return _childNodeReferences;
 
-                _childNodeReferences = new List<AnalysisNodeReference>();
+                _childNodeReferences = new List<EvaluationNodeReference>();
                 foreach (var play in PlayerPlays)
                 {
                     var gameState = GameState;
@@ -62,7 +62,7 @@ namespace Othello.Model.Evaluation
 
                     var nextGameState = gameState.NextTurn();
 
-                    var child = new AnalysisNode(ref nextGameState, _weights, play);
+                    var child = new EvaluationNode(ref nextGameState, _weights, play);
 
                     var reference = DepthFirstSearch.AnalysisNodeCollection.AddAnalysisNode(ref child);
 
@@ -72,14 +72,14 @@ namespace Othello.Model.Evaluation
                 return _childNodeReferences;
             }
         }
-        private List<AnalysisNodeReference> _childNodeReferences;
+        private List<EvaluationNodeReference> _childNodeReferences;
         
         public IEnumerable<INode> Children
         {
             get
             {
                 var children = new List<INode>();
-                ChildNodeReferences.ForEach(x => children.Add(DepthFirstSearch.AnalysisNodeCollection.GetAnalysisNode(x)));
+                ChildNodeReferences.ForEach(x => children.Add(DepthFirstSearch.AnalysisNodeCollection.GetEvaluationNode(x)));
                 return children;
             }
         }

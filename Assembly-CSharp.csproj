@@ -47,11 +47,11 @@
      <Compile Include="Assets\Event\Callback.cs" />
      <Compile Include="Assets\Event\Messenger.cs" />
      <Compile Include="Assets\Model\BitBoardHelper.cs" />
-     <Compile Include="Assets\Model\Evaluation\AnalysisNode.cs" />
-     <Compile Include="Assets\Model\Evaluation\AnalysisNodeBuffer.cs" />
-     <Compile Include="Assets\Model\Evaluation\AnalysisNodeCollection.cs" />
      <Compile Include="Assets\Model\Evaluation\ComputerPlayer.cs" />
      <Compile Include="Assets\Model\Evaluation\DepthFirstSearch.cs" />
+     <Compile Include="Assets\Model\Evaluation\EvaluationNode.cs" />
+     <Compile Include="Assets\Model\Evaluation\EvaluationNodeBuffer.cs" />
+     <Compile Include="Assets\Model\Evaluation\EvaluationNodeCollection.cs" />
      <Compile Include="Assets\Model\Evaluation\INode.cs" />
      <Compile Include="Assets\Model\Evaluation\Patterns.cs" />
      <Compile Include="Assets\Model\Evaluation\SearchAlgorithms.cs" />

@@ -322,7 +322,7 @@ namespace Othello.Model
                 turn++;
             }
 
-            var analysisNode = new AnalysisNode(ref gameState, computerPlayer.GetWeights(turn));
+            var analysisNode = new EvaluationNode(ref gameState, computerPlayer.GetWeights(turn));
 
             var playerName = IsBlacksTurn(turn) ? "Black" : "White";
 

@@ -107,7 +107,7 @@ public class GameBehaviour : MonoBehaviour
         }
     }
 
-    private List<AnalysisNode> _savedGameStateNodes;
+    private List<EvaluationNode> _savedGameStateNodes;
 
     public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GUISkin guiSkin, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, GameManager gameManager, List<string> gameArchive, PlayerUiSettings playerUiSettings)
     {
@@ -566,9 +566,9 @@ public class GameBehaviour : MonoBehaviour
         if (!IsReplaying)
             return;
 
-        if (_gameManager.IsGameOver)
+        if (Plays.Where(x => x != null).Last() == _gameManager.Plays.Where(x => x != null).Last())
         {
-            RestartGame();
+            PlayToStart();
         }
         _stopwatch = System.Diagnostics.Stopwatch.StartNew();
     }

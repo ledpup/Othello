@@ -189,7 +189,7 @@ namespace Tests
         {
             var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.NegaMax };
 
-            var node = new AnalysisNode(ref _game1.GameState, _weights);
+            var node = new EvaluationNode(ref _game1.GameState, _weights);
 
             var score = computerPlayer.Search(node, new SearchConfig(0, 0, 3));
 
@@ -203,7 +203,7 @@ namespace Tests
 
             var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.AlphaBetaNegaMax };
 
-            var node = new AnalysisNode(ref _game1.GameState, _weights);
+            var node = new EvaluationNode(ref _game1.GameState, _weights);
 
             var score = computerPlayer.Search(node, new SearchConfig(0, 0, 3));
 
@@ -215,7 +215,7 @@ namespace Tests
         {
             var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.NegaScout };
 
-            var node = new AnalysisNode(ref _game1.GameState, _weights);
+            var node = new EvaluationNode(ref _game1.GameState, _weights);
 
             var score = computerPlayer.Search(node, new SearchConfig(0, 0, 3));
 
@@ -227,7 +227,7 @@ namespace Tests
         {
             var computerPlayer = new ComputerPlayer { Search = SearchAlgorithms.NegaScout };
 
-            var node = new AnalysisNode(ref _game3.GameState, _weights);
+            var node = new EvaluationNode(ref _game3.GameState, _weights);
 
             var score = computerPlayer.Search(node, new SearchConfig(0, 0, 10));
 

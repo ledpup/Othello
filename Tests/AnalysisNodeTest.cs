@@ -25,12 +25,12 @@ namespace Tests
         {
 
             var gameManager = new GameManager();
-            var gameStateNode = new AnalysisNode(ref gameManager.GameState, _weights);
+            var gameStateNode = new EvaluationNode(ref gameManager.GameState, _weights);
 
             ValidateNode(gameStateNode);
         }
 
-        private void ValidateNode(AnalysisNode gameStateNode)
+        private void ValidateNode(EvaluationNode gameStateNode)
         {
             Assert.IsTrue(gameStateNode.Pieces >= 0 && gameStateNode.Pieces <= 1);
             Assert.IsTrue(gameStateNode.Mobility >= 0 && gameStateNode.Mobility <= 1);
@@ -57,7 +57,7 @@ namespace Tests
                 gameManager.PlacePiece(computerPlayIndex);
                 gameManager.NextTurn();
 
-                var gameStateNode = new AnalysisNode(ref gameManager.GameState, _weights);
+                var gameStateNode = new EvaluationNode(ref gameManager.GameState, _weights);
                 ValidateNode(gameStateNode);
             }
         }
