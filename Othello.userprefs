@@ -1,26 +1,30 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UI\GameBehaviour.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UI\PlayerUiSettings.cs">
     <Files>
-      <File FileName="Assets\UI\GameBehaviour.cs" Line="377" Column="10" />
+      <File FileName="Assets\Model\Serialiser.cs" Line="1" Column="1" />
+      <File FileName="Assets\Model\Serialiser.cs" Line="13" Column="32" />
+      <File FileName="Assets\UI\GameBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\GameManager.cs" Line="1" Column="1" />
       <File FileName="Assets\UI\GamesController.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\Evaluation\SearchAlgorithms.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\Evaluation\ComputerPlayer.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\PlayStats.cs" Line="1" Column="1" />
       <File FileName="Assets\UI\PlayerUiSettings.cs" Line="1" Column="1" />
-      <File FileName="Assets\Model\Serialiser.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\Evaluation\DepthFirstSearch.cs" Line="1" Column="1" />
       <File FileName="Assets\UI\TileBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\GameState.cs" Line="1" Column="1" />
       <File FileName="Assets\Model\Evaluation\Patterns.cs" Line="1" Column="1" />
       <File FileName="Assets\Event\Messenger.cs" Line="1" Column="1" />
+      <File FileName="c:\Users\Patrick\Documents\GitHub\Othello\Assets\Model\Evaluation\EvaluationNode.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="C:\Users\ledpup\Documents\GitHub\Othello\Assets\UI\TileBehaviour.cs" line="37" />
       <Breakpoint file="C:\Users\ledpup\Documents\GitHub\Othello\Assets\Event\Messenger.cs" line="63" />
+      <Breakpoint file="C:\Users\Patrick\Documents\GitHub\Othello\Assets\UI\GameBehaviour.cs" line="113" />
+      <Breakpoint file="C:\Users\Patrick\Documents\GitHub\Othello\Assets\UI\GameBehaviour.cs" line="135" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
