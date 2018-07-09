@@ -331,14 +331,14 @@ namespace Othello.Model
 
             //stringBulider.AppendLine(playerName + " Score\t\t\t" + analysisNode.Value * 100);
             //stringBulider.AppendLine();
-            stringBulider.AppendLine("\t\t\t\t  Black\t  White");
-            stringBulider.AppendLine("Pieces\t\t\t" + BlackAndWhite(analysisNode.PlayerPieces, analysisNode.OpponentPieces, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("Mobility\t\t\t" + BlackAndWhite(analysisNode.PlayerPlayCount, analysisNode.OpponentPlayCount, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("Frontier\t\t\t" + BlackAndWhite(analysisNode.PlayerFrontier, analysisNode.OpponentFrontier, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("Corner\t\t\t" + BlackAndWhite(analysisNode.PlayerCorners, analysisNode.OpponentCorners, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("X Square\t\t" + BlackAndWhite(analysisNode.PlayerXSquares, analysisNode.OpponentXSquares, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("C Square\t\t" + BlackAndWhite(analysisNode.PlayerCSquares, analysisNode.OpponentCSquares, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("Edge\t\t\t\t" + BlackAndWhite(analysisNode.PlayerEdges, analysisNode.OpponentEdges, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("\tBlack\tWhite");
+            stringBulider.AppendLine("Pieces\t" + BlackAndWhite(analysisNode.PlayerPieces, analysisNode.OpponentPieces, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("Mobility\t" + BlackAndWhite(analysisNode.PlayerPlayCount, analysisNode.OpponentPlayCount, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("Frontier\t" + BlackAndWhite(analysisNode.PlayerFrontier, analysisNode.OpponentFrontier, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("Corner\t" + BlackAndWhite(analysisNode.PlayerCorners, analysisNode.OpponentCorners, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("X Square\t" + BlackAndWhite(analysisNode.PlayerXSquares, analysisNode.OpponentXSquares, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("C Square\t" + BlackAndWhite(analysisNode.PlayerCSquares, analysisNode.OpponentCSquares, IsBlacksTurn(turn)));
+            stringBulider.AppendLine("Edge\t" + BlackAndWhite(analysisNode.PlayerEdges, analysisNode.OpponentEdges, IsBlacksTurn(turn)));
             return stringBulider.ToString();
         }
 
@@ -354,7 +354,7 @@ namespace Othello.Model
 
 	    private static string FormatValues(short p, short o)
         {
-            return StringSpacing(p) + "\t\t\t" + StringSpacing(o);
+            return StringSpacing(p) + "\t" + StringSpacing(o);
         }
 
         private static string StringSpacing(short value)

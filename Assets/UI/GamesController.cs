@@ -97,7 +97,7 @@ public class GamesController : MonoBehaviour
     }
 	
 	void OptionsGui()
-	{
+    {
         _playerUiSettings.BlackIsHuman = GUI.Toggle(new Rect(20, 50, 200, 20), _playerUiSettings.BlackIsHuman, "Black is a human player");
         _playerUiSettings.WhiteIsHuman = GUI.Toggle(new Rect(20, 70, 200, 20), _playerUiSettings.WhiteIsHuman, "White is a human player");
         _activeGame.ShowValidPlays = GUI.Toggle(new Rect(20, 90, 200, 20), _activeGame.ShowValidPlays, "Show valid plays");
