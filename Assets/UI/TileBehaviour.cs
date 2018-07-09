@@ -24,24 +24,24 @@ public class TileBehaviour : MonoBehaviour
     void OnMouseEnter()
     {
         Messenger<short>.Broadcast("Tile hover", Tile.Index);
-		_oldColour = renderer.material.color;
-		renderer.material.color = Color.cyan;
+		_oldColour = GetComponent<Renderer>().material.color;
+		GetComponent<Renderer>().material.color = Color.cyan;
     }
 	
 	void OnMouseExit()
 	{
-		renderer.material.color = _oldColour;
+		GetComponent<Renderer>().material.color = _oldColour;
 	}
 	
     void OnLastPlay(short index)
     {
         if (Tile.Index == index)
         {
-            _oldColour = renderer.material.color = Color.green;
+            _oldColour = GetComponent<Renderer>().material.color = Color.green;
         }
         else
         {
-            _oldColour = renderer.material.color = Color.white;
+            _oldColour = GetComponent<Renderer>().material.color = Color.white;
         }
     }
 }

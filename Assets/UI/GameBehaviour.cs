@@ -339,7 +339,7 @@ public class GameBehaviour : MonoBehaviour
         var textObject = (GameObject)Instantiate(Text);
         ((TextMesh)textObject.transform.GetComponent("TextMesh")).text = text;
         textObject.transform.localScale = new Vector3(.5f, .5f, .5f);
-        textObject.renderer.material.color = Color.black;
+        textObject.GetComponent<Renderer>().material.color = Color.black;
         textObject.transform.position = GetWorldCoordinates(x + xOffset, y + yOffset, 0, BoardLocation);
         
         _tileInfo.Add(textObject);
