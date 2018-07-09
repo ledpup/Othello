@@ -9,6 +9,10 @@
 Assets/AssetStoreTools*
 
 
+# Visual Studio cache directory
+.vs/
+
+
 #################
 ## Eclipse
 #################
