@@ -612,10 +612,10 @@ public class GameBehaviour : MonoBehaviour
         
         var stats = _positionStats[position].PlayStats[((short)_infoPlayIndex)];
 		var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine(string.Format("{0} of {1} games ({2}%) play {3}.", stats.SubsetCount, GameArchive.Count, stats.PercentageOfGames, _infoPlayIndex.ToAlgebraicNotation()));
-        stringBuilder.AppendLine(string.Format("Black won {0} ({1}%)", stats.BlackWins, stats.PercentageOfWinsForBlack));
-        stringBuilder.AppendLine(string.Format("White won {0} ({1}%)", stats.WhiteWins, stats.PercentageOfWinsForWhite));
-        stringBuilder.AppendLine(string.Format("Draws = {0} ({1}%)", stats.Draws, stats.PercentageOfDraws));
+        stringBuilder.AppendLine(string.Format("{0}% of games play {1}", stats.PercentageOfGames, _infoPlayIndex.ToAlgebraicNotation()));
+        stringBuilder.AppendLine(string.Format("{0}% of games won by black", stats.PercentageOfWinsForBlack));
+        stringBuilder.AppendLine(string.Format("{0}% of games won by white", stats.PercentageOfWinsForWhite));
+        stringBuilder.AppendLine(string.Format("{0}% of games were draws", stats.PercentageOfDraws));
 
         return stringBuilder.ToString();
     }
