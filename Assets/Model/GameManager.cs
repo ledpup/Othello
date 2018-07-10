@@ -293,17 +293,9 @@ namespace Othello.Model
         }
 
 	    public short Placement;
-        //{
-        //    get { return GameState.Placement.Indices().Single(); }
-        //}
 
 	    public List<short> FlippedPieces;
-        //{
-        //    get { return GameState.FlippedPieces.Indices().ToList(); }
-        //}
-
-
-
+        
         public bool IsDraw
         {
             get { return GameState.IsDraw; }
@@ -324,13 +316,7 @@ namespace Othello.Model
 
             var analysisNode = new EvaluationNode(ref gameState, computerPlayer.GetWeights(turn));
 
-            var playerName = IsBlacksTurn(turn) ? "Black" : "White";
-
             var stringBulider = new StringBuilder();
-            //stringBulider.AppendLine();
-
-            //stringBulider.AppendLine(playerName + " Score\t\t\t" + analysisNode.Value * 100);
-            //stringBulider.AppendLine();
             stringBulider.AppendLine("\tBlack\tWhite");
             stringBulider.AppendLine("Pieces\t" + BlackAndWhite(analysisNode.PlayerPieces, analysisNode.OpponentPieces, IsBlacksTurn(turn)));
             stringBulider.AppendLine("Mobility\t" + BlackAndWhite(analysisNode.PlayerPlayCount, analysisNode.OpponentPlayCount, IsBlacksTurn(turn)));

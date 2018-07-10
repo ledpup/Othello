@@ -93,7 +93,7 @@ public class GamesController : MonoBehaviour
         if (!_depthComboBox.IsClickedComboButton)
             GUI.TextArea(new Rect(20, 310, 180, 130), _activeGame.AnalysisInfo());
         if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
-            GUI.TextArea(new Rect(20, 440, 180, 80), _activeGame.ArchiveInfo());
+            GUI.TextArea(new Rect(20, 440, 180, 70), _activeGame.ArchiveInfo());
     }
 	
 	void OptionsGui()
