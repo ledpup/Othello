@@ -69,8 +69,8 @@ public class GamesController : MonoBehaviour
 	void OnGUI()
 	{
 		GUI.skin = GuiSkin;
-			
-		Replay();
+
+        Replay();
 		
 	    if (_activeGame.IsReplaying)
             return;
