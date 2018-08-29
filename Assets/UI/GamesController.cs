@@ -5,6 +5,7 @@ using System.Linq;
 using Othello.Assets.UI;
 using UnityEngine;
 using Othello.Model;
+using UnityEngine.UI;
 
 public class GamesController : MonoBehaviour
 {
@@ -12,8 +13,10 @@ public class GamesController : MonoBehaviour
 	public GameObject BoardTile;
 	public GameObject Text;
 	public GUISkin GuiSkin;
-	
-	private List<GameBehaviour> _games;
+    public GameObject ButtonPrefab;
+    public GameObject Panel;
+
+    private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
 	float _globalAnimationSpeed = .5f;
 
@@ -41,6 +44,17 @@ public class GamesController : MonoBehaviour
 
 		_activeGame = _games.First();
 
+
+        var newGameButton = Instantiate(ButtonPrefab);
+        newGameButton.transform.SetParent(Panel.transform);
+        newGameButton.GetComponentInChildren<Text>().text = "New Game";
+        newGameButton.GetComponent<Button>().onClick.AddListener(NewGame);
+
+        var quitButton = Instantiate(ButtonPrefab);
+        quitButton.transform.SetParent(Panel.transform);
+        quitButton.GetComponentInChildren<Text>().text = "Quit";
+        quitButton.GetComponent<Button>().onClick.AddListener(Quit);
+
         _searchMethods = new[] { new GUIContent("NegaMax"), new GUIContent("NegaMax w/ Alpha-Beta") };
         _searchDepths = new[] 
 		{ 
@@ -60,8 +74,18 @@ public class GamesController : MonoBehaviour
         listStyle.onHover.background = listStyle.hover.background = new Texture2D(2, 2);
         listStyle.padding.left = listStyle.padding.right = listStyle.padding.top = listStyle.padding.bottom = 4;
 	}
-	
-	void OnApplicationQuit()
+
+    void NewGame()
+    {
+        _activeGame.RestartGame();
+    }
+
+    void Quit()
+    {
+        Application.Quit();
+    }
+
+    void OnApplicationQuit()
 	{
 	    _playerUiSettings.Save();
 	}
@@ -76,7 +100,6 @@ public class GamesController : MonoBehaviour
             return;
 
 	    OptionsGui();
-	    GameGui();
 	    TurnInfoGui();
 	    UndoRedoGui();
 	    InfoGui();
@@ -109,19 +132,7 @@ public class GamesController : MonoBehaviour
         _activeGame.SearchMethod = _searchComboBox.List(new Rect(20, 200, 150, 20), _searchMethods[_activeGame.SearchMethod].text, _searchMethods, listStyle);
         if (!_searchComboBox.IsClickedComboButton)
             _activeGame.SearchDepth = _depthComboBox.List(new Rect(20, 220, 150, 20), _searchDepths[_activeGame.SearchDepth].text, _searchDepths, listStyle);
-	}
-	
-	void GameGui()
-	{
-        if (GUI.Button(new Rect(20, 20, 80, 20), "New Game"))
-        {
-            _activeGame.RestartGame();
-        }
-		if (GUI.Button(new Rect(120, 20, 80, 20), "Quit"))
-        {
-            Application.Quit();
-        }
-	}
+    }
 	
 	void TurnInfoGui()
 	{
