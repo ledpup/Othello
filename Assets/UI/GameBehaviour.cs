@@ -38,7 +38,7 @@ public class GameBehaviour : MonoBehaviour
     System.Random _random;
     
     Stopwatch _stopwatch;
-    float _animationSpeed = .5f;
+    float _animationSpeed = .35f;
 
     public List<string> GameArchive;
     private Dictionary<string, GameStateStats> _positionStats;

@@ -18,7 +18,7 @@ public class GamesController : MonoBehaviour
 
     private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
-	float _globalAnimationSpeed = .5f;
+	//float _globalAnimationSpeed = .15f;
 
     private List<string> _gameArchive;
 	
@@ -193,16 +193,16 @@ public class GamesController : MonoBehaviour
 	    }
 	}
 	
-	void GameSpeedGui()
-	{
-		var oldGameSpeed = _globalAnimationSpeed;
-        GUI.TextField(new Rect(20, 240, 130, 25), "Animation Speed");
-		_globalAnimationSpeed = GUI.HorizontalSlider (new Rect (20, 270, 130, 30), _globalAnimationSpeed, 0.0f, 1.0f);
-		if (oldGameSpeed != _globalAnimationSpeed)
-		{
-			Messenger<float>.Broadcast("Game speed changed", _globalAnimationSpeed);
-		}
-	}
+	//void GameSpeedGui()
+	//{
+	//	var oldGameSpeed = _globalAnimationSpeed;
+ //       GUI.TextField(new Rect(20, 240, 130, 25), "Animation Speed");
+	//	_globalAnimationSpeed = GUI.HorizontalSlider (new Rect (20, 270, 130, 30), _globalAnimationSpeed, 0.0f, 1.0f);
+	//	if (oldGameSpeed != _globalAnimationSpeed)
+	//	{
+	//		Messenger<float>.Broadcast("Game speed changed", _globalAnimationSpeed);
+	//	}
+	//}
 	
 	void Replay()
 	{

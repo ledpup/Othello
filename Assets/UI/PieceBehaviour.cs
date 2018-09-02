@@ -43,7 +43,7 @@ public class PieceBehaviour : MonoBehaviour
 				return;
 			}
 			
-			var rotation = Time.deltaTime * 550 * _gameSpeed * _flippingDirection;
+			var rotation = Time.deltaTime * 500 * _gameSpeed * _flippingDirection;
 			
 			if (transform.rotation.eulerAngles.y + rotation > 180)
 			{
