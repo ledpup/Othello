@@ -14,7 +14,11 @@ public class GamesController : MonoBehaviour
 	public GameObject Text;
 	public GUISkin GuiSkin;
     public GameObject ButtonPrefab;
+    public GameObject TogglePrefab;
     public GameObject Panel;
+    public GameObject GameOptionsPanel;
+    public GameObject ViewOptionsPanel;
+    public Text PlayerTurn;
 
     private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
@@ -30,8 +34,9 @@ public class GamesController : MonoBehaviour
     private GUIStyle listStyle = new GUIStyle();
 
     private PlayerUiSettings _playerUiSettings;
+    Toggle _blackIsHumanToggle, _whiteIsHumanToggle, _showValidPlaysToggle, _showBoardCoordinatesToggle, _showArchiveStatsToggle;
 
-	void Start()
+    void Start()
 	{
         _gameArchive = File.ReadAllLines(SavePath + "ArchiveData.txt").ToList();
 
@@ -54,6 +59,40 @@ public class GamesController : MonoBehaviour
         quitButton.transform.SetParent(Panel.transform);
         quitButton.GetComponentInChildren<Text>().text = "Quit";
         quitButton.GetComponent<Button>().onClick.AddListener(Quit);
+
+
+        var toggle = Instantiate(TogglePrefab);
+        toggle.transform.SetParent(GameOptionsPanel.transform);
+        toggle.GetComponentInChildren<Text>().text = "Black is a human player";
+        _blackIsHumanToggle = toggle.GetComponent<Toggle>();
+        _blackIsHumanToggle.onValueChanged.AddListener(delegate { BlackIsHuman(_blackIsHumanToggle); });
+
+        toggle = Instantiate(TogglePrefab);
+        toggle.transform.SetParent(GameOptionsPanel.transform);
+        toggle.GetComponentInChildren<Text>().text = "White is a human player";
+        _whiteIsHumanToggle = toggle.GetComponent<Toggle>();
+        _whiteIsHumanToggle.onValueChanged.AddListener(delegate { WhiteIsHuman(_whiteIsHumanToggle); });
+
+        toggle = Instantiate(TogglePrefab);
+        toggle.transform.SetParent(ViewOptionsPanel.transform);
+        toggle.GetComponentInChildren<Text>().text = "Show valid plays";
+        _showValidPlaysToggle = toggle.GetComponent<Toggle>();
+        _showValidPlaysToggle.onValueChanged.AddListener(delegate { ShowValidPlays(_showValidPlaysToggle); });
+
+        toggle = Instantiate(TogglePrefab);
+        toggle.transform.SetParent(ViewOptionsPanel.transform);
+        toggle.GetComponentInChildren<Text>().text = "Show board coordinates";
+        _showBoardCoordinatesToggle = toggle.GetComponent<Toggle>();
+        _showBoardCoordinatesToggle.onValueChanged.AddListener(delegate { ShowBoardCoordinates(_showBoardCoordinatesToggle); });
+
+        toggle = Instantiate(TogglePrefab);
+        toggle.transform.SetParent(ViewOptionsPanel.transform);
+        toggle.GetComponentInChildren<Text>().text = "Show archive stats";
+        _showArchiveStatsToggle = toggle.GetComponent<Toggle>();
+        _showArchiveStatsToggle.onValueChanged.AddListener(delegate { ShowArchiveStats(_showArchiveStatsToggle); });
+
+        //_activeGame.UseTranspositionTable = GUI.Toggle(new Rect(20, 150, 200, 20), _activeGame.UseTranspositionTable, "Use transposition table");
+        //_activeGame.UseOpeningBook = GUI.Toggle(new Rect(20, 170, 200, 20), _activeGame.UseOpeningBook, "Use opening book");
 
         _searchMethods = new[] { new GUIContent("NegaMax"), new GUIContent("NegaMax w/ Alpha-Beta") };
         _searchDepths = new[] 
@@ -99,7 +138,6 @@ public class GamesController : MonoBehaviour
 	    if (_activeGame.IsReplaying)
             return;
 
-	    OptionsGui();
 	    TurnInfoGui();
 	    UndoRedoGui();
 	    InfoGui();
@@ -118,23 +156,39 @@ public class GamesController : MonoBehaviour
         if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
             GUI.TextArea(new Rect(20, 440, 180, 70), _activeGame.ArchiveInfo());
     }
-	
-	void OptionsGui()
+
+    void OptionsGui()
     {
-        _playerUiSettings.BlackIsHuman = GUI.Toggle(new Rect(20, 50, 200, 20), _playerUiSettings.BlackIsHuman, "Black is a human player");
-        _playerUiSettings.WhiteIsHuman = GUI.Toggle(new Rect(20, 70, 200, 20), _playerUiSettings.WhiteIsHuman, "White is a human player");
-        _activeGame.ShowValidPlays = GUI.Toggle(new Rect(20, 90, 200, 20), _activeGame.ShowValidPlays, "Show valid plays");
-        _activeGame.ShowBoardCoordinates = GUI.Toggle(new Rect(20, 110, 200, 20), _activeGame.ShowBoardCoordinates, "Show board coordinates");
-        _activeGame.ShowArchiveStats = GUI.Toggle(new Rect(20, 130, 200, 20), _activeGame.ShowArchiveStats, "Show archive stats");
-        _activeGame.UseTranspositionTable = GUI.Toggle(new Rect(20, 150, 200, 20), _activeGame.UseTranspositionTable, "Use transposition table");
-        _activeGame.UseOpeningBook = GUI.Toggle(new Rect(20, 170, 200, 20), _activeGame.UseOpeningBook, "Use opening book");
+
 
         _activeGame.SearchMethod = _searchComboBox.List(new Rect(20, 200, 150, 20), _searchMethods[_activeGame.SearchMethod].text, _searchMethods, listStyle);
         if (!_searchComboBox.IsClickedComboButton)
             _activeGame.SearchDepth = _depthComboBox.List(new Rect(20, 220, 150, 20), _searchDepths[_activeGame.SearchDepth].text, _searchDepths, listStyle);
     }
 	
-	void TurnInfoGui()
+    void BlackIsHuman(Toggle toggle)
+    {
+        _playerUiSettings.BlackIsHuman = toggle.isOn;
+    }
+
+    void WhiteIsHuman(Toggle toggle)
+    {
+        _playerUiSettings.WhiteIsHuman = toggle.isOn;
+    }
+    void ShowValidPlays(Toggle toggle)
+    {
+        _activeGame.ShowValidPlays = toggle.isOn;
+    }
+    void ShowBoardCoordinates(Toggle toggle)
+    {
+        _activeGame.ShowBoardCoordinates = toggle.isOn;
+    }
+    void ShowArchiveStats(Toggle toggle)
+    {
+        _activeGame.ShowArchiveStats = toggle.isOn;
+    }
+
+    void TurnInfoGui()
 	{
 		var labelWidth = 200;
 		var labelHeight = 80;
@@ -165,8 +219,12 @@ public class GamesController : MonoBehaviour
 		}
 		else
 		{
-			GUI.Label (new Rect(Screen.width / 2 - labelWidth / 2, 20, labelWidth, 20), string.Format("{0} to play.", _activeGame.Player));
-		}
+            if (!PlayerTurn.text.StartsWith(_activeGame.Player.ToUpper()))
+            {
+                PlayerTurn.text = _activeGame.Player.ToUpper() + " to play";
+                PlayerTurn.color = _activeGame.Player == "Black" ? Color.black : Color.white;
+            }
+        }
 	}
 
 	void UndoRedoGui()
