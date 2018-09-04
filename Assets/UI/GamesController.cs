@@ -221,7 +221,7 @@ public class GamesController : MonoBehaviour
 		{
             if (!PlayerTurn.text.StartsWith(_activeGame.Player.ToUpper()))
             {
-                PlayerTurn.text = _activeGame.Player.ToUpper() + " to play";
+                PlayerTurn.text = _activeGame.Player.ToUpper();
                 PlayerTurn.color = _activeGame.Player == "Black" ? Color.black : Color.white;
             }
         }
