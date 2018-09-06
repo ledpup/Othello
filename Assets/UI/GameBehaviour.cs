@@ -283,11 +283,11 @@ public class GameBehaviour : MonoBehaviour
                             if (!_positionStats[position].PlayStats.ContainsKey(p)) 
                                 return;
 
-                            DrawTileInfo(coord.X, coord.Y, -.45f, -.45f, _positionStats[position].PlayStats[p].PercentageOfGames + "%");
+                            DrawTileInfo(coord.X, coord.Y, -.425f, -.45f, _positionStats[position].PlayStats[p].PercentageOfGames + "%");
 							if (_gameManager.PlayerIsBlack)
-                            	DrawTileInfo(coord.X, coord.Y, -.45f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForBlack + "%");
+                            	DrawTileInfo(coord.X, coord.Y, -.425f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForBlack + "%");
 							else
-								DrawTileInfo(coord.X, coord.Y, -.45f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForWhite + "%");
+								DrawTileInfo(coord.X, coord.Y, -.425f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForWhite + "%");
                         });
         
     }
@@ -550,10 +550,15 @@ public class GameBehaviour : MonoBehaviour
     {
         get { return _gameManager.IsGameOver; }
     }
-    
-    public string GameOverMessage
+
+    public string GameWinner
     {
-        get { return _gameManager.GameOverMessage; }
+        get { return _gameManager.GameWinner; }
+    }
+
+    public string GameResult
+    {
+        get { return _gameManager.GameResult; }
     }
     
     public string CannotPlayMessage

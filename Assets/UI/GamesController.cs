@@ -18,6 +18,7 @@ public class GamesController : MonoBehaviour
     public GameObject Panel;
     public GameObject GameOptionsPanel;
     public GameObject ViewOptionsPanel;
+    public GameObject GameoverPanel;
     public Text PlayerTurn;
 
     private List<GameBehaviour> _games;
@@ -38,6 +39,8 @@ public class GamesController : MonoBehaviour
 
     void Start()
 	{
+        GameoverPanel.SetActive(false);
+
         _gameArchive = File.ReadAllLines(SavePath + "ArchiveData.txt").ToList();
 
 	    _games = new List<GameBehaviour>();
@@ -117,6 +120,7 @@ public class GamesController : MonoBehaviour
     void NewGame()
     {
         _activeGame.RestartGame();
+        GameoverPanel.SetActive(false);
     }
 
     void Quit()
@@ -198,9 +202,20 @@ public class GamesController : MonoBehaviour
 		
 		if (_activeGame.IsGameOver)
 		{
-			var message = _activeGame.GameOverMessage;
-		    
-            GUI.Label(new Rect(x, y, labelWidth, labelHeight), message);
+            GameoverPanel.SetActive(true);
+
+            GameoverPanel.GetComponent<Image>().color = _activeGame.GameWinner == "White" ? Color.white : Color.black;
+
+            var gameOverText = GameObject.Find("Gameover Text").GetComponent<Text>();
+            gameOverText.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+
+            var winner = GameObject.Find("Winner").GetComponent<Text>();
+            winner.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+            winner.text = _activeGame.GameWinner.ToUpper();
+
+            var gameResult = GameObject.Find("Game Result").GetComponent<Text>();
+            gameResult.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+            gameResult.text = _activeGame.GameResult;
 		}
 		else if (!_activeGame.CanPlay)
 		{
@@ -246,7 +261,8 @@ public class GamesController : MonoBehaviour
 	        var row = (i / 2) * 18;
 	        if (GUI.Button(new Rect(Screen.width - 40 - column, 20 + row, 40, 18), _activeGame.Plays[i].ToAlgebraicNotation()))
 	        {
-				_activeGame.PlayTo(i);
+                GameoverPanel.SetActive(false);
+                _activeGame.PlayTo(i);
 	        }
 	    }
 	}
@@ -266,7 +282,8 @@ public class GamesController : MonoBehaviour
 	{
         if (GUI.Button(new Rect(Screen.width - 200, 0, 80, 20), _activeGame.IsReplaying ? "Stop" : "Replay"))
 		{
-			_games.ForEach(x => x.Replay());
+            GameoverPanel.SetActive(false);
+            _games.ForEach(x => x.Replay());
 		}
 	}
 	

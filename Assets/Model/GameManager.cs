@@ -140,25 +140,31 @@ namespace Othello.Model
             return new GameManager(plays);
         }
 		
-		public string GameOverMessage
+        public string GameWinner
+        {
+            get
+            {
+                if (GameState.IsDraw)
+                {
+                    return "Draw";
+                }
+                return GameState.PlayerWinning ? Player : Opponent;
+            }   
+        }
+
+
+		public string GameResult
 		{
 			get 
 			{
 				if (!GameState.IsGameOver)
 					throw new Exception();
-					
-				string message;
-	            if (GameState.IsDraw)
-	            {
-	                message = "Gameover.\r\nIt is a draw.";
-	            }
-	            else
-	            {
-	                var winner = GameState.PlayerWinning ? Player : Opponent;
 
-	                message = string.Format("Gameover.\r\n{0} wins {1} to {2}.", winner, WinnersScore, LossersScore);
+	            if (!GameState.IsDraw)
+	            {
+	                return string.Format("{0} to {1}", WinnersScore, LossersScore);
 	            }
-				return message;
+				return "";
 			}
 		}
 
