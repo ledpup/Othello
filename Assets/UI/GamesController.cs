@@ -19,6 +19,7 @@ public class GamesController : MonoBehaviour
     public GameObject GameOptionsPanel;
     public GameObject ViewOptionsPanel;
     public GameObject GameoverPanel;
+    public GameObject SkipTurnPanel;
     public Text PlayerTurn;
 
     private List<GameBehaviour> _games;
@@ -40,6 +41,7 @@ public class GamesController : MonoBehaviour
     void Start()
 	{
         GameoverPanel.SetActive(false);
+        SkipTurnPanel.SetActive(false);
 
         _gameArchive = File.ReadAllLines(SavePath + "ArchiveData.txt").ToList();
 
@@ -93,6 +95,8 @@ public class GamesController : MonoBehaviour
         toggle.GetComponentInChildren<Text>().text = "Show archive stats";
         _showArchiveStatsToggle = toggle.GetComponent<Toggle>();
         _showArchiveStatsToggle.onValueChanged.AddListener(delegate { ShowArchiveStats(_showArchiveStatsToggle); });
+
+        SkipTurnPanel.GetComponentInChildren<Button>().onClick.AddListener(delegate { ShipTurn(); });
 
         //_activeGame.UseTranspositionTable = GUI.Toggle(new Rect(20, 150, 200, 20), _activeGame.UseTranspositionTable, "Use transposition table");
         //_activeGame.UseOpeningBook = GUI.Toggle(new Rect(20, 170, 200, 20), _activeGame.UseOpeningBook, "Use opening book");
@@ -232,12 +236,10 @@ public class GamesController : MonoBehaviour
 			}
 			else 
 			{
-				GUI.Label (new Rect(x, y, labelWidth, labelHeight), _activeGame.CannotPlayMessage);
-				if (GUI.Button(new Rect(x, Screen.height / 2 + labelHeight / 2, labelWidth, 20), "Okay"))
-				{
-					_activeGame.SkipTurn();
-				}
-			}
+                SkipTurnPanel.SetActive(true);
+                SkipTurnPanel.GetComponentInChildren<Text>().text = _activeGame.CannotPlayMessage;
+
+            }
 		}
 		else
 		{
@@ -251,7 +253,13 @@ public class GamesController : MonoBehaviour
         }
 	}
 
-	void UndoRedoGui()
+    private void ShipTurn()
+    {
+        _activeGame.SkipTurn();
+        SkipTurnPanel.SetActive(false);
+    }
+
+    void UndoRedoGui()
 	{
 		if (GUI.Button(new Rect(Screen.width - 100, 0, 80, 20), "Start"))
 		{

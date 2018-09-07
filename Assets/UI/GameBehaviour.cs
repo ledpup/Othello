@@ -563,7 +563,7 @@ public class GameBehaviour : MonoBehaviour
     
     public string CannotPlayMessage
     {
-        get { return string.Format("{0} can not play.\n{1} to play instead.", _gameManager.Player, _gameManager.Opponent); }
+        get { return string.Format("{0} can not play\n{1} to play instead", _gameManager.Player.ToUpper(), _gameManager.Opponent.ToUpper()); }
     }
 
     internal void Replay()
