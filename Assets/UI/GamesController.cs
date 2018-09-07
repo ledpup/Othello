@@ -192,6 +192,7 @@ public class GamesController : MonoBehaviour
         _activeGame.ShowArchiveStats = toggle.isOn;
     }
 
+    bool _displayedGameOver;
     void TurnInfoGui()
 	{
 		var labelWidth = 200;
@@ -202,24 +203,30 @@ public class GamesController : MonoBehaviour
 		
 		if (_activeGame.IsGameOver)
 		{
-            GameoverPanel.SetActive(true);
+            if (!_displayedGameOver)
+            {
+                _displayedGameOver = true;
+                GameoverPanel.SetActive(true);
 
-            GameoverPanel.GetComponent<Image>().color = _activeGame.GameWinner == "White" ? Color.white : Color.black;
+                GameoverPanel.GetComponent<Image>().color = _activeGame.GameWinner == "White" ? Color.white : Color.black;
 
-            var gameOverText = GameObject.Find("Gameover Text").GetComponent<Text>();
-            gameOverText.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+                var gameOverText = GameObject.Find("Gameover Text").GetComponent<Text>();
+                gameOverText.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
 
-            var winner = GameObject.Find("Winner").GetComponent<Text>();
-            winner.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
-            winner.text = _activeGame.GameWinner.ToUpper();
+                var winner = GameObject.Find("Winner").GetComponent<Text>();
+                winner.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+                winner.text = _activeGame.GameWinner.ToUpper();
 
-            var gameResult = GameObject.Find("Game Result").GetComponent<Text>();
-            gameResult.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
-            gameResult.text = _activeGame.GameResult;
+                var gameResult = GameObject.Find("Game Result").GetComponent<Text>();
+                gameResult.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+                gameResult.text = _activeGame.GameResult;
+            }
 		}
 		else if (!_activeGame.CanPlay)
 		{
-			if (_activeGame.IsComputerTurn)
+            _displayedGameOver = false;
+
+            if (_activeGame.IsComputerTurn)
 			{
 				_activeGame.SkipTurn();
 			}
@@ -234,6 +241,8 @@ public class GamesController : MonoBehaviour
 		}
 		else
 		{
+            _displayedGameOver = false;
+
             if (!PlayerTurn.text.StartsWith(_activeGame.Player.ToUpper()))
             {
                 PlayerTurn.text = _activeGame.Player.ToUpper();

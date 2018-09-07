@@ -91,6 +91,7 @@
     <Compile Include="Assets\Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\UI\ComboBox.cs" />
     <Compile Include="Assets\UI\GameBehaviour.cs" />
+    <Compile Include="Assets\UI\GameOver.cs" />
     <Compile Include="Assets\UI\GamesController.cs" />
     <Compile Include="Assets\UI\KeyboardCameraControl.cs" />
     <Compile Include="Assets\UI\MouseCameraControl.cs" />
@@ -100,11 +101,11 @@
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/ledpu/Documents/GitHub/Othello/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/ledpu/Documents/GitHub/Othello/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/ledpu/Documents/GitHub/Othello/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.PackageManagerUI.Editor">
+      <HintPath>C:/Users/ledpu/Documents/GitHub/Othello/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/Users/ledpu/Documents/GitHub/Othello/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
