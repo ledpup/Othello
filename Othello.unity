@@ -239,9 +239,9 @@ MonoBehaviour:
   BoardTile: {fileID: 100000, guid: ffc36a3c5dbbb6940ab26818f9ed9c5c, type: 2}
   Text: {fileID: 100000, guid: e389af59487b5e84bbe2bdffc68be578, type: 2}
   GuiSkin: {fileID: 11400000, guid: 15fc501dc5d416247b571a1e49936f25, type: 2}
-  ButtonPrefab: {fileID: 1172500090064164, guid: 27e3617f80036154c9a53340aa6cec29,
+  ButtonPrefab: {fileID: 1172500090064164, guid: 50eee0f510f4c30429e636bd3b87e2ab,
     type: 2}
-  TogglePrefab: {fileID: 1135675252003746, guid: 4871b611dfd38c14ba169119798e914d,
+  TogglePrefab: {fileID: 1135675252003746, guid: db5f5d6c0bbae8c4daff2337716e13a5,
     type: 2}
   Panel: {fileID: 2404494}
   GameOptionsPanel: {fileID: 1627090964}
