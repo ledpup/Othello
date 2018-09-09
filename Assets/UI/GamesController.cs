@@ -20,7 +20,10 @@ public class GamesController : MonoBehaviour
     public GameObject ViewOptionsPanel;
     public GameObject GameoverPanel;
     public GameObject SkipTurnPanel;
+    public GameObject ArchiveInfoPanel;
+    public Text SearchInfo;
     public Text PlayerTurn;
+    public Text GameAnalysis;
 
     private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
@@ -155,14 +158,21 @@ public class GamesController : MonoBehaviour
     private void InfoGui()
     {
         if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
-            GUI.TextArea(new Rect(20, 260, 180, 50), "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions);
+            SearchInfo.text = "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions;
 
         GuiSkin.textArea.alignment = TextAnchor.UpperLeft;
 
         if (!_depthComboBox.IsClickedComboButton)
-            GUI.TextArea(new Rect(20, 310, 180, 130), _activeGame.AnalysisInfo());
+            GameAnalysis.text = _activeGame.AnalysisInfo();
         if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
-            GUI.TextArea(new Rect(20, 440, 180, 70), _activeGame.ArchiveInfo());
+        {
+            ArchiveInfoPanel.SetActive(true);
+            ArchiveInfoPanel.GetComponentInChildren<Text>().text = _activeGame.ArchiveInfo();
+        }
+        else
+        {
+            ArchiveInfoPanel.SetActive(false);
+        }
     }
 
     void OptionsGui()
