@@ -12,7 +12,6 @@ public class GamesController : MonoBehaviour
 	public GameObject Piece;
 	public GameObject BoardTile;
 	public GameObject Text;
-	public GUISkin GuiSkin;
     public GameObject ButtonPrefab;
     public GameObject TogglePrefab;
     public GameObject Panel;
@@ -21,6 +20,7 @@ public class GamesController : MonoBehaviour
     public GameObject GameoverPanel;
     public GameObject SkipTurnPanel;
     public GameObject ArchiveInfoPanel;
+    public GameObject GamePlayHistoryPanel;
     public Text SearchInfo;
     public Text PlayerTurn;
     public Text GameAnalysis;
@@ -53,7 +53,7 @@ public class GamesController : MonoBehaviour
 	    var gameManagers = GameManager.LoadGamesFromFile(SavePath + "CurrentGame.txt");
 		
 		_playerUiSettings = PlayerUiSettings.Load();
-        _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, GuiSkin, BoardTile, Piece, Text, ((short)0).ToCartesianCoordinate(), gameManagers.First(), _gameArchive, _playerUiSettings));
+        _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, BoardTile, Piece, Text, ((short)0).ToCartesianCoordinate(), gameManagers.First(), _gameArchive, _playerUiSettings));
 
 		_activeGame = _games.First();
 
@@ -122,12 +122,15 @@ public class GamesController : MonoBehaviour
         listStyle.normal.textColor = Color.white;
         listStyle.onHover.background = listStyle.hover.background = new Texture2D(2, 2);
         listStyle.padding.left = listStyle.padding.right = listStyle.padding.top = listStyle.padding.bottom = 4;
-	}
+
+        UndoRedoGui();
+    }
 
     void NewGame()
     {
         _activeGame.RestartGame();
         GameoverPanel.SetActive(false);
+        UndoRedoGui();
     }
 
     void Quit()
@@ -142,15 +145,13 @@ public class GamesController : MonoBehaviour
 	
 	void OnGUI()
 	{
-		GUI.skin = GuiSkin;
-
         Replay();
 		
 	    if (_activeGame.IsReplaying)
             return;
 
 	    TurnInfoGui();
-	    UndoRedoGui();
+
 	    InfoGui();
 	    //GameSpeedGui();
 	}
@@ -159,8 +160,6 @@ public class GamesController : MonoBehaviour
     {
         if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
             SearchInfo.text = "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions;
-
-        GuiSkin.textArea.alignment = TextAnchor.UpperLeft;
 
         if (!_depthComboBox.IsClickedComboButton)
             GameAnalysis.text = _activeGame.AnalysisInfo();
@@ -263,6 +262,11 @@ public class GamesController : MonoBehaviour
         }
 	}
 
+    public void StartButtonDown()
+    {
+        _activeGame.PlayToStart();
+    }
+
     private void ShipTurn()
     {
         _activeGame.SkipTurn();
@@ -270,12 +274,7 @@ public class GamesController : MonoBehaviour
     }
 
     void UndoRedoGui()
-	{
-		if (GUI.Button(new Rect(Screen.width - 100, 0, 80, 20), "Start"))
-		{
-			_activeGame.PlayToStart();
-		}
-		
+	{		
 		if (!_activeGame.Plays.Any())
             return;
 		
@@ -284,26 +283,25 @@ public class GamesController : MonoBehaviour
 	        if (_activeGame.Plays[i] == null)
 	            continue;
 
-	        var column = i % 2 == 0 ? 60 : 20;
-	        var row = (i / 2) * 18;
-	        if (GUI.Button(new Rect(Screen.width - 40 - column, 20 + row, 40, 18), _activeGame.Plays[i].ToAlgebraicNotation()))
-	        {
-                GameoverPanel.SetActive(false);
-                _activeGame.PlayTo(i);
-	        }
-	    }
+            var column = i % 2 == 0 ? 60 : 20;
+            var row = (i / 2) * 18;
+            var playButton = Instantiate(ButtonPrefab);
+            //playButton.transform.localScale = new Vector3(40,)
+            playButton.transform.SetParent(GamePlayHistoryPanel.transform);
+            playButton.transform.position = new Vector3(40 + column, 20 + row);
+            
+            playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[i].ToAlgebraicNotation();
+            playButton.GetComponent<Button>().onClick.AddListener(PlayTo);
+            
+
+        }
 	}
 	
-	//void GameSpeedGui()
-	//{
-	//	var oldGameSpeed = _globalAnimationSpeed;
- //       GUI.TextField(new Rect(20, 240, 130, 25), "Animation Speed");
-	//	_globalAnimationSpeed = GUI.HorizontalSlider (new Rect (20, 270, 130, 30), _globalAnimationSpeed, 0.0f, 1.0f);
-	//	if (oldGameSpeed != _globalAnimationSpeed)
-	//	{
-	//		Messenger<float>.Broadcast("Game speed changed", _globalAnimationSpeed);
-	//	}
-	//}
+    void PlayTo()
+    {
+        GameoverPanel.SetActive(false);
+        _activeGame.PlayTo(5);
+    }
 	
 	void Replay()
 	{

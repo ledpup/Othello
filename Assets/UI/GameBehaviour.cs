@@ -15,7 +15,6 @@ public class GameBehaviour : MonoBehaviour
     public GameObject BoardTile;
     public GameObject Piece;
     public GameObject Text;
-    public GUISkin GuiSkin;
     
     List<GameObject> _gamePieces;
 
@@ -109,11 +108,10 @@ public class GameBehaviour : MonoBehaviour
 
     private List<EvaluationNode> _savedGameStateNodes;
 
-    public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GUISkin guiSkin, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, GameManager gameManager, List<string> gameArchive, PlayerUiSettings playerUiSettings)
+    public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, GameManager gameManager, List<string> gameArchive, PlayerUiSettings playerUiSettings)
     {
         var gameBehaviour = gameObject.AddComponent<GameBehaviour>();
         
-        gameBehaviour.GuiSkin = guiSkin;
         gameBehaviour.BoardTile = boardTile;
         gameBehaviour.Piece = piece;
         gameBehaviour.Text = text;
