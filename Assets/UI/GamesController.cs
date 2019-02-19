@@ -283,13 +283,13 @@ public class GamesController : MonoBehaviour
 	        if (_activeGame.Plays[i] == null)
 	            continue;
 
-            var column = i % 2 == 0 ? 60 : 20;
-            var row = (i / 2) * 18;
+            var column = i % 2 == 0 ? 30 : 10;
+            var row = (i / 2) * 12;
             var playButton = Instantiate(ButtonPrefab);
-            //playButton.transform.localScale = new Vector3(40,)
             playButton.transform.SetParent(GamePlayHistoryPanel.transform);
-            playButton.transform.position = new Vector3(40 + column, 20 + row);
-            
+            playButton.transform.localPosition = new Vector3(column - 20, row - 50);
+
+
             playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[i].ToAlgebraicNotation();
             playButton.GetComponent<Button>().onClick.AddListener(PlayTo);
             
