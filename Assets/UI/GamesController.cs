@@ -287,20 +287,22 @@ public class GamesController : MonoBehaviour
             var row = (i / 2) * 12;
             var playButton = Instantiate(ButtonPrefab);
             playButton.transform.SetParent(GamePlayHistoryPanel.transform);
-            playButton.transform.localPosition = new Vector3(column - 20, row - 50);
-
+            
+            playButton.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1);
+            playButton.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1);
+            playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
+            playButton.transform.localPosition = new Vector3(-column + 20, -row + 235);
 
             playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[i].ToAlgebraicNotation();
-            playButton.GetComponent<Button>().onClick.AddListener(PlayTo);
-            
-
+            playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(2); } );
         }
 	}
 	
-    void PlayTo()
+    void PlayTo(short index)
     {
+        Debug.Log(index);
         GameoverPanel.SetActive(false);
-        _activeGame.PlayTo(5);
+        _activeGame.PlayTo(index);
     }
 	
 	void Replay()
