@@ -9,12 +9,12 @@ using UnityEngine.UI;
 
 public class GamesController : MonoBehaviour
 {
+    public GameObject NewGameButton;
 	public GameObject Piece;
 	public GameObject BoardTile;
 	public GameObject Text;
     public GameObject ButtonPrefab;
     public GameObject TogglePrefab;
-    public GameObject Panel;
     public GameObject GameOptionsPanel;
     public GameObject ViewOptionsPanel;
     public GameObject GameoverPanel;
@@ -58,16 +58,7 @@ public class GamesController : MonoBehaviour
 		_activeGame = _games.First();
 
 
-        var newGameButton = Instantiate(ButtonPrefab);
-        newGameButton.transform.SetParent(Panel.transform);
-        newGameButton.GetComponentInChildren<Text>().text = "New Game";
-        newGameButton.GetComponent<Button>().onClick.AddListener(NewGame);
-
-        var quitButton = Instantiate(ButtonPrefab);
-        quitButton.transform.SetParent(Panel.transform);
-        quitButton.GetComponentInChildren<Text>().text = "Quit";
-        quitButton.GetComponent<Button>().onClick.AddListener(Quit);
-
+        NewGameButton.GetComponent<Button>().onClick.AddListener(NewGame);
 
         var toggle = Instantiate(TogglePrefab);
         toggle.transform.SetParent(GameOptionsPanel.transform);
