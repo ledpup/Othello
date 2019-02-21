@@ -294,7 +294,8 @@ public class GamesController : MonoBehaviour
             playButton.transform.localPosition = new Vector3(-column + 20, -row + 235);
 
             playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[i].ToAlgebraicNotation();
-            playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(2); } );
+            var uniqueIndexReference = i; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
+            playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(uniqueIndexReference); } );
         }
 	}
 	
