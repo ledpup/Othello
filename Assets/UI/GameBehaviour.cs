@@ -281,12 +281,12 @@ public class GameBehaviour : MonoBehaviour
                             if (!_positionStats[position].PlayStats.ContainsKey(p)) 
                                 return;
 
-                            DrawTileInfo(coord.X, coord.Y, -0.4f, -.425f, _positionStats[position].PlayStats[p].PercentageOfGames + "%");
+                            DrawTileInfo(coord.X, coord.Y, -0.4f, -.465f + (coord.Y * .01f), _positionStats[position].PlayStats[p].PercentageOfGames + "%");
 
 							if (_gameManager.PlayerIsBlack)
-                            	DrawTileInfo(coord.X, coord.Y, -0.4f, .285f, _positionStats[position].PlayStats[p].PercentageOfWinsForBlack + "%");
+                            	DrawTileInfo(coord.X, coord.Y, -0.4f, .275f + (coord.Y * .01f), _positionStats[position].PlayStats[p].PercentageOfWinsForBlack + "%");
 							else
-								DrawTileInfo(coord.X, coord.Y, -0.4f, .285f, _positionStats[position].PlayStats[p].PercentageOfWinsForWhite + "%");
+								DrawTileInfo(coord.X, coord.Y, -0.4f, .275f + (coord.Y * .01f), _positionStats[position].PlayStats[p].PercentageOfWinsForWhite + "%");
                         });
         
     }
@@ -512,7 +512,7 @@ public class GameBehaviour : MonoBehaviour
     
     static Vector3 GetWorldCoordinates(float x, float y, float z, Point boardLocation)
     {
-        return new Vector3(x * Spacing + (_width * Spacing * boardLocation.X * 1.075f) + 1f, -y * Spacing + (_height * Spacing * boardLocation.Y * 2f), z);
+        return new Vector3(x * Spacing + (_width * Spacing * boardLocation.X * 1.075f) + 1f, -y * Spacing + (_height * Spacing * boardLocation.Y * 1.075f), z);
     }
     
 	public void PlayToStart()

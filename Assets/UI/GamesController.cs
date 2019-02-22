@@ -24,6 +24,7 @@ public class GamesController : MonoBehaviour
     public Text PlayerTurn;
     public Text GameAnalysis;
     public Dropdown SearchDepthDropDown;
+    public Button ReplayButton;
 
     private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
@@ -102,6 +103,8 @@ public class GamesController : MonoBehaviour
         listStyle.padding.left = listStyle.padding.right = listStyle.padding.top = listStyle.padding.bottom = 4;
 
         PlayHistory();
+
+        ReplayButton.onClick.AddListener(delegate { ReplayGame(); });
     }
 
     private void ChangeSearchDepth()
@@ -127,9 +130,7 @@ public class GamesController : MonoBehaviour
 	}
 	
 	void OnGUI()
-	{
-        Replay();
-		
+	{	
 	    if (_activeGame.IsReplaying)
             return;
 
@@ -142,7 +143,7 @@ public class GamesController : MonoBehaviour
     private void InfoGui()
     {
         //if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
-            SearchInfo.text = "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions;
+            SearchInfo.text = "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + string.Format("{0:n0}", _activeGame.NodesSearched) + "\nTranspositions: " + string.Format("{0:n0}", GameBehaviour.Transpositions);
 
         //if (!_depthComboBox.IsClickedComboButton)
             GameAnalysis.text = _activeGame.AnalysisInfo();
@@ -155,13 +156,6 @@ public class GamesController : MonoBehaviour
         {
             ArchiveInfoPanel.SetActive(false);
         }
-    }
-
-    void OptionsGui()
-    {
-        //_activeGame.SearchMethod = _searchComboBox.List(new Rect(20, 200, 150, 20), _searchMethods[_activeGame.SearchMethod].text, _searchMethods, listStyle);
-        //if (!_searchComboBox.IsClickedComboButton)
-        //    _activeGame.SearchDepth = _depthComboBox.List(new Rect(20, 220, 150, 20), _searchDepths[_activeGame.SearchDepth].text, _searchDepths, listStyle);
     }
 	
     void BlackIsHuman(Toggle toggle)
@@ -258,7 +252,7 @@ public class GamesController : MonoBehaviour
 	        if (_activeGame.Plays[i] == null)
 	            continue;
 
-            var column = i % 2 == 0 ? 30 : 10;
+            var column = i % 2 == 0 ? 35 : 10;
             var row = (i / 2) * 12;
             var playButton = Instantiate(ButtonPrefab);
             playButton.transform.SetParent(GamePlayHistoryPanel.transform);
@@ -266,7 +260,7 @@ public class GamesController : MonoBehaviour
             playButton.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1);
             playButton.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1);
             playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
-            playButton.transform.localPosition = new Vector3(-column + 20, -row + 235);
+            playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 220);
 
             playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[i].ToAlgebraicNotation();
             var uniqueIndexReference = i; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
@@ -280,15 +274,21 @@ public class GamesController : MonoBehaviour
         GameoverPanel.SetActive(false);
         _activeGame.PlayTo(index);
     }
-	
-	void Replay()
-	{
-        if (GUI.Button(new Rect(Screen.width - 200, 0, 80, 20), _activeGame.IsReplaying ? "Stop" : "Replay"))
-		{
-            GameoverPanel.SetActive(false);
-            _games.ForEach(x => x.Replay());
-		}
-	}
-	
-	
+
+    void ReplayGame()
+    {
+        if (ReplayButton.GetComponentInChildren<Text>().text == "REPLAY")
+        {
+            ReplayButton.GetComponentInChildren<Text>().text = "STOP";
+
+        }
+        else
+        {
+            ReplayButton.GetComponentInChildren<Text>().text = "REPLAY";
+        }
+        GameoverPanel.SetActive(false);
+        _games.ForEach(x => x.Replay());
+    }
+
+
 }
