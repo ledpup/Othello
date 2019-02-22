@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Othello.Assets.UI;
 using UnityEngine;
 using Othello.Model;
 using UnityEngine.UI;
@@ -24,18 +23,15 @@ public class GamesController : MonoBehaviour
     public Text SearchInfo;
     public Text PlayerTurn;
     public Text GameAnalysis;
+    public Dropdown SearchDepthDropDown;
 
     private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
-	//float _globalAnimationSpeed = .15f;
 
     private List<string> _gameArchive;
 	
 	public static string SavePath = @"Save\";
-
-    GUIContent[] _searchMethods, _searchDepths;
-    private ComboBox _searchComboBox = new ComboBox();
-    private ComboBox _depthComboBox = new ComboBox();
+    
     private GUIStyle listStyle = new GUIStyle();
 
     private PlayerUiSettings _playerUiSettings;
@@ -65,63 +61,59 @@ public class GamesController : MonoBehaviour
         toggle.GetComponentInChildren<Text>().text = "Black is a human player";
         _blackIsHumanToggle = toggle.GetComponent<Toggle>();
         _blackIsHumanToggle.onValueChanged.AddListener(delegate { BlackIsHuman(_blackIsHumanToggle); });
+        _blackIsHumanToggle.isOn = _playerUiSettings.BlackIsHuman;
 
         toggle = Instantiate(TogglePrefab);
         toggle.transform.SetParent(GameOptionsPanel.transform);
         toggle.GetComponentInChildren<Text>().text = "White is a human player";
         _whiteIsHumanToggle = toggle.GetComponent<Toggle>();
         _whiteIsHumanToggle.onValueChanged.AddListener(delegate { WhiteIsHuman(_whiteIsHumanToggle); });
+        _whiteIsHumanToggle.isOn = _playerUiSettings.WhiteIsHuman;
 
         toggle = Instantiate(TogglePrefab);
         toggle.transform.SetParent(ViewOptionsPanel.transform);
         toggle.GetComponentInChildren<Text>().text = "Show valid plays";
         _showValidPlaysToggle = toggle.GetComponent<Toggle>();
         _showValidPlaysToggle.onValueChanged.AddListener(delegate { ShowValidPlays(_showValidPlaysToggle); });
+        _showValidPlaysToggle.isOn = _playerUiSettings.ShowValidPlays;
 
         toggle = Instantiate(TogglePrefab);
         toggle.transform.SetParent(ViewOptionsPanel.transform);
         toggle.GetComponentInChildren<Text>().text = "Show board coordinates";
         _showBoardCoordinatesToggle = toggle.GetComponent<Toggle>();
         _showBoardCoordinatesToggle.onValueChanged.AddListener(delegate { ShowBoardCoordinates(_showBoardCoordinatesToggle); });
+        _showBoardCoordinatesToggle.isOn = _playerUiSettings.ShowBoardCoordinates;
 
         toggle = Instantiate(TogglePrefab);
         toggle.transform.SetParent(ViewOptionsPanel.transform);
         toggle.GetComponentInChildren<Text>().text = "Show archive stats";
         _showArchiveStatsToggle = toggle.GetComponent<Toggle>();
         _showArchiveStatsToggle.onValueChanged.AddListener(delegate { ShowArchiveStats(_showArchiveStatsToggle); });
+        _showArchiveStatsToggle.isOn = _playerUiSettings.ShowArchiveStats;
 
         SkipTurnPanel.GetComponentInChildren<Button>().onClick.AddListener(delegate { ShipTurn(); });
 
-        //_activeGame.UseTranspositionTable = GUI.Toggle(new Rect(20, 150, 200, 20), _activeGame.UseTranspositionTable, "Use transposition table");
-        //_activeGame.UseOpeningBook = GUI.Toggle(new Rect(20, 170, 200, 20), _activeGame.UseOpeningBook, "Use opening book");
-
-        _searchMethods = new[] { new GUIContent("NegaMax"), new GUIContent("NegaMax w/ Alpha-Beta") };
-        _searchDepths = new[] 
-		{ 
-			new GUIContent("Search Depth 0"), 
-			new GUIContent("Search Depth 1"), 
-			new GUIContent("Search Depth 2"), 
-			new GUIContent("Search Depth 3"), 
-			new GUIContent("Search Depth 4"), 
-			new GUIContent("Search Depth 5"), 
-			new GUIContent("Search Depth 6"),
-            new GUIContent("Search Depth 7"),
-		};
-        _searchComboBox.SelectedItemIndex = _playerUiSettings.SearchMethod;
-        _depthComboBox.SelectedItemIndex = _playerUiSettings.SearchDepth;
+        var searchDepth = SearchDepthDropDown.GetComponent<Dropdown>();
+        searchDepth.value = _playerUiSettings.SearchDepth - 2;
+        searchDepth.onValueChanged.AddListener(delegate { ChangeSearchDepth(); });
 
         listStyle.normal.textColor = Color.white;
         listStyle.onHover.background = listStyle.hover.background = new Texture2D(2, 2);
         listStyle.padding.left = listStyle.padding.right = listStyle.padding.top = listStyle.padding.bottom = 4;
 
-        UndoRedoGui();
+        PlayHistory();
+    }
+
+    private void ChangeSearchDepth()
+    {
+        _playerUiSettings.SearchDepth = SearchDepthDropDown.GetComponent<Dropdown>().value + 2;
     }
 
     void NewGame()
     {
         _activeGame.RestartGame();
         GameoverPanel.SetActive(false);
-        UndoRedoGui();
+        PlayHistory();
     }
 
     void Quit()
@@ -149,10 +141,10 @@ public class GamesController : MonoBehaviour
 
     private void InfoGui()
     {
-        if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
+        //if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
             SearchInfo.text = "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions;
 
-        if (!_depthComboBox.IsClickedComboButton)
+        //if (!_depthComboBox.IsClickedComboButton)
             GameAnalysis.text = _activeGame.AnalysisInfo();
         if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
         {
@@ -167,11 +159,9 @@ public class GamesController : MonoBehaviour
 
     void OptionsGui()
     {
-
-
-        _activeGame.SearchMethod = _searchComboBox.List(new Rect(20, 200, 150, 20), _searchMethods[_activeGame.SearchMethod].text, _searchMethods, listStyle);
-        if (!_searchComboBox.IsClickedComboButton)
-            _activeGame.SearchDepth = _depthComboBox.List(new Rect(20, 220, 150, 20), _searchDepths[_activeGame.SearchDepth].text, _searchDepths, listStyle);
+        //_activeGame.SearchMethod = _searchComboBox.List(new Rect(20, 200, 150, 20), _searchMethods[_activeGame.SearchMethod].text, _searchMethods, listStyle);
+        //if (!_searchComboBox.IsClickedComboButton)
+        //    _activeGame.SearchDepth = _depthComboBox.List(new Rect(20, 220, 150, 20), _searchDepths[_activeGame.SearchDepth].text, _searchDepths, listStyle);
     }
 	
     void BlackIsHuman(Toggle toggle)
@@ -198,13 +188,7 @@ public class GamesController : MonoBehaviour
 
     bool _displayedGameOver;
     void TurnInfoGui()
-	{
-		var labelWidth = 200;
-		var labelHeight = 80;
-		
-		var x = Screen.width / 2 - labelWidth / 2;
-		var y = Screen.height / 2 - labelHeight / 2;
-		
+	{		
 		if (_activeGame.IsGameOver)
 		{
             if (!_displayedGameOver)
@@ -264,7 +248,7 @@ public class GamesController : MonoBehaviour
         SkipTurnPanel.SetActive(false);
     }
 
-    void UndoRedoGui()
+    void PlayHistory()
 	{		
 		if (!_activeGame.Plays.Any())
             return;

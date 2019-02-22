@@ -240,6 +240,7 @@ MonoBehaviour:
   SearchInfo: {fileID: 1804446299}
   PlayerTurn: {fileID: 163153436}
   GameAnalysis: {fileID: 80028260}
+  SearchDepthDropDown: {fileID: 314322620}
 --- !u!81 &147987952
 AudioListener:
   m_ObjectHideFlags: 0
