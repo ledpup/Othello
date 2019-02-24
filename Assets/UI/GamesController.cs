@@ -38,6 +38,8 @@ public class GamesController : MonoBehaviour
     private PlayerUiSettings _playerUiSettings;
     Toggle _blackIsHumanToggle, _whiteIsHumanToggle, _showValidPlaysToggle, _showBoardCoordinatesToggle, _showArchiveStatsToggle;
 
+    Dictionary<short, GameObject> _playHistory;
+
     void Start()
 	{
         GameoverPanel.SetActive(false);
@@ -102,9 +104,24 @@ public class GamesController : MonoBehaviour
         listStyle.onHover.background = listStyle.hover.background = new Texture2D(2, 2);
         listStyle.padding.left = listStyle.padding.right = listStyle.padding.top = listStyle.padding.bottom = 4;
 
-        PlayHistory();
-
         ReplayButton.onClick.AddListener(delegate { ReplayGame(); });
+
+        Messenger<short>.AddListener("Place piece", OnLastPlay);
+        _playHistory = new Dictionary<short, GameObject>();
+
+        PlayHistory();
+    }
+
+    private void OnLastPlay(short tileIndex)
+    {
+        if (_activeGame == null || _playHistory == null)
+        {
+            return;
+        }
+
+        var index =  (short)_activeGame.Plays.IndexOf(tileIndex);
+
+        AddPlayButton(index);
     }
 
     private void ChangeSearchDepth()
@@ -248,26 +265,32 @@ public class GamesController : MonoBehaviour
             return;
 		
 	    for (short i = 0; i < _activeGame.Plays.Count; i++) 
-	    { 
-	        if (_activeGame.Plays[i] == null)
-	            continue;
-
-            var column = i % 2 == 0 ? 35 : 10;
-            var row = (i / 2) * 12;
-            var playButton = Instantiate(ButtonPrefab);
-            playButton.transform.SetParent(GamePlayHistoryPanel.transform);
-            
-            playButton.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1);
-            playButton.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1);
-            playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
-            playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 220);
-
-            playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[i].ToAlgebraicNotation();
-            var uniqueIndexReference = i; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
-            playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(uniqueIndexReference); } );
+	    {
+            AddPlayButton(i);
         }
 	}
 	
+    void AddPlayButton(short index)
+    {
+        if (_activeGame.Plays.Count < index || _playHistory.ContainsKey(index))
+            return;
+
+        var column = index % 2 == 0 ? 35 : 10;
+        var row = (index / 2) * 12;
+        var playButton = Instantiate(ButtonPrefab);
+        playButton.transform.SetParent(GamePlayHistoryPanel.transform);
+
+        playButton.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1);
+        playButton.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1);
+        playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
+        playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 220);
+
+        playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[index].ToAlgebraicNotation();
+        var uniqueIndexReference = index; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
+        playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(uniqueIndexReference); });
+        _playHistory.Add(index, playButton);
+    }
+
     void PlayTo(short index)
     {
         Debug.Log(index);

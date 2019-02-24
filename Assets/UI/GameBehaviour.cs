@@ -237,7 +237,8 @@ public class GameBehaviour : MonoBehaviour
 		{
             PlaceAndFlipPieces();
 			Messenger<short>.Broadcast("Last play", (short)index);
-		}
+            Messenger<short>.Broadcast("Place piece", (short)index);
+        }
         _gameManager.NextTurn();
         DisplayPlays();
     }
