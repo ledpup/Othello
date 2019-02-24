@@ -272,6 +272,8 @@ public class GamesController : MonoBehaviour
 	
     void AddPlayButton(short index)
     {
+        if (index < 0)
+            return;
         if (_activeGame.Plays.Count < index || _playHistory.ContainsKey(index))
             return;
 
