@@ -20,6 +20,8 @@ public class GamesController : MonoBehaviour
     public GameObject SkipTurnPanel;
     public GameObject ArchiveInfoPanel;
     public GameObject GamePlayHistoryPanel;
+    public Toggle WhiteHuman;
+    public Toggle BlackHuman;
     public Text SearchInfo;
     public Text PlayerTurn;
     public Text GameAnalysis;
@@ -36,7 +38,7 @@ public class GamesController : MonoBehaviour
     private GUIStyle listStyle = new GUIStyle();
 
     private PlayerUiSettings _playerUiSettings;
-    Toggle _blackIsHumanToggle, _whiteIsHumanToggle, _showValidPlaysToggle, _showBoardCoordinatesToggle, _showArchiveStatsToggle;
+    public Toggle ShowValidPlaysToggle, ShowBoardCoordinatesToggle, ShowArchiveStatsToggle;
 
     Dictionary<short, GameObject> _playHistory;
 
@@ -59,40 +61,20 @@ public class GamesController : MonoBehaviour
 
         NewGameButton.GetComponent<Button>().onClick.AddListener(NewGame);
 
-        var toggle = Instantiate(TogglePrefab);
-        toggle.transform.SetParent(GameOptionsPanel.transform);
-        toggle.GetComponentInChildren<Text>().text = "Black is a human player";
-        _blackIsHumanToggle = toggle.GetComponent<Toggle>();
-        _blackIsHumanToggle.onValueChanged.AddListener(delegate { BlackIsHuman(_blackIsHumanToggle); });
-        _blackIsHumanToggle.isOn = _playerUiSettings.BlackIsHuman;
+        WhiteHuman.onValueChanged.AddListener(delegate { WhiteIsHuman(WhiteHuman); });
+        WhiteHuman.isOn = _playerUiSettings.WhiteIsHuman;
 
-        toggle = Instantiate(TogglePrefab);
-        toggle.transform.SetParent(GameOptionsPanel.transform);
-        toggle.GetComponentInChildren<Text>().text = "White is a human player";
-        _whiteIsHumanToggle = toggle.GetComponent<Toggle>();
-        _whiteIsHumanToggle.onValueChanged.AddListener(delegate { WhiteIsHuman(_whiteIsHumanToggle); });
-        _whiteIsHumanToggle.isOn = _playerUiSettings.WhiteIsHuman;
+        BlackHuman.onValueChanged.AddListener(delegate { BlackIsHuman(BlackHuman); });
+        BlackHuman.isOn = _playerUiSettings.BlackIsHuman;
 
-        toggle = Instantiate(TogglePrefab);
-        toggle.transform.SetParent(ViewOptionsPanel.transform);
-        toggle.GetComponentInChildren<Text>().text = "Show valid plays";
-        _showValidPlaysToggle = toggle.GetComponent<Toggle>();
-        _showValidPlaysToggle.onValueChanged.AddListener(delegate { ShowValidPlays(_showValidPlaysToggle); });
-        _showValidPlaysToggle.isOn = _playerUiSettings.ShowValidPlays;
+        ShowValidPlaysToggle.onValueChanged.AddListener(delegate { ShowValidPlays(ShowValidPlaysToggle); });
+        ShowValidPlaysToggle.isOn = _playerUiSettings.ShowValidPlays;
 
-        toggle = Instantiate(TogglePrefab);
-        toggle.transform.SetParent(ViewOptionsPanel.transform);
-        toggle.GetComponentInChildren<Text>().text = "Show board coordinates";
-        _showBoardCoordinatesToggle = toggle.GetComponent<Toggle>();
-        _showBoardCoordinatesToggle.onValueChanged.AddListener(delegate { ShowBoardCoordinates(_showBoardCoordinatesToggle); });
-        _showBoardCoordinatesToggle.isOn = _playerUiSettings.ShowBoardCoordinates;
+        ShowBoardCoordinatesToggle.onValueChanged.AddListener(delegate { ShowBoardCoordinates(ShowBoardCoordinatesToggle); });
+        ShowBoardCoordinatesToggle.isOn = _playerUiSettings.ShowBoardCoordinates;
 
-        toggle = Instantiate(TogglePrefab);
-        toggle.transform.SetParent(ViewOptionsPanel.transform);
-        toggle.GetComponentInChildren<Text>().text = "Show archive stats";
-        _showArchiveStatsToggle = toggle.GetComponent<Toggle>();
-        _showArchiveStatsToggle.onValueChanged.AddListener(delegate { ShowArchiveStats(_showArchiveStatsToggle); });
-        _showArchiveStatsToggle.isOn = _playerUiSettings.ShowArchiveStats;
+        ShowArchiveStatsToggle.onValueChanged.AddListener(delegate { ShowArchiveStats(ShowArchiveStatsToggle); });
+        ShowArchiveStatsToggle.isOn = _playerUiSettings.ShowArchiveStats;
 
         SkipTurnPanel.GetComponentInChildren<Button>().onClick.AddListener(delegate { ShipTurn(); });
 
@@ -297,7 +279,7 @@ public class GamesController : MonoBehaviour
             return;
 
         var column = index % 2 == 0 ? 35 : 10;
-        var row = (index / 2) * 15;
+        var row = (index / 2) * 14;
 
 
 
@@ -307,7 +289,7 @@ public class GamesController : MonoBehaviour
         playButton.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1);
         playButton.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1);
         playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
-        playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 220);
+        playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 200);
 
         playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[index].ToAlgebraicNotation().ToUpper();
         var uniqueIndexReference = index; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
