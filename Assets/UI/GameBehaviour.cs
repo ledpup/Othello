@@ -199,6 +199,11 @@ public class GameBehaviour : MonoBehaviour
                     PlacePiece(Plays[_gameManager.Turn]);
                     _stopwatch = System.Diagnostics.Stopwatch.StartNew();
                 }
+                else
+                {
+                    Replay();
+                    Messenger.Broadcast("Replay finished");
+                }
             }
         }
         else
@@ -237,7 +242,6 @@ public class GameBehaviour : MonoBehaviour
 		{
             PlaceAndFlipPieces();
 			Messenger<short>.Broadcast("Last play", (short)index);
-            Messenger<short>.Broadcast("Place piece", (short)index);
         }
         _gameManager.NextTurn();
         DisplayPlays();
@@ -492,7 +496,7 @@ public class GameBehaviour : MonoBehaviour
     {
         _boardCoordinates.ForEach(Destroy);
         
-        if (!ShowBoardCoordinates || IsReplaying)
+        if (!ShowBoardCoordinates)
             return;
         
         for (var i = 0; i < _width; i++)
@@ -505,7 +509,7 @@ public class GameBehaviour : MonoBehaviour
     void DrawCoordinate(int x, int y, float xOffset, float yOffset, bool chararacter)
     {
         var text = (GameObject)Instantiate(Text);
-        ((TextMesh)text.transform.GetComponent("TextMesh")).text = chararacter ? ((char)(x + 97)).ToString() : (y + 1).ToString();
+        ((TextMesh)text.transform.GetComponent("TextMesh")).text = chararacter ? ((char)(x + 65)).ToString() : (y + 1).ToString();
         text.transform.position = GetWorldCoordinates(-.05f + x + xOffset, -.35f + y + yOffset, 0, BoardLocation);
         
         _boardCoordinates.Add(text);
@@ -571,7 +575,6 @@ public class GameBehaviour : MonoBehaviour
         IsReplaying = !IsReplaying;
     
 		DeleteTileInfo();
-        DrawBoardCoordinates();
         CreatePieces();
 
         if (!IsReplaying)

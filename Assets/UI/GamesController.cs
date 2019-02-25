@@ -106,10 +106,25 @@ public class GamesController : MonoBehaviour
 
         ReplayButton.onClick.AddListener(delegate { ReplayGame(); });
 
-        Messenger<short>.AddListener("Place piece", OnLastPlay);
+        Messenger<short>.AddListener("Last play", OnLastPlay);
         _playHistory = new Dictionary<short, GameObject>();
 
         PlayHistory();
+
+        Messenger.AddListener("Replay finished", ChangeReplayButtonText);
+    }
+
+    private void ChangeReplayButtonText()
+    {
+        if (_activeGame.IsReplaying)
+        {
+            ReplayButton.GetComponentInChildren<Text>().text = "STOP";
+
+        }
+        else
+        {
+            ReplayButton.GetComponentInChildren<Text>().text = "REPLAY";
+        }
     }
 
     private void OnLastPlay(short tileIndex)
@@ -127,6 +142,7 @@ public class GamesController : MonoBehaviour
     private void ChangeSearchDepth()
     {
         _playerUiSettings.SearchDepth = SearchDepthDropDown.GetComponent<Dropdown>().value + 2;
+        _activeGame.SearchDepth = _playerUiSettings.SearchDepth;
     }
 
     void NewGame()
@@ -287,7 +303,7 @@ public class GamesController : MonoBehaviour
         playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
         playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 220);
 
-        playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[index].ToAlgebraicNotation();
+        playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[index].ToAlgebraicNotation().ToUpper();
         var uniqueIndexReference = index; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
         playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(uniqueIndexReference); });
         _playHistory.Add(index, playButton);
@@ -302,17 +318,9 @@ public class GamesController : MonoBehaviour
 
     void ReplayGame()
     {
-        if (ReplayButton.GetComponentInChildren<Text>().text == "REPLAY")
-        {
-            ReplayButton.GetComponentInChildren<Text>().text = "STOP";
-
-        }
-        else
-        {
-            ReplayButton.GetComponentInChildren<Text>().text = "REPLAY";
-        }
         GameoverPanel.SetActive(false);
         _games.ForEach(x => x.Replay());
+        ChangeReplayButtonText();
     }
 
 
