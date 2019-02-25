@@ -15,7 +15,6 @@ public class GameBehaviour : MonoBehaviour
     public GameObject BoardTile;
     public GameObject Piece;
     public GameObject Text;
-    public GUISkin GuiSkin;
     
     List<GameObject> _gamePieces;
 
@@ -38,7 +37,7 @@ public class GameBehaviour : MonoBehaviour
     System.Random _random;
     
     Stopwatch _stopwatch;
-    float _animationSpeed = .5f;
+    float _animationSpeed = .35f;
 
     public List<string> GameArchive;
     private Dictionary<string, GameStateStats> _positionStats;
@@ -109,11 +108,10 @@ public class GameBehaviour : MonoBehaviour
 
     private List<EvaluationNode> _savedGameStateNodes;
 
-    public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GUISkin guiSkin, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, GameManager gameManager, List<string> gameArchive, PlayerUiSettings playerUiSettings)
+    public static GameBehaviour CreateGameBehaviour(GameObject gameObject, GameObject boardTile, GameObject piece, GameObject text, Point boardLocation, GameManager gameManager, List<string> gameArchive, PlayerUiSettings playerUiSettings)
     {
         var gameBehaviour = gameObject.AddComponent<GameBehaviour>();
         
-        gameBehaviour.GuiSkin = guiSkin;
         gameBehaviour.BoardTile = boardTile;
         gameBehaviour.Piece = piece;
         gameBehaviour.Text = text;
@@ -201,6 +199,11 @@ public class GameBehaviour : MonoBehaviour
                     PlacePiece(Plays[_gameManager.Turn]);
                     _stopwatch = System.Diagnostics.Stopwatch.StartNew();
                 }
+                else
+                {
+                    Replay();
+                    Messenger.Broadcast("Replay finished");
+                }
             }
         }
         else
@@ -239,19 +242,19 @@ public class GameBehaviour : MonoBehaviour
 		{
             PlaceAndFlipPieces();
 			Messenger<short>.Broadcast("Last play", (short)index);
-		}
+        }
         _gameManager.NextTurn();
         DisplayPlays();
     }
 
-    private short? _infoPlayIndex;
+    public short? InfoPlayIndex;
 
     void OnTileHover(short index)
     {
-        _infoPlayIndex = null;
+        InfoPlayIndex = null;
         if (_gameManager.CanPlay(index))
         {
-            _infoPlayIndex = index;
+            InfoPlayIndex = index;
         }
     }
 
@@ -283,11 +286,12 @@ public class GameBehaviour : MonoBehaviour
                             if (!_positionStats[position].PlayStats.ContainsKey(p)) 
                                 return;
 
-                            DrawTileInfo(coord.X, coord.Y, -.45f, -.45f, _positionStats[position].PlayStats[p].PercentageOfGames + "%");
+                            DrawTileInfo(coord.X, coord.Y, -0.4f, -.465f + (coord.Y * .01f), _positionStats[position].PlayStats[p].PercentageOfGames + "%");
+
 							if (_gameManager.PlayerIsBlack)
-                            	DrawTileInfo(coord.X, coord.Y, -.45f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForBlack + "%");
+                            	DrawTileInfo(coord.X, coord.Y, -0.4f, .275f + (coord.Y * .01f), _positionStats[position].PlayStats[p].PercentageOfWinsForBlack + "%");
 							else
-								DrawTileInfo(coord.X, coord.Y, -.45f, .2f, _positionStats[position].PlayStats[p].PercentageOfWinsForWhite + "%");
+								DrawTileInfo(coord.X, coord.Y, -0.4f, .275f + (coord.Y * .01f), _positionStats[position].PlayStats[p].PercentageOfWinsForWhite + "%");
                         });
         
     }
@@ -492,12 +496,12 @@ public class GameBehaviour : MonoBehaviour
     {
         _boardCoordinates.ForEach(Destroy);
         
-        if (!ShowBoardCoordinates || IsReplaying)
+        if (!ShowBoardCoordinates)
             return;
         
         for (var i = 0; i < _width; i++)
         {
-            DrawCoordinate(i, 0, 0, 8, true);
+            DrawCoordinate(i, 0, -0.05f, 7.9f, true);
             DrawCoordinate(0, i, -0.7f, .2f, false);
         }			
     }
@@ -505,15 +509,15 @@ public class GameBehaviour : MonoBehaviour
     void DrawCoordinate(int x, int y, float xOffset, float yOffset, bool chararacter)
     {
         var text = (GameObject)Instantiate(Text);
-        ((TextMesh)text.transform.GetComponent("TextMesh")).text = chararacter ? ((char)(x + 97)).ToString() : (y + 1).ToString();
-        text.transform.position = GetWorldCoordinates(-.2f + x + xOffset, -.5f + y + yOffset, 0, BoardLocation);
+        ((TextMesh)text.transform.GetComponent("TextMesh")).text = chararacter ? ((char)(x + 65)).ToString() : (y + 1).ToString();
+        text.transform.position = GetWorldCoordinates(-.05f + x + xOffset, -.35f + y + yOffset, 0, BoardLocation);
         
         _boardCoordinates.Add(text);
     }
     
     static Vector3 GetWorldCoordinates(float x, float y, float z, Point boardLocation)
     {
-        return new Vector3(x * Spacing + (_width * Spacing * boardLocation.X * 1.075f), -y * Spacing + (_height * Spacing * boardLocation.Y * 1.075f), z);
+        return new Vector3(x * Spacing + (_width * Spacing * boardLocation.X * 1.075f) + 1f, -y * Spacing + (_height * Spacing * boardLocation.Y * 1.075f), z);
     }
     
 	public void PlayToStart()
@@ -550,15 +554,20 @@ public class GameBehaviour : MonoBehaviour
     {
         get { return _gameManager.IsGameOver; }
     }
-    
-    public string GameOverMessage
+
+    public string GameWinner
     {
-        get { return _gameManager.GameOverMessage; }
+        get { return _gameManager.GameWinner; }
+    }
+
+    public string GameResult
+    {
+        get { return _gameManager.GameResult; }
     }
     
     public string CannotPlayMessage
     {
-        get { return string.Format("{0} can not play.\n{1} to play instead.", _gameManager.Player, _gameManager.Opponent); }
+        get { return string.Format("{0} can not play\n{1} to play instead", _gameManager.Player.ToUpper(), _gameManager.Opponent.ToUpper()); }
     }
 
     internal void Replay()
@@ -566,7 +575,6 @@ public class GameBehaviour : MonoBehaviour
         IsReplaying = !IsReplaying;
     
 		DeleteTileInfo();
-        DrawBoardCoordinates();
         CreatePieces();
 
         if (!IsReplaying)
@@ -591,28 +599,28 @@ public class GameBehaviour : MonoBehaviour
     private int _nodesSearched;
     public PlayerUiSettings PlayerUiSettings;
     
-    internal string AnalysisInfo()
+    internal string[] AnalysisInfo()
     {
-        return _gameManager.AnalysisInfo(_infoPlayIndex, _computerPlayer);
+        return _gameManager.AnalysisInfo(InfoPlayIndex, _computerPlayer);
     }
 
     public static int Transpositions { get; set; }
 
     internal string ArchiveInfo()
     {
-        if (_infoPlayIndex ==  null)
+        if (InfoPlayIndex ==  null)
             return null;
         if (!_statsAvailable)
             return null;
 		
         var position = _gameManager.Plays.ToChars();
 		
-		if (!_positionStats[position].PlayStats.ContainsKey(((short)_infoPlayIndex)))
+		if (!_positionStats[position].PlayStats.ContainsKey(((short)InfoPlayIndex)))
 			return null;
         
-        var stats = _positionStats[position].PlayStats[((short)_infoPlayIndex)];
+        var stats = _positionStats[position].PlayStats[((short)InfoPlayIndex)];
 		var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine(string.Format("{0}% of games play {1}", stats.PercentageOfGames, _infoPlayIndex.ToAlgebraicNotation()));
+        stringBuilder.AppendLine(string.Format("{0}% of games play {1}", stats.PercentageOfGames, InfoPlayIndex.ToAlgebraicNotation()));
         stringBuilder.AppendLine(string.Format("{0}% of games won by black", stats.PercentageOfWinsForBlack));
         stringBuilder.AppendLine(string.Format("{0}% of games won by white", stats.PercentageOfWinsForWhite));
         stringBuilder.AppendLine(string.Format("{0}% of games were draws", stats.PercentageOfDraws));

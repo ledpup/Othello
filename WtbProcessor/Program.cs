@@ -40,7 +40,7 @@ namespace WtbProcessor
                     score += GetScore(round, gameManager);
 
                     Console.WriteLine("Score {0} ", score);
-                    Console.WriteLine(gameManager.GameOverMessage);
+                    //Console.WriteLine(gameManager.GameOverMessage);
 
                     SwapPlayers(computerPlayers);
                 }

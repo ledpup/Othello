@@ -25,7 +25,7 @@ public class TileBehaviour : MonoBehaviour
     {
         Messenger<short>.Broadcast("Tile hover", Tile.Index);
 		_oldColour = GetComponent<Renderer>().material.color;
-		GetComponent<Renderer>().material.color = Color.cyan;
+		GetComponent<Renderer>().material.color = new Color(.875f, .875f, 0); // mouse over colour
     }
 	
 	void OnMouseExit()
@@ -37,11 +37,11 @@ public class TileBehaviour : MonoBehaviour
     {
         if (Tile.Index == index)
         {
-            _oldColour = GetComponent<Renderer>().material.color = Color.green;
+            _oldColour = GetComponent<Renderer>().material.color = new Color(0, 0.8f, 0.3f); // last played
         }
         else
         {
-            _oldColour = GetComponent<Renderer>().material.color = Color.white;
+            _oldColour = GetComponent<Renderer>().material.color = new Color(0, .5f, .25f); // base board colour - green
         }
     }
 }

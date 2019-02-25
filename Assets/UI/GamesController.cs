@@ -2,34 +2,52 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Othello.Assets.UI;
 using UnityEngine;
 using Othello.Model;
+using UnityEngine.UI;
 
 public class GamesController : MonoBehaviour
 {
+    public GameObject NewGameButton;
 	public GameObject Piece;
 	public GameObject BoardTile;
 	public GameObject Text;
-	public GUISkin GuiSkin;
-	
-	private List<GameBehaviour> _games;
+    public GameObject ButtonPrefab;
+    public GameObject TogglePrefab;
+    public GameObject GameOptionsPanel;
+    public GameObject ViewOptionsPanel;
+    public GameObject GameoverPanel;
+    public GameObject SkipTurnPanel;
+    public GameObject ArchiveInfoPanel;
+    public GameObject GamePlayHistoryPanel;
+    public Toggle WhiteHuman;
+    public Toggle BlackHuman;
+    public Text SearchInfo;
+    public Text PlayerTurn;
+    public Text BlackAnalysis;
+    public Text WhiteAnalysis;
+    public Dropdown SearchDepthDropDown;
+    public Button ReplayButton;
+
+    private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
-	float _globalAnimationSpeed = .5f;
 
     private List<string> _gameArchive;
 	
 	public static string SavePath = @"Save\";
-
-    GUIContent[] _searchMethods, _searchDepths;
-    private ComboBox _searchComboBox = new ComboBox();
-    private ComboBox _depthComboBox = new ComboBox();
+    
     private GUIStyle listStyle = new GUIStyle();
 
     private PlayerUiSettings _playerUiSettings;
+    public Toggle ShowValidPlaysToggle, ShowBoardCoordinatesToggle, ShowArchiveStatsToggle;
 
-	void Start()
+    Dictionary<short, GameObject> _playHistory;
+
+    void Start()
 	{
+        GameoverPanel.SetActive(false);
+        SkipTurnPanel.SetActive(false);
+
         _gameArchive = File.ReadAllLines(SavePath + "ArchiveData.txt").ToList();
 
 	    _games = new List<GameBehaviour>();
@@ -37,169 +55,271 @@ public class GamesController : MonoBehaviour
 	    var gameManagers = GameManager.LoadGamesFromFile(SavePath + "CurrentGame.txt");
 		
 		_playerUiSettings = PlayerUiSettings.Load();
-        _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, GuiSkin, BoardTile, Piece, Text, ((short)0).ToCartesianCoordinate(), gameManagers.First(), _gameArchive, _playerUiSettings));
+        _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, BoardTile, Piece, Text, ((short)0).ToCartesianCoordinate(), gameManagers.First(), _gameArchive, _playerUiSettings));
 
 		_activeGame = _games.First();
 
-        _searchMethods = new[] { new GUIContent("NegaMax"), new GUIContent("NegaMax w/ Alpha-Beta") };
-        _searchDepths = new[] 
-		{ 
-			new GUIContent("Search Depth 0"), 
-			new GUIContent("Search Depth 1"), 
-			new GUIContent("Search Depth 2"), 
-			new GUIContent("Search Depth 3"), 
-			new GUIContent("Search Depth 4"), 
-			new GUIContent("Search Depth 5"), 
-			new GUIContent("Search Depth 6"),
-            new GUIContent("Search Depth 7"),
-		};
-        _searchComboBox.SelectedItemIndex = _playerUiSettings.SearchMethod;
-        _depthComboBox.SelectedItemIndex = _playerUiSettings.SearchDepth;
+
+        NewGameButton.GetComponent<Button>().onClick.AddListener(NewGame);
+
+        WhiteHuman.onValueChanged.AddListener(delegate { WhiteIsHuman(WhiteHuman); });
+        WhiteHuman.isOn = _playerUiSettings.WhiteIsHuman;
+
+        BlackHuman.onValueChanged.AddListener(delegate { BlackIsHuman(BlackHuman); });
+        BlackHuman.isOn = _playerUiSettings.BlackIsHuman;
+
+        ShowValidPlaysToggle.onValueChanged.AddListener(delegate { ShowValidPlays(ShowValidPlaysToggle); });
+        ShowValidPlaysToggle.isOn = _playerUiSettings.ShowValidPlays;
+
+        ShowBoardCoordinatesToggle.onValueChanged.AddListener(delegate { ShowBoardCoordinates(ShowBoardCoordinatesToggle); });
+        ShowBoardCoordinatesToggle.isOn = _playerUiSettings.ShowBoardCoordinates;
+
+        ShowArchiveStatsToggle.onValueChanged.AddListener(delegate { ShowArchiveStats(ShowArchiveStatsToggle); });
+        ShowArchiveStatsToggle.isOn = _playerUiSettings.ShowArchiveStats;
+
+        SkipTurnPanel.GetComponentInChildren<Button>().onClick.AddListener(delegate { ShipTurn(); });
+
+        var searchDepth = SearchDepthDropDown.GetComponent<Dropdown>();
+        searchDepth.value = _playerUiSettings.SearchDepth - 2;
+        searchDepth.onValueChanged.AddListener(delegate { ChangeSearchDepth(); });
 
         listStyle.normal.textColor = Color.white;
         listStyle.onHover.background = listStyle.hover.background = new Texture2D(2, 2);
         listStyle.padding.left = listStyle.padding.right = listStyle.padding.top = listStyle.padding.bottom = 4;
-	}
-	
-	void OnApplicationQuit()
+
+        ReplayButton.onClick.AddListener(delegate { ReplayGame(); });
+
+        Messenger<short>.AddListener("Last play", OnLastPlay);
+        _playHistory = new Dictionary<short, GameObject>();
+
+        PlayHistory();
+
+        Messenger.AddListener("Replay finished", ChangeReplayButtonText);
+    }
+
+    private void ChangeReplayButtonText()
+    {
+        if (_activeGame.IsReplaying)
+        {
+            ReplayButton.GetComponentInChildren<Text>().text = "STOP";
+
+        }
+        else
+        {
+            ReplayButton.GetComponentInChildren<Text>().text = "REPLAY";
+        }
+    }
+
+    private void OnLastPlay(short tileIndex)
+    {
+        if (_activeGame == null || _playHistory == null)
+        {
+            return;
+        }
+
+        var index =  (short)_activeGame.Plays.IndexOf(tileIndex);
+
+        AddPlayButton(index);
+    }
+
+    private void ChangeSearchDepth()
+    {
+        _playerUiSettings.SearchDepth = SearchDepthDropDown.GetComponent<Dropdown>().value + 2;
+        _activeGame.SearchDepth = _playerUiSettings.SearchDepth;
+    }
+
+    void NewGame()
+    {
+        _activeGame.RestartGame();
+        GameoverPanel.SetActive(false);
+        PlayHistory();
+    }
+
+    void Quit()
+    {
+        Application.Quit();
+    }
+
+    void OnApplicationQuit()
 	{
 	    _playerUiSettings.Save();
 	}
 	
 	void OnGUI()
-	{
-		GUI.skin = GuiSkin;
-			
-		Replay();
-		
+	{	
 	    if (_activeGame.IsReplaying)
             return;
 
-	    OptionsGui();
-	    GameGui();
 	    TurnInfoGui();
-	    UndoRedoGui();
+
 	    InfoGui();
-	    //GameSpeedGui();
 	}
 
     private void InfoGui()
     {
-        if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
-            GUI.TextArea(new Rect(20, 260, 180, 50), "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + _activeGame.NodesSearched + "\nTranspositions: " + GameBehaviour.Transpositions);
+        SearchInfo.text = "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + string.Format("{0:n0}", _activeGame.NodesSearched) + "\nTranspositions: " + string.Format("{0:n0}", GameBehaviour.Transpositions);
 
-        GuiSkin.textArea.alignment = TextAnchor.UpperLeft;
+        var results = _activeGame.AnalysisInfo();
 
-        if (!_depthComboBox.IsClickedComboButton)
-            GUI.TextArea(new Rect(20, 310, 180, 130), _activeGame.AnalysisInfo());
+        if (_activeGame.InfoPlayIndex == null)
+        {
+            BlackAnalysis.text = "BLACK\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[0] : results[1]);
+            WhiteAnalysis.text = "WHITE\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[1] : results[0]);
+        }
+        else
+        {
+            BlackAnalysis.text = "BLACK\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[1] : results[0]);
+            WhiteAnalysis.text = "WHITE\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[0] : results[1]);
+        }
+
         if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
-            GUI.TextArea(new Rect(20, 440, 180, 70), _activeGame.ArchiveInfo());
+        {
+            ArchiveInfoPanel.SetActive(true);
+            ArchiveInfoPanel.GetComponentInChildren<Text>().text = _activeGame.ArchiveInfo();
+        }
+        else
+        {
+            ArchiveInfoPanel.SetActive(false);
+        }
     }
 	
-	void OptionsGui()
+    void BlackIsHuman(Toggle toggle)
     {
-        _playerUiSettings.BlackIsHuman = GUI.Toggle(new Rect(20, 50, 200, 20), _playerUiSettings.BlackIsHuman, "Black is a human player");
-        _playerUiSettings.WhiteIsHuman = GUI.Toggle(new Rect(20, 70, 200, 20), _playerUiSettings.WhiteIsHuman, "White is a human player");
-        _activeGame.ShowValidPlays = GUI.Toggle(new Rect(20, 90, 200, 20), _activeGame.ShowValidPlays, "Show valid plays");
-        _activeGame.ShowBoardCoordinates = GUI.Toggle(new Rect(20, 110, 200, 20), _activeGame.ShowBoardCoordinates, "Show board coordinates");
-        _activeGame.ShowArchiveStats = GUI.Toggle(new Rect(20, 130, 200, 20), _activeGame.ShowArchiveStats, "Show archive stats");
-        _activeGame.UseTranspositionTable = GUI.Toggle(new Rect(20, 150, 200, 20), _activeGame.UseTranspositionTable, "Use transposition table");
-        _activeGame.UseOpeningBook = GUI.Toggle(new Rect(20, 170, 200, 20), _activeGame.UseOpeningBook, "Use opening book");
+        _playerUiSettings.BlackIsHuman = toggle.isOn;
+    }
 
-        _activeGame.SearchMethod = _searchComboBox.List(new Rect(20, 200, 150, 20), _searchMethods[_activeGame.SearchMethod].text, _searchMethods, listStyle);
-        if (!_searchComboBox.IsClickedComboButton)
-            _activeGame.SearchDepth = _depthComboBox.List(new Rect(20, 220, 150, 20), _searchDepths[_activeGame.SearchDepth].text, _searchDepths, listStyle);
-	}
-	
-	void GameGui()
-	{
-        if (GUI.Button(new Rect(20, 20, 80, 20), "New Game"))
-        {
-            _activeGame.RestartGame();
-        }
-		if (GUI.Button(new Rect(120, 20, 80, 20), "Quit"))
-        {
-            Application.Quit();
-        }
-	}
-	
-	void TurnInfoGui()
-	{
-		var labelWidth = 200;
-		var labelHeight = 80;
-		
-		var x = Screen.width / 2 - labelWidth / 2;
-		var y = Screen.height / 2 - labelHeight / 2;
-		
+    void WhiteIsHuman(Toggle toggle)
+    {
+        _playerUiSettings.WhiteIsHuman = toggle.isOn;
+    }
+    void ShowValidPlays(Toggle toggle)
+    {
+        _activeGame.ShowValidPlays = toggle.isOn;
+    }
+    void ShowBoardCoordinates(Toggle toggle)
+    {
+        _activeGame.ShowBoardCoordinates = toggle.isOn;
+    }
+    void ShowArchiveStats(Toggle toggle)
+    {
+        _activeGame.ShowArchiveStats = toggle.isOn;
+    }
+
+    bool _displayedGameOver;
+    void TurnInfoGui()
+	{		
 		if (_activeGame.IsGameOver)
 		{
-			var message = _activeGame.GameOverMessage;
-		    
-            GUI.Label(new Rect(x, y, labelWidth, labelHeight), message);
+            if (!_displayedGameOver)
+            {
+                _displayedGameOver = true;
+                GameoverPanel.SetActive(true);
+
+                GameoverPanel.GetComponent<Image>().color = _activeGame.GameWinner == "White" ? Color.white : Color.black;
+
+                var gameOverText = GameObject.Find("Gameover Text").GetComponent<Text>();
+                gameOverText.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+
+                var winner = GameObject.Find("Winner").GetComponent<Text>();
+                winner.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+                winner.text = _activeGame.GameWinner.ToUpper();
+
+                var gameResult = GameObject.Find("Game Result").GetComponent<Text>();
+                gameResult.color = _activeGame.GameWinner == "White" ? Color.black : Color.white;
+                gameResult.text = _activeGame.GameResult;
+            }
 		}
 		else if (!_activeGame.CanPlay)
 		{
-			if (_activeGame.IsComputerTurn)
+            _displayedGameOver = false;
+
+            if (_activeGame.IsComputerTurn)
 			{
 				_activeGame.SkipTurn();
 			}
 			else 
 			{
-				GUI.Label (new Rect(x, y, labelWidth, labelHeight), _activeGame.CannotPlayMessage);
-				if (GUI.Button(new Rect(x, Screen.height / 2 + labelHeight / 2, labelWidth, 20), "Okay"))
-				{
-					_activeGame.SkipTurn();
-				}
-			}
+                SkipTurnPanel.SetActive(true);
+                SkipTurnPanel.GetComponentInChildren<Text>().text = _activeGame.CannotPlayMessage;
+
+            }
 		}
 		else
 		{
-			GUI.Label (new Rect(Screen.width / 2 - labelWidth / 2, 20, labelWidth, 20), string.Format("{0} to play.", _activeGame.Player));
-		}
+            _displayedGameOver = false;
+
+            if (!PlayerTurn.text.StartsWith(_activeGame.Player.ToUpper()))
+            {
+                PlayerTurn.text = _activeGame.Player.ToUpper();
+                PlayerTurn.color = _activeGame.Player == "Black" ? Color.black : Color.white;
+            }
+        }
 	}
 
-	void UndoRedoGui()
-	{
-		if (GUI.Button(new Rect(Screen.width - 100, 0, 80, 20), "Start"))
-		{
-			_activeGame.PlayToStart();
-		}
-		
+    public void StartButtonDown()
+    {
+        _activeGame.PlayToStart();
+    }
+
+    private void ShipTurn()
+    {
+        _activeGame.SkipTurn();
+        SkipTurnPanel.SetActive(false);
+    }
+
+    void PlayHistory()
+	{		
 		if (!_activeGame.Plays.Any())
             return;
 		
 	    for (short i = 0; i < _activeGame.Plays.Count; i++) 
-	    { 
-	        if (_activeGame.Plays[i] == null)
-	            continue;
+	    {
+            AddPlayButton(i);
+        }
+	}
+	
+    void AddPlayButton(short index)
+    {
+        if (index < 0)
+            return;
+        if (_activeGame.Plays.Count < index || _playHistory.ContainsKey(index))
+            return;
 
-	        var column = i % 2 == 0 ? 60 : 20;
-	        var row = (i / 2) * 18;
-	        if (GUI.Button(new Rect(Screen.width - 40 - column, 20 + row, 40, 18), _activeGame.Plays[i].ToAlgebraicNotation()))
-	        {
-				_activeGame.PlayTo(i);
-	        }
-	    }
-	}
-	
-	void GameSpeedGui()
-	{
-		var oldGameSpeed = _globalAnimationSpeed;
-        GUI.TextField(new Rect(20, 240, 130, 25), "Animation Speed");
-		_globalAnimationSpeed = GUI.HorizontalSlider (new Rect (20, 270, 130, 30), _globalAnimationSpeed, 0.0f, 1.0f);
-		if (oldGameSpeed != _globalAnimationSpeed)
-		{
-			Messenger<float>.Broadcast("Game speed changed", _globalAnimationSpeed);
-		}
-	}
-	
-	void Replay()
-	{
-        if (GUI.Button(new Rect(Screen.width - 200, 0, 80, 20), _activeGame.IsReplaying ? "Stop" : "Replay"))
-		{
-			_games.ForEach(x => x.Replay());
-		}
-	}
-	
-	
+        if (_activeGame.Plays[index] == null) // Is the turn skipped?
+            return;
+
+        var column = index % 2 == 0 ? 35 : 10;
+        var row = (index / 2) * 13;
+
+
+
+        var playButton = Instantiate(ButtonPrefab);
+        playButton.transform.SetParent(GamePlayHistoryPanel.transform);
+
+        playButton.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1);
+        playButton.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1);
+        playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
+        playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 200);
+
+        playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[index].ToAlgebraicNotation().ToUpper();
+        var uniqueIndexReference = index; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
+        playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(uniqueIndexReference); });
+        _playHistory.Add(index, playButton);
+    }
+
+    void PlayTo(short index)
+    {
+        Debug.Log(index);
+        GameoverPanel.SetActive(false);
+        _activeGame.PlayTo(index);
+    }
+
+    void ReplayGame()
+    {
+        GameoverPanel.SetActive(false);
+        _games.ForEach(x => x.Replay());
+        ChangeReplayButtonText();
+    }
+
+
 }
