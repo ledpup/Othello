@@ -1,1 +1,1 @@
-f5,d6,c5,f4,d3,e3,f3,b5,c6,d7,a5,d2,c1,b4,d8,f2,a3,g5,h5,c4,b3,f6,f7,h6,f1,e7
+f5,d6,c5,f4,d3,e3,f3,b5,c6,d7,a5,d2,c1,b4,d8,f2,a3,g5,h5,c4,b3,f6,f7,h6,f1,e7,f8,d1,h7,b1,h4,g7,b7,g1,h1,c7,e8,a7,a8,b6,c8,a6,a4,b8,c2,e6,g8,g6,e2,e1,a1,g2,h3,g4,b2,h8,g3,h2,,c3,,a2

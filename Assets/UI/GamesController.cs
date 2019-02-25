@@ -293,8 +293,14 @@ public class GamesController : MonoBehaviour
         if (_activeGame.Plays.Count < index || _playHistory.ContainsKey(index))
             return;
 
+        if (_activeGame.Plays[index] == null) // Is the turn skipped?
+            return;
+
         var column = index % 2 == 0 ? 35 : 10;
-        var row = (index / 2) * 12;
+        var row = (index / 2) * 15;
+
+
+
         var playButton = Instantiate(ButtonPrefab);
         playButton.transform.SetParent(GamePlayHistoryPanel.transform);
 
