@@ -24,7 +24,8 @@ public class GamesController : MonoBehaviour
     public Toggle BlackHuman;
     public Text SearchInfo;
     public Text PlayerTurn;
-    public Text GameAnalysis;
+    public Text BlackAnalysis;
+    public Text WhiteAnalysis;
     public Dropdown SearchDepthDropDown;
     public Button ReplayButton;
 
@@ -152,16 +153,25 @@ public class GamesController : MonoBehaviour
 	    TurnInfoGui();
 
 	    InfoGui();
-	    //GameSpeedGui();
 	}
 
     private void InfoGui()
     {
-        //if (!_searchComboBox.IsClickedComboButton && !_depthComboBox.IsClickedComboButton)
-            SearchInfo.text = "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + string.Format("{0:n0}", _activeGame.NodesSearched) + "\nTranspositions: " + string.Format("{0:n0}", GameBehaviour.Transpositions);
+        SearchInfo.text = "Search time: " + Math.Round(_activeGame.StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + string.Format("{0:n0}", _activeGame.NodesSearched) + "\nTranspositions: " + string.Format("{0:n0}", GameBehaviour.Transpositions);
 
-        //if (!_depthComboBox.IsClickedComboButton)
-            GameAnalysis.text = _activeGame.AnalysisInfo();
+        var results = _activeGame.AnalysisInfo();
+
+        if (_activeGame.InfoPlayIndex == null)
+        {
+            BlackAnalysis.text = "BLACK\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[0] : results[1]);
+            WhiteAnalysis.text = "WHITE\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[1] : results[0]);
+        }
+        else
+        {
+            BlackAnalysis.text = "BLACK\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[1] : results[0]);
+            WhiteAnalysis.text = "WHITE\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[0] : results[1]);
+        }
+
         if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
         {
             ArchiveInfoPanel.SetActive(true);
@@ -279,7 +289,7 @@ public class GamesController : MonoBehaviour
             return;
 
         var column = index % 2 == 0 ? 35 : 10;
-        var row = (index / 2) * 14;
+        var row = (index / 2) * 13;
 
 
 

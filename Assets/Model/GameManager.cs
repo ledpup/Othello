@@ -307,7 +307,7 @@ namespace Othello.Model
             get { return GameState.IsDraw; }
         }
 
-        public string AnalysisInfo(short? infoPlayIndex, ComputerPlayer computerPlayer)
+        public string[] AnalysisInfo(short? infoPlayIndex, ComputerPlayer computerPlayer)
         {
             var gameState = GameState;
 
@@ -322,16 +322,25 @@ namespace Othello.Model
 
             var analysisNode = new EvaluationNode(ref gameState, computerPlayer.GetWeights(turn));
 
-            var stringBulider = new StringBuilder();
-            stringBulider.AppendLine("\t\t\t\t\tBlack\t\tWhite");
-            stringBulider.AppendLine("Pieces\t\t\t" + BlackAndWhite(analysisNode.PlayerPieces, analysisNode.OpponentPieces, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("Mobility\t\t" + BlackAndWhite(analysisNode.PlayerPlayCount, analysisNode.OpponentPlayCount, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("Frontier\t\t" + BlackAndWhite(analysisNode.PlayerFrontier, analysisNode.OpponentFrontier, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("Corner\t\t\t" + BlackAndWhite(analysisNode.PlayerCorners, analysisNode.OpponentCorners, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("X Square\t" + BlackAndWhite(analysisNode.PlayerXSquares, analysisNode.OpponentXSquares, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("C Square\t" + BlackAndWhite(analysisNode.PlayerCSquares, analysisNode.OpponentCSquares, IsBlacksTurn(turn)));
-            stringBulider.AppendLine("Edge\t\t\t" + BlackAndWhite(analysisNode.PlayerEdges, analysisNode.OpponentEdges, IsBlacksTurn(turn)));
-            return stringBulider.ToString();
+            var results = new string[2];
+
+            results[0] =               StringSpacing(analysisNode.PlayerPieces) 
+                            + "\r\n" + StringSpacing(analysisNode.PlayerPlayCount)
+                            + "\r\n" + StringSpacing(analysisNode.PlayerFrontier)
+                            + "\r\n" + StringSpacing(analysisNode.PlayerCorners)
+                            + "\r\n" + StringSpacing(analysisNode.PlayerXSquares)
+                            + "\r\n" + StringSpacing(analysisNode.PlayerCSquares)
+                            + "\r\n" + StringSpacing(analysisNode.PlayerEdges);
+
+            results[1] =               StringSpacing(analysisNode.OpponentPieces)
+                            + "\r\n" + StringSpacing(analysisNode.OpponentPlayCount)
+                            + "\r\n" + StringSpacing(analysisNode.OpponentFrontier)
+                            + "\r\n" + StringSpacing(analysisNode.OpponentCorners)
+                            + "\r\n" + StringSpacing(analysisNode.OpponentXSquares)
+                            + "\r\n" + StringSpacing(analysisNode.OpponentCSquares)
+                            + "\r\n" + StringSpacing(analysisNode.OpponentEdges);
+
+            return results;
         }
 
 	    static bool IsBlacksTurn(short turn)

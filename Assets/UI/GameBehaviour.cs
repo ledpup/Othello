@@ -247,14 +247,14 @@ public class GameBehaviour : MonoBehaviour
         DisplayPlays();
     }
 
-    private short? _infoPlayIndex;
+    public short? InfoPlayIndex;
 
     void OnTileHover(short index)
     {
-        _infoPlayIndex = null;
+        InfoPlayIndex = null;
         if (_gameManager.CanPlay(index))
         {
-            _infoPlayIndex = index;
+            InfoPlayIndex = index;
         }
     }
 
@@ -599,28 +599,28 @@ public class GameBehaviour : MonoBehaviour
     private int _nodesSearched;
     public PlayerUiSettings PlayerUiSettings;
     
-    internal string AnalysisInfo()
+    internal string[] AnalysisInfo()
     {
-        return _gameManager.AnalysisInfo(_infoPlayIndex, _computerPlayer);
+        return _gameManager.AnalysisInfo(InfoPlayIndex, _computerPlayer);
     }
 
     public static int Transpositions { get; set; }
 
     internal string ArchiveInfo()
     {
-        if (_infoPlayIndex ==  null)
+        if (InfoPlayIndex ==  null)
             return null;
         if (!_statsAvailable)
             return null;
 		
         var position = _gameManager.Plays.ToChars();
 		
-		if (!_positionStats[position].PlayStats.ContainsKey(((short)_infoPlayIndex)))
+		if (!_positionStats[position].PlayStats.ContainsKey(((short)InfoPlayIndex)))
 			return null;
         
-        var stats = _positionStats[position].PlayStats[((short)_infoPlayIndex)];
+        var stats = _positionStats[position].PlayStats[((short)InfoPlayIndex)];
 		var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine(string.Format("{0}% of games play {1}", stats.PercentageOfGames, _infoPlayIndex.ToAlgebraicNotation()));
+        stringBuilder.AppendLine(string.Format("{0}% of games play {1}", stats.PercentageOfGames, InfoPlayIndex.ToAlgebraicNotation()));
         stringBuilder.AppendLine(string.Format("{0}% of games won by black", stats.PercentageOfWinsForBlack));
         stringBuilder.AppendLine(string.Format("{0}% of games won by white", stats.PercentageOfWinsForWhite));
         stringBuilder.AppendLine(string.Format("{0}% of games were draws", stats.PercentageOfDraws));
