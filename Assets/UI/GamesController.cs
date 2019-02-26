@@ -27,7 +27,10 @@ public class GamesController : MonoBehaviour
     public Text BlackAnalysis;
     public Text WhiteAnalysis;
     public Dropdown SearchDepthDropDown;
+    public Button StartButton;
     public Button ReplayButton;
+
+    PlayState _playState;
 
     private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
@@ -42,6 +45,12 @@ public class GamesController : MonoBehaviour
     public Toggle ShowValidPlaysToggle, ShowBoardCoordinatesToggle, ShowArchiveStatsToggle;
 
     Dictionary<short, GameObject> _playHistory;
+
+    enum PlayState
+    {
+        Playing,
+        ViewingHistory
+    }
 
     void Start()
 	{
@@ -58,7 +67,6 @@ public class GamesController : MonoBehaviour
         _games.Add(GameBehaviour.CreateGameBehaviour(gameObject, BoardTile, Piece, Text, ((short)0).ToCartesianCoordinate(), gameManagers.First(), _gameArchive, _playerUiSettings));
 
 		_activeGame = _games.First();
-
 
         NewGameButton.GetComponent<Button>().onClick.AddListener(NewGame);
 
@@ -95,6 +103,8 @@ public class GamesController : MonoBehaviour
         PlayHistory();
 
         Messenger.AddListener("Replay finished", ChangeReplayButtonText);
+
+        _playState = PlayState.Playing;
     }
 
     private void ChangeReplayButtonText()
@@ -117,7 +127,7 @@ public class GamesController : MonoBehaviour
             return;
         }
 
-        var index =  (short)_activeGame.Plays.IndexOf(tileIndex);
+        var index = (short)_activeGame.Plays.IndexOf(tileIndex);
 
         AddPlayButton(index);
     }
@@ -132,7 +142,14 @@ public class GamesController : MonoBehaviour
     {
         _activeGame.RestartGame();
         GameoverPanel.SetActive(false);
-        PlayHistory();
+        var plays = _playHistory.Keys.Count;
+        for (short i = 0; i < plays; i++)
+        {
+            if (_playHistory.ContainsKey(i))
+                Destroy(_playHistory[i]);
+        }
+        _playHistory = new Dictionary<short, GameObject>();
+        _playState = PlayState.Playing;
     }
 
     void Quit()
@@ -259,6 +276,7 @@ public class GamesController : MonoBehaviour
     public void StartButtonDown()
     {
         _activeGame.PlayToStart();
+        ColourPlayHistoryButtons(-1);
     }
 
     private void ShipTurn()
@@ -282,16 +300,32 @@ public class GamesController : MonoBehaviour
     {
         if (index < 0)
             return;
-        if (_activeGame.Plays.Count < index || _playHistory.ContainsKey(index))
-            return;
+
+        if (_playHistory.ContainsKey(index))
+        {
+            if (_playHistory[index].GetComponentInChildren<Text>().text != _activeGame.Plays[index].ToAlgebraicNotation().ToUpper())
+            {
+                var removeUpTo = _playHistory.Count;
+                for (var i = index; i < removeUpTo; i ++)
+                {
+                    if (_playHistory.ContainsKey(i))
+                    {
+                        Destroy(_playHistory[i]);
+                        _playHistory.Remove(i);
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
 
         if (_activeGame.Plays[index] == null) // Is the turn skipped?
             return;
 
         var column = index % 2 == 0 ? 35 : 10;
         var row = (index / 2) * 13;
-
-
 
         var playButton = Instantiate(ButtonPrefab);
         playButton.transform.SetParent(GamePlayHistoryPanel.transform);
@@ -309,9 +343,39 @@ public class GamesController : MonoBehaviour
 
     void PlayTo(short index)
     {
-        Debug.Log(index);
+        ColourPlayHistoryButtons(index);
+
         GameoverPanel.SetActive(false);
         _activeGame.PlayTo(index);
+
+        _playState = PlayState.ViewingHistory;
+        if (_activeGame.Plays.Count - 1 == index)
+            _playState = PlayState.Playing;
+    }
+
+    private void ColourPlayHistoryButtons(short index)
+    {
+        if (index == -1)
+        {
+            StartButton.GetComponent<Image>().color = new Color(0.625f, 1, 1);
+            index = 0;
+        }
+        else
+        {
+            StartButton.GetComponent<Image>().color = new Color(1, 1, 1);
+        }
+
+        for (short i = 0; i < _playHistory.Keys.Count; i++)
+        {
+            if (i < index || _playHistory.Keys.Count - 1 == index)
+            {
+                _playHistory[i].GetComponent<Image>().color = new Color(1, 1, 1);
+            }
+            else
+            {
+                _playHistory[i].GetComponent<Image>().color = new Color(0.625f, 1, 1);
+            }
+        }
     }
 
     void ReplayGame()

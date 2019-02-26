@@ -37,11 +37,11 @@ public class TileBehaviour : MonoBehaviour
     {
         if (Tile.Index == index)
         {
-            _oldColour = GetComponent<Renderer>().material.color = new Color(0, 0.8f, 0.3f); // last played
+            _oldColour = GetComponent<Renderer>().material.color = new Color(0.3f, 0.8f, 0.3f); // last played
         }
         else
         {
-            _oldColour = GetComponent<Renderer>().material.color = new Color(0, .5f, .25f); // base board colour - green
+            _oldColour = GetComponent<Renderer>().material.color = new Color(0, .625f, 0); // base board colour - green
         }
     }
 }
