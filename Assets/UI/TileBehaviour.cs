@@ -25,7 +25,7 @@ public class TileBehaviour : MonoBehaviour
     {
         Messenger<short>.Broadcast("Tile hover", Tile.Index);
 		_oldColour = GetComponent<Renderer>().material.color;
-		GetComponent<Renderer>().material.color = new Color(0.5f, 0.25f, 0.75f); // mouse over colour
+		GetComponent<Renderer>().material.color = new Color(0.75f, 0.25f, 0.25f); // mouse over colour
     }
 	
 	void OnMouseExit()

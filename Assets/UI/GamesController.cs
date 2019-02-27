@@ -140,6 +140,7 @@ public class GamesController : MonoBehaviour
                 Destroy(_playHistory[i]);
         }
         _playHistory = new Dictionary<short, GameObject>();
+        Messenger<short>.Broadcast("Notify tile", -1);
     }
 
     void Quit()
@@ -248,7 +249,6 @@ public class GamesController : MonoBehaviour
 			{
                 SkipTurnPanel.SetActive(true);
                 SkipTurnPanel.GetComponentInChildren<Text>().text = _activeGame.CannotPlayMessage;
-
             }
 		}
 		else
@@ -334,6 +334,7 @@ public class GamesController : MonoBehaviour
 
     void PlayTo(short index)
     {
+        _activeGame.IsViewingHistory = true;
         ColourPlayHistoryButtons(index);
 
         GameoverPanel.SetActive(false);
@@ -371,6 +372,7 @@ public class GamesController : MonoBehaviour
 
     void ReplayGame()
     {
+        Messenger<short>.Broadcast("Notify tile", -1);
         GameoverPanel.SetActive(false);
         _games.ForEach(x => x.Replay());
         ChangeReplayButtonText();

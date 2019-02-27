@@ -67,6 +67,7 @@ public class GameBehaviour : MonoBehaviour
     }
 	
     public bool IsReplaying;
+    public bool IsViewingHistory;
 
     private ComputerPlayer _computerPlayer;
     short? _computerPlayIndex;
@@ -205,6 +206,10 @@ public class GameBehaviour : MonoBehaviour
                 }
             }
         }
+        else if (IsViewingHistory)
+        {
+            DrawStats();
+        }
         else
         {
             DrawStats();
@@ -230,6 +235,7 @@ public class GameBehaviour : MonoBehaviour
 	
 	void Play(short? tileIndex)
 	{
+        IsViewingHistory = false;
         PlacePiece(tileIndex);
         Plays = _gameManager.Plays;
         Messenger<short>.Broadcast("Last play", (short)tileIndex);
@@ -529,7 +535,7 @@ public class GameBehaviour : MonoBehaviour
 	
     public void PlayTo(short index)
     {
-        var plays = Plays.GetRange(0, index).Select(x => (short?)x).ToList();
+        var plays = Plays.GetRange(0, index).ToList();
         _gameManager = new GameManager(plays);
         CreatePieces();
         PlacePiece(Plays[index]);
