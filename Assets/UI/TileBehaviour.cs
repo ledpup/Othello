@@ -8,7 +8,7 @@ public class TileBehaviour : MonoBehaviour
     
     void Start()
     {
-        Messenger<short>.AddListener("Last play", OnLastPlay);
+        Messenger<short>.AddListener("Notify tile", OnLastPlay);
     }
 
     void Update()
@@ -25,7 +25,7 @@ public class TileBehaviour : MonoBehaviour
     {
         Messenger<short>.Broadcast("Tile hover", Tile.Index);
 		_oldColour = GetComponent<Renderer>().material.color;
-		GetComponent<Renderer>().material.color = new Color(.875f, .875f, 0); // mouse over colour
+		GetComponent<Renderer>().material.color = new Color(0.5f, 0.25f, 0.75f); // mouse over colour
     }
 	
 	void OnMouseExit()
@@ -37,7 +37,7 @@ public class TileBehaviour : MonoBehaviour
     {
         if (Tile.Index == index)
         {
-            _oldColour = GetComponent<Renderer>().material.color = new Color(0.3f, 0.8f, 0.3f); // last played
+            _oldColour = GetComponent<Renderer>().material.color = new Color(0.3f, 1, 0.3f); // last played
         }
         else
         {

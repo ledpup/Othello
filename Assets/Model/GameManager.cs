@@ -43,20 +43,20 @@ namespace Othello.Model
 			return GameState.PlayerPlays.Indices().Any(m => m == position);
 		}
 				
-		public void PlacePiece(short? index)
+		public void PlacePiece(short? tileIndex)
 		{
-			if (GameState.HasPlays && index == null)
+			if (GameState.HasPlays && tileIndex == null)
 				throw new Exception(string.Format("{0} can not pass.", Player));
 					
-			Plays.Add(index);
+			Plays.Add(tileIndex);
 
-		    if (index == null)
+		    if (tileIndex == null)
 				return;
 			
-			var play = (short)index;
+			var play = (short)tileIndex;
 			
 			if (!CanPlay(play))
-				throw new Exception(string.Format("Play to {0} (index {1}) is not a valid play.", index.ToAlgebraicNotation(), play));
+				throw new Exception(string.Format("Play to {0} (index {1}) is not a valid play.", tileIndex.ToAlgebraicNotation(), play));
 			
 			FlippedPieces = GameState.PlacePiece(play);
 		    Placement = play;

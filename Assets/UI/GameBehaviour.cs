@@ -181,13 +181,11 @@ public class GameBehaviour : MonoBehaviour
 	
     void Update()
     {
-		// This is a horrible hack to get the last played piece to highlight!!!!
-		// I should find a better way... one day.
 		if (_firstUpdate)
 		{
 			_firstUpdate = false;
 			if (Plays.Count > 0)
-				Messenger<short>.Broadcast("Last play", (short)Plays.Last());
+				Messenger<short>.Broadcast("Notify tile", (short)Plays.Last());
 		}
 		
         if (IsReplaying)
@@ -197,7 +195,8 @@ public class GameBehaviour : MonoBehaviour
                 if (_gameManager.Turn < Plays.Count())
                 {
                     PlacePiece(Plays[_gameManager.Turn]);
-                    _stopwatch = System.Diagnostics.Stopwatch.StartNew();
+                    Messenger<short>.Broadcast("Notify tile", (short)Plays[_gameManager.Turn - 1]);
+                    _stopwatch = Stopwatch.StartNew();
                 }
                 else
                 {
@@ -229,19 +228,20 @@ public class GameBehaviour : MonoBehaviour
 		Play(index);
     }
 	
-	void Play(short? index)
+	void Play(short? tileIndex)
 	{
-		PlacePiece(index);
+        PlacePiece(tileIndex);
         Plays = _gameManager.Plays;
-	}
+        Messenger<short>.Broadcast("Last play", (short)tileIndex);
+        Messenger<short>.Broadcast("Notify tile", (short)tileIndex);
+    }
     
-    void PlacePiece(short? index)
+    void PlacePiece(short? tileIndex)
     {
-        _gameManager.PlacePiece(index);
-        if (index != null)
+        _gameManager.PlacePiece(tileIndex);
+        if (tileIndex != null)
 		{
             PlaceAndFlipPieces();
-			Messenger<short>.Broadcast("Last play", (short)index);
         }
         _gameManager.NextTurn();
         DisplayPlays();

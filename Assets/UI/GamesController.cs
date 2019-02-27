@@ -30,8 +30,6 @@ public class GamesController : MonoBehaviour
     public Button StartButton;
     public Button ReplayButton;
 
-    PlayState _playState;
-
     private List<GameBehaviour> _games;
 	GameBehaviour _activeGame;
 
@@ -45,12 +43,6 @@ public class GamesController : MonoBehaviour
     public Toggle ShowValidPlaysToggle, ShowBoardCoordinatesToggle, ShowArchiveStatsToggle;
 
     Dictionary<short, GameObject> _playHistory;
-
-    enum PlayState
-    {
-        Playing,
-        ViewingHistory
-    }
 
     void Start()
 	{
@@ -103,8 +95,6 @@ public class GamesController : MonoBehaviour
         PlayHistory();
 
         Messenger.AddListener("Replay finished", ChangeReplayButtonText);
-
-        _playState = PlayState.Playing;
     }
 
     private void ChangeReplayButtonText()
@@ -127,9 +117,10 @@ public class GamesController : MonoBehaviour
             return;
         }
 
-        var index = (short)_activeGame.Plays.IndexOf(tileIndex);
+        short turn = (short)_activeGame.Plays.IndexOf(tileIndex);
 
-        AddPlayButton(index);
+        AddPlayButton(turn);
+        ColourPlayHistoryButtons((short)_activeGame.Plays.Count);
     }
 
     private void ChangeSearchDepth()
@@ -149,7 +140,6 @@ public class GamesController : MonoBehaviour
                 Destroy(_playHistory[i]);
         }
         _playHistory = new Dictionary<short, GameObject>();
-        _playState = PlayState.Playing;
     }
 
     void Quit()
@@ -277,6 +267,7 @@ public class GamesController : MonoBehaviour
     {
         _activeGame.PlayToStart();
         ColourPlayHistoryButtons(-1);
+        Messenger<short>.Broadcast("Notify tile", -1);
     }
 
     private void ShipTurn()
@@ -296,17 +287,17 @@ public class GamesController : MonoBehaviour
         }
 	}
 	
-    void AddPlayButton(short index)
+    void AddPlayButton(short turnIndex)
     {
-        if (index < 0)
+        if (turnIndex < 0)
             return;
 
-        if (_playHistory.ContainsKey(index))
+        if (_playHistory.ContainsKey(turnIndex))
         {
-            if (_playHistory[index].GetComponentInChildren<Text>().text != _activeGame.Plays[index].ToAlgebraicNotation().ToUpper())
+            if (_playHistory[turnIndex].GetComponentInChildren<Text>().text != _activeGame.Plays[turnIndex].ToAlgebraicNotation().ToUpper())
             {
                 var removeUpTo = _playHistory.Count;
-                for (var i = index; i < removeUpTo; i ++)
+                for (var i = turnIndex; i < removeUpTo; i ++)
                 {
                     if (_playHistory.ContainsKey(i))
                     {
@@ -321,11 +312,11 @@ public class GamesController : MonoBehaviour
             }
         }
 
-        if (_activeGame.Plays[index] == null) // Is the turn skipped?
+        if (_activeGame.Plays[turnIndex] == null) // Is the turn skipped?
             return;
 
-        var column = index % 2 == 0 ? 35 : 10;
-        var row = (index / 2) * 13;
+        var column = turnIndex % 2 == 0 ? 35 : 10;
+        var row = (turnIndex / 2) * 13;
 
         var playButton = Instantiate(ButtonPrefab);
         playButton.transform.SetParent(GamePlayHistoryPanel.transform);
@@ -335,10 +326,10 @@ public class GamesController : MonoBehaviour
         playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
         playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 200);
 
-        playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[index].ToAlgebraicNotation().ToUpper();
-        var uniqueIndexReference = index; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
-        playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(uniqueIndexReference); });
-        _playHistory.Add(index, playButton);
+        playButton.GetComponentInChildren<Text>().text = _activeGame.Plays[turnIndex].ToAlgebraicNotation().ToUpper();
+        var uniqueTurnReference = turnIndex; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
+        playButton.GetComponent<Button>().onClick.AddListener(delegate { PlayTo(uniqueTurnReference); });
+        _playHistory.Add(turnIndex, playButton);
     }
 
     void PlayTo(short index)
@@ -347,10 +338,7 @@ public class GamesController : MonoBehaviour
 
         GameoverPanel.SetActive(false);
         _activeGame.PlayTo(index);
-
-        _playState = PlayState.ViewingHistory;
-        if (_activeGame.Plays.Count - 1 == index)
-            _playState = PlayState.Playing;
+        Messenger<short>.Broadcast("Notify tile", (short)_activeGame.Plays[index]);
     }
 
     private void ColourPlayHistoryButtons(short index)
@@ -367,13 +355,16 @@ public class GamesController : MonoBehaviour
 
         for (short i = 0; i < _playHistory.Keys.Count; i++)
         {
-            if (i < index || _playHistory.Keys.Count - 1 == index)
+            if (_playHistory.ContainsKey(i))
             {
-                _playHistory[i].GetComponent<Image>().color = new Color(1, 1, 1);
-            }
-            else
-            {
-                _playHistory[i].GetComponent<Image>().color = new Color(0.625f, 1, 1);
+                if (i < index || _playHistory.Keys.Count - 1 == index)
+                {
+                    _playHistory[i].GetComponent<Image>().color = new Color(1, 1, 1);
+                }
+                else
+                {
+                    _playHistory[i].GetComponent<Image>().color = new Color(0.625f, 1, 1);
+                }
             }
         }
     }
@@ -384,6 +375,4 @@ public class GamesController : MonoBehaviour
         _games.ForEach(x => x.Replay());
         ChangeReplayButtonText();
     }
-
-
 }
