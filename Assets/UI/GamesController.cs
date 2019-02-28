@@ -44,6 +44,8 @@ public class GamesController : MonoBehaviour
 
     Dictionary<short, GameObject> _playHistory;
 
+    public short _currentTurnIndex;
+
     void Start()
 	{
         GameoverPanel.SetActive(false);
@@ -117,9 +119,9 @@ public class GamesController : MonoBehaviour
             return;
         }
 
-        short turn = (short)_activeGame.Plays.IndexOf(tileIndex);
+        _currentTurnIndex = (short)_activeGame.Plays.IndexOf(tileIndex);
 
-        AddPlayButton(turn);
+        AddPlayButton(_currentTurnIndex);
         ColourPlayHistoryButtons((short)_activeGame.Plays.Count);
     }
 
@@ -169,15 +171,15 @@ public class GamesController : MonoBehaviour
 
         var results = _activeGame.AnalysisInfo();
 
-        if (_activeGame.InfoPlayIndex == null)
+        if (_activeGame.InfoPlayIndex != null)
         {
-            BlackAnalysis.text = "BLACK\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[0] : results[1]);
-            WhiteAnalysis.text = "WHITE\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[1] : results[0]);
+            BlackAnalysis.text = "BLACK\r\n" + (_currentTurnIndex % 2 == 0 ? results[0] : results[1]);
+            WhiteAnalysis.text = "WHITE\r\n" + (_currentTurnIndex % 2 == 0 ? results[1] : results[0]);
         }
         else
         {
-            BlackAnalysis.text = "BLACK\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[1] : results[0]);
-            WhiteAnalysis.text = "WHITE\r\n" + (_activeGame.Plays.Count % 2 == 0 ? results[0] : results[1]);
+            BlackAnalysis.text = "BLACK\r\n" + (_currentTurnIndex % 2 == 0 ? results[1] : results[0]);
+            WhiteAnalysis.text = "WHITE\r\n" + (_currentTurnIndex % 2 == 0 ? results[0] : results[1]);
         }
 
         if (!string.IsNullOrEmpty(_activeGame.ArchiveInfo()))
@@ -332,14 +334,15 @@ public class GamesController : MonoBehaviour
         _playHistory.Add(turnIndex, playButton);
     }
 
-    void PlayTo(short index)
+    void PlayTo(short turnIndex)
     {
         _activeGame.IsViewingHistory = true;
-        ColourPlayHistoryButtons(index);
+        ColourPlayHistoryButtons(turnIndex);
 
         GameoverPanel.SetActive(false);
-        _activeGame.PlayTo(index);
-        Messenger<short>.Broadcast("Notify tile", (short)_activeGame.Plays[index]);
+        _activeGame.PlayTo(turnIndex);
+        _currentTurnIndex = turnIndex;
+        Messenger<short>.Broadcast("Notify tile", (short)_activeGame.Plays[turnIndex]);
     }
 
     private void ColourPlayHistoryButtons(short index)
