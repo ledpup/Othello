@@ -12,7 +12,8 @@ public class PieceBehaviour : MonoBehaviour
 	bool _drop;
 	int _dropDirection;
 	double _flipWait;
-	
+    public const float TileHeight = -0.2f;
+    const float flipHeight = -1f;
 	void Start()
     {
 		Messenger<float>.AddListener("Game speed changed", OnGameSpeedChanged);
@@ -29,10 +30,10 @@ public class PieceBehaviour : MonoBehaviour
 		{
 			var translation = Time.deltaTime * GameBehaviour.PieceStartingHeight * _gameSpeed * 4f;
 			transform.Translate(0, 0, translation * (float)_dropDirection);
-			if (transform.position.z + translation > 0)
+			if (transform.position.z + translation > TileHeight)
 			{
 				_drop = false;
-				transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+				transform.position = new Vector3(transform.position.x, transform.position.y, TileHeight);
 			}
 		}
 		else if (_flip)
@@ -44,17 +45,20 @@ public class PieceBehaviour : MonoBehaviour
 			}
 			
 			var rotation = Time.deltaTime * 500 * _gameSpeed * _flippingDirection;
-			
-			if (transform.rotation.eulerAngles.y + rotation > 180)
+            transform.position = new Vector3(transform.position.x, transform.position.y, flipHeight);
+
+            if (transform.rotation.eulerAngles.y + rotation > 180)
 			{
 				rotation = 360;
 				_flip = false;
-			}
+                transform.position = new Vector3(transform.position.x, transform.position.y, TileHeight);
+            }
 			else if (transform.rotation.eulerAngles.y + rotation < 0)
 			{
 				rotation = 0;
 				_flip = false;
-			}
+                transform.position = new Vector3(transform.position.x, transform.position.y, TileHeight);
+            }
 			
 			transform.Rotate(0, rotation , 0);
 		}

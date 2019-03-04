@@ -26,7 +26,7 @@ public class GameBehaviour : MonoBehaviour
     GameManager _gameManager;
     
     float _cameraZ;
-    public const float PieceStartingHeight = 10;
+    public const float PieceStartingHeight = 13;
 
     public List<short?> Plays;
 
@@ -341,7 +341,7 @@ public class GameBehaviour : MonoBehaviour
 
         var playerPlays = _gameManager.PlayerPlays;
 
-        playerPlays.ForEach(p => CreatePiece(p, _gameManager.PlayerIndex, .3f, 0));
+        playerPlays.ForEach(p => CreatePiece(p, _gameManager.PlayerIndex, 2, PieceBehaviour.TileHeight));
     }
     
     void DrawTileInfo(int x, int y, float xOffset, float yOffset, string text)
@@ -416,7 +416,7 @@ public class GameBehaviour : MonoBehaviour
     
     void PlaceAndFlipPieces()
     {        
-        var toDestroy = _gamePieces.Where(p => p.transform.localScale.x < .5f).ToList();
+        var toDestroy = _gamePieces.Where(p => p.transform.localScale.x == 2).ToList();
         toDestroy.ForEach(p => 
                           {
                             Destroy(p);
@@ -425,7 +425,7 @@ public class GameBehaviour : MonoBehaviour
         
         var playerColour = 1 - _gameManager.PlayerIndex;
 
-        CreatePiece(_gameManager.Placement, playerColour, .95f, -PieceStartingHeight);
+        CreatePiece(_gameManager.Placement, playerColour, 23, -PieceStartingHeight);
         
         FlipPieces(_gameManager.FlippedPieces, _gameManager.Placement, playerColour);
     }
@@ -449,8 +449,8 @@ public class GameBehaviour : MonoBehaviour
 
         var opponentColour = _gameManager.PlayerIndex - 1;
 
-        _gameManager.PlayerPieces.ForEach(p => CreatePiece(p, _gameManager.PlayerIndex, .95f, 0));
-        _gameManager.OpponentPieces.ForEach(p => CreatePiece(p, opponentColour, .95f, 0));
+        _gameManager.PlayerPieces.ForEach(p => CreatePiece(p, _gameManager.PlayerIndex, 23, PieceBehaviour.TileHeight));
+        _gameManager.OpponentPieces.ForEach(p => CreatePiece(p, opponentColour, 23, PieceBehaviour.TileHeight));
         DisplayPlays();
     }
 
@@ -459,7 +459,7 @@ public class GameBehaviour : MonoBehaviour
         var gamePiece = (GameObject)Instantiate(Piece);
         var point = pieceIndex.ToCartesianCoordinate();
         gamePiece.transform.position = GetWorldCoordinates(point.X, point.Y, z, BoardLocation);
-        gamePiece.transform.localScale = new Vector3(scale, scale, scale);
+        gamePiece.transform.localScale = new Vector3(scale, scale, scale * 0.1f);
         
         var rotation = colour == 0 ? 0 : 180;
         var pieceTransform = gamePiece.transform;
