@@ -1,1 +1,1 @@
-d3,e3,f3,c5,b6,b5,f6,b7,d6,e7,d8,f8,d7,g5,h4,f2,f1,g7,a7,c7,b8,f7,h7,h6,h5
+d3,c3,c4,c5,f6,g7,b3,f3,h8,e6,f5,g6,d7,a2,g5,e7,b6,f4

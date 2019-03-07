@@ -459,7 +459,7 @@ public class GameBehaviour : MonoBehaviour
         var gamePiece = (GameObject)Instantiate(Piece);
         var point = pieceIndex.ToCartesianCoordinate();
         gamePiece.transform.position = GetWorldCoordinates(point.X, point.Y, z, BoardLocation);
-        gamePiece.transform.localScale = new Vector3(scale, scale, scale * 0.1f);
+        gamePiece.transform.localScale = new Vector3(scale, scale, scale * 0.2f);
         
         var rotation = colour == 0 ? 0 : 180;
         var pieceTransform = gamePiece.transform;
