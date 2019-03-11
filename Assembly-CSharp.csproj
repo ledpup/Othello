@@ -81,7 +81,6 @@
      <Compile Include="Assets\Model\Thor\ThorSaveGame.cs" />
      <Compile Include="Assets\Model\Tile.cs" />
      <Compile Include="Assets\Properties\AssemblyInfo.cs" />
-     <Compile Include="Assets\UI\ComboBox.cs" />
      <Compile Include="Assets\UI\GameController.cs" />
      <Compile Include="Assets\UI\GameOver.cs" />
      <Compile Include="Assets\UI\KeyboardCameraControl.cs" />
