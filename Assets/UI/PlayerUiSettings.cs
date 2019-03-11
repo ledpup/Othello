@@ -22,6 +22,7 @@ public class PlayerUiSettings
         WhiteIsHuman = false;
         ShowBoardCoordinates = true;
         ShowValidPlays = true;
+        ShowArchiveStats = true;
         UseTranspositionTable = true;
         UseOpeningBook = true;
         SearchDepth = 5;

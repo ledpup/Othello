@@ -8,7 +8,7 @@ PlayerSettings:
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
-  defaultScreenOrientation: 0
+  defaultScreenOrientation: 3
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -536,7 +536,21 @@ PlayerSettings:
   metroCertificateIssuer: Led Industries
   metroCertificateNotAfter: 80e253c4fef4d501
   metroApplicationDescription: Othello
-  wsaImages: {}
+  wsaImages:
+    65636: Assets/Materials/Othello 50.png
+    131172: Assets/Materials/Othello Wide 620.png
+    131272: Assets/Materials/Othello Wide 1240.png
+    2031640: Assets/Materials/Othello 24.png
+    2031716: Assets/Materials/Othello 44.png
+    2031816: Assets/Materials/Othello 88.png
+    2097252: Assets/Materials/Othello 71.png
+    2162788: Assets/Materials/Othello 150.png
+    2162838: Assets/Materials/Othello 225.png
+    2162888: Assets/Materials/Othello 300.png
+    2228324: Assets/Materials/Othello 310.png
+    2293860: Assets/Materials/Othello Wide 310.png
+    2293960: Assets/Materials/Othello Wide 620.png
+    2294160: Assets/Materials/Othello Wide 1240.png
   metroTileShortName: Open Othello
   metroTileShowName: 0
   metroMediumTileShowName: 0
