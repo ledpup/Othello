@@ -107,14 +107,11 @@ namespace Othello.Model
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException("fileName");
 
-            if (!File.Exists(fileName))
-                throw new FileNotFoundException();
-
-            var data = File.ReadAllLines(fileName);
+            var data = File.Exists(fileName) ? File.ReadAllLines(fileName) : null;
 
             var games = new List<GameManager>();
 			
-			if (!data.Any())
+			if (data == null || !data.Any())
 				games.Add(new GameManager());
 			else
             	data.ToList().ForEach(x => games.Add(Load(x)));

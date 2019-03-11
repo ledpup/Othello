@@ -322,12 +322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NewGameButton: {fileID: 1576425850}
-  Piece: {fileID: 1859248962, guid: 4cc24330645a16a4694b8895607dd136, type: 3}
-  BoardTile: {fileID: 100000, guid: ffc36a3c5dbbb6940ab26818f9ed9c5c, type: 3}
-  Text: {fileID: 100000, guid: e389af59487b5e84bbe2bdffc68be578, type: 3}
   ButtonPrefab: {fileID: 1172500090064164, guid: 27e3617f80036154c9a53340aa6cec29,
-    type: 3}
-  TogglePrefab: {fileID: 1135675252003746, guid: 4871b611dfd38c14ba169119798e914d,
     type: 3}
   GameOptionsPanel: {fileID: 1627090964}
   ViewOptionsPanel: {fileID: 403932286}
@@ -348,6 +343,22 @@ MonoBehaviour:
   ShowBoardCoordinatesToggle: {fileID: 805851432}
   ShowArchiveStatsToggle: {fileID: 80030197}
   _currentTurnIndex: 0
+  BoardTile: {fileID: 100000, guid: ffc36a3c5dbbb6940ab26818f9ed9c5c, type: 3}
+  Piece: {fileID: 1859248962, guid: 4cc24330645a16a4694b8895607dd136, type: 3}
+  Text: {fileID: 100000, guid: e389af59487b5e84bbe2bdffc68be578, type: 3}
+  GameArchive: []
+  IsReplaying: 0
+  IsViewingHistory: 0
+  PlayerUiSettings:
+    BlackIsHuman: 1
+    WhiteIsHuman: 0
+    ShowValidPlays: 1
+    ShowBoardCoordinates: 1
+    ShowArchiveStats: 0
+    UseTranspositionTable: 1
+    UseOpeningBook: 1
+    SearchMethod: 1
+    SearchDepth: 5
 --- !u!81 &147987952
 AudioListener:
   m_ObjectHideFlags: 0
@@ -773,7 +784,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.5000229, y: 15}
+  m_AnchoredPosition: {x: 0, y: 15}
   m_SizeDelta: {x: 60, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &231127829
@@ -1172,7 +1183,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -40, y: 0}
-  m_SizeDelta: {x: 65, y: 500}
+  m_SizeDelta: {x: 65, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &336771706
 MonoBehaviour:
@@ -3946,7 +3957,7 @@ GameObject:
   - component: {fileID: 1712249109}
   - component: {fileID: 1712249108}
   m_Layer: 0
-  m_Name: Point light
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3963,8 +3974,8 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
-  m_Range: 75
+  m_Intensity: 1.25
+  m_Range: 100
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -3978,11 +3989,11 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_Lightmapping: 1
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -3998,7 +4009,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712249107}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -20}
+  m_LocalPosition: {x: 5, y: -5, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

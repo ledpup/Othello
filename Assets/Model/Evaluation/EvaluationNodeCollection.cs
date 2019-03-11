@@ -16,7 +16,7 @@ namespace Othello.Model.Evaluation
         {
             _evaluationNodeBuffers.ForEach(x => x.LowestFreeSlot = 0);
             ComputerPlayer.TranspositionTable.Clear();
-            GameBehaviour.Transpositions = 0;
+            GameController.Transpositions = 0;
         }
 
         public EvaluationNodeReference AddAnalysisNode(ref EvaluationNode evaluationNode)

@@ -86,7 +86,7 @@ namespace Othello.Model.Evaluation
             {
                 if (ComputerPlayer.TranspositionTable.ContainsKey(gameState))
                 {
-                    GameBehaviour.Transpositions++;
+                    GameController.Transpositions++;
                     return ComputerPlayer.TranspositionTable[gameState];
                 }
                 return null;

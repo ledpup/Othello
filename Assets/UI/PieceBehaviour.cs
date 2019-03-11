@@ -28,7 +28,7 @@ public class PieceBehaviour : MonoBehaviour
     {
 		if (_drop)
 		{
-			var translation = Time.deltaTime * GameBehaviour.PieceStartingHeight * _gameSpeed * 4f;
+			var translation = Time.deltaTime * GameController.PieceStartingHeight * _gameSpeed * 4f;
 			transform.Translate(0, 0, translation * (float)_dropDirection);
 			if (transform.position.z + translation > TileHeight)
 			{
@@ -69,7 +69,7 @@ public class PieceBehaviour : MonoBehaviour
 		_flip = true;
 		_flippingDirection = playerIndex == 0 ? -1 : 1;
 
-	    var dropWait = GameBehaviour.PieceStartingHeight * .01f;
+	    var dropWait = GameController.PieceStartingHeight * .01f;
 	    var distanceWait = EuclideanDistance(Index.ToCartesianCoordinate(), placement.ToCartesianCoordinate());
 
         _flipWait = dropWait * distanceWait;

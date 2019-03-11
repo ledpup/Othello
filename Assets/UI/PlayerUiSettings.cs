@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Othello.Model;
+using UnityEngine;
 
 [Serializable]
 public class PlayerUiSettings
@@ -29,16 +30,14 @@ public class PlayerUiSettings
 
     internal static PlayerUiSettings Load()
     {
-        if (File.Exists(GamesController.SavePath + "PlayerUiSettings.cfg"))
-            return (PlayerUiSettings) Serialiser.DeSerializeObject(GamesController.SavePath + "PlayerUiSettings.cfg");
+        if (File.Exists(Application.persistentDataPath + "/PlayerUiSettings.cfg"))
+            return (PlayerUiSettings) Serialiser.DeSerializeObject(Application.persistentDataPath + "/PlayerUiSettings.cfg");
         return new PlayerUiSettings();
     }
 
     internal void Save()
     {
-        Serialiser.SerializeObject(GamesController.SavePath + "PlayerUiSettings.cfg", this);
+        Serialiser.SerializeObject(Application.persistentDataPath + "/PlayerUiSettings.cfg", this);
     }
-
-    
 }
 
