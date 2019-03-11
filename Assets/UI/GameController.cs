@@ -567,10 +567,14 @@ public class GameController : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        Save();
+    }
+
+    void Save()
+    {
         SaveSettings();
         SaveGame();
     }
-
     private void SaveGame()
     {
         if (_gameManager != null && Plays != null)
@@ -583,7 +587,7 @@ public class GameController : MonoBehaviour
     {
         if (!hasFocus)
         {
-            OnApplicationQuit();
+            Save();
         }
     }
     void OnTileSelected(short index)

@@ -316,7 +316,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147987950}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2372c0ded6af9846b6f9c8932d82183, type: 3}
   m_Name: 
@@ -349,16 +349,6 @@ MonoBehaviour:
   GameArchive: []
   IsReplaying: 0
   IsViewingHistory: 0
-  PlayerUiSettings:
-    BlackIsHuman: 1
-    WhiteIsHuman: 0
-    ShowValidPlays: 1
-    ShowBoardCoordinates: 1
-    ShowArchiveStats: 0
-    UseTranspositionTable: 1
-    UseOpeningBook: 1
-    SearchMethod: 1
-    SearchDepth: 5
 --- !u!81 &147987952
 AudioListener:
   m_ObjectHideFlags: 0
