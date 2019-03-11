@@ -460,11 +460,12 @@ public class GameController : MonoBehaviour
             StartButton.GetComponent<Image>().color = new Color(1, 1, 1);
         }
 
-        for (short i = 0; i < _playHistory.Keys.Count; i++)
+        foreach (var play in _playHistory.Values)
         {
+            var i = _playHistory.Single(x => x.Value == play).Key;
             if (_playHistory.ContainsKey(i))
             {
-                if (i < index || _playHistory.Keys.Count - 1 == index)
+                if (i < index || _playHistory.Keys.Count + 1 == index)
                 {
                     _playHistory[i].GetComponent<Image>().color = new Color(1, 1, 1);
                 }
