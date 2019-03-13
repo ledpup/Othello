@@ -540,7 +540,7 @@ public class GameController : MonoBehaviour
 
         if (IsReplaying)
         {
-            if (_stopwatch.ElapsedMilliseconds > 350 * (1 / _animationSpeed))
+            if (_stopwatch.ElapsedMilliseconds > 1000 * (1 / _animationSpeed))
             {
                 if (_gameManager.Turn < Plays.Count())
                 {
