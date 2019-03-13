@@ -414,8 +414,8 @@ public class GameController : MonoBehaviour
         if (Plays[turnIndex] == null) // Is the turn skipped?
             return;
 
-        var column = turnIndex % 2 == 0 ? 35 : 10;
-        var row = (turnIndex / 2) * 13;
+        var column = turnIndex % 2 == 0 ? 70 : 20;
+        var row = (turnIndex / 2) * 26;
 
         var playButton = Instantiate(ButtonPrefab);
         playButton.transform.SetParent(GamePlayHistoryPanel.transform);
@@ -423,7 +423,7 @@ public class GameController : MonoBehaviour
         playButton.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1);
         playButton.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1);
         playButton.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
-        playButton.transform.localPosition = new Vector3(-column + 22.5f, -row + 210);
+        playButton.transform.localPosition = new Vector3(-column + 45f, -row + 460);
 
         playButton.GetComponentInChildren<Text>().text = Plays[turnIndex].ToAlgebraicNotation().ToUpper();
         var uniqueTurnReference = turnIndex; // https://answers.unity.com/questions/1121756/how-to-addlistener-from-code-featuring-an-argument.html
@@ -885,7 +885,7 @@ public class GameController : MonoBehaviour
 
     static Vector3 GetWorldCoordinates(float x, float y, float z, Point boardLocation)
     {
-        return new Vector3(x * Spacing + (_width * Spacing * boardLocation.X * 1.075f) + 1f, -y * Spacing + (_height * Spacing * boardLocation.Y * 1.075f), z);
+        return new Vector3(x * Spacing + (_width * boardLocation.X) + 1f, -y * Spacing + (_height * boardLocation.Y) - 0.2f, z);
     }
 
     public void PlayToStart()
@@ -981,9 +981,9 @@ public class GameController : MonoBehaviour
 
         var stats = _positionStats[position].PlayStats[((short)InfoPlayIndex)];
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine(string.Format("{0}% of games play {1}", stats.PercentageOfGames, InfoPlayIndex.ToAlgebraicNotation()));
-        stringBuilder.AppendLine(string.Format("{0}% of games won by black", stats.PercentageOfWinsForBlack));
-        stringBuilder.AppendLine(string.Format("{0}% of games won by white", stats.PercentageOfWinsForWhite));
+        stringBuilder.AppendLine(string.Format("{0}% of games play {1}", stats.PercentageOfGames, InfoPlayIndex.ToAlgebraicNotation().ToUpper()));
+        stringBuilder.AppendLine(string.Format("{0}% of games won by BLACK", stats.PercentageOfWinsForBlack));
+        stringBuilder.AppendLine(string.Format("{0}% of games won by WHITE", stats.PercentageOfWinsForWhite));
         stringBuilder.AppendLine(string.Format("{0}% of games were draws", stats.PercentageOfDraws));
 
         return stringBuilder.ToString();
