@@ -395,8 +395,8 @@ public class GameController : MonoBehaviour
         {
             if (_playHistory[turnIndex].GetComponentInChildren<Text>().text != Plays[turnIndex].ToAlgebraicNotation().ToUpper())
             {
-                var removeUpTo = _playHistory.Count;
-                for (var i = turnIndex; i < removeUpTo; i ++)
+                var removeUpTo = _playHistory.Keys.Last();
+                for (var i = turnIndex; i <= removeUpTo; i ++)
                 {
                     if (_playHistory.ContainsKey(i))
                     {
