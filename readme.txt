@@ -11,4 +11,4 @@ The source code can be compiled in either Visual Studio or MonoDevelop. You will
 
 More information about the project can be found at http://ledpup.blogspot.com.au/search/label/Reversi.
 
-March 2019 update: published to the Microsoft Store, https://www.microsoft.com/store/apps/9WZDNCRDWZZ3.
+March 2019 update: published to the Microsoft Store at https://www.microsoft.com/store/apps/9WZDNCRDWZZ3.
