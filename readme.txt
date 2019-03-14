@@ -10,3 +10,5 @@ Othello is an implementation of the board-game Othello (aka Reversi). It was cre
 The source code can be compiled in either Visual Studio or MonoDevelop. You will need Unity 3.5 to be able to compile and run the GUI for the game. The unity project file is stored in the Assets folder. See http://unity3d.com/.
 
 More information about the project can be found at http://ledpup.blogspot.com.au/search/label/Reversi.
+
+March 2019 update: published to the Microsoft Store, https://www.microsoft.com/store/apps/9WZDNCRDWZZ3.
