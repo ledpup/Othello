@@ -154,7 +154,7 @@ public class GameController : MonoBehaviour
         _depthFirstSearch = new DepthFirstSearch();
 
         StopWatch = new Stopwatch();
-
+        _artificialDelay = new Stopwatch();
 
 
 
@@ -725,7 +725,7 @@ public class GameController : MonoBehaviour
     }
 
     private DepthFirstSearch _depthFirstSearch;
-    public Stopwatch StopWatch;
+    public Stopwatch StopWatch, _artificialDelay;
 
     void ComputerPlay()
     {
@@ -742,6 +742,8 @@ public class GameController : MonoBehaviour
             _computerStarted = true;
             StopWatch.Reset();
             StopWatch.Start();
+            _artificialDelay.Reset();
+            _artificialDelay.Start();
 
             DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
             var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _computerPlayer, ref _computerPlayIndex));
@@ -749,10 +751,17 @@ public class GameController : MonoBehaviour
         }
         else if (_computerPlayIndex != null)
         {
-            Play((short)_computerPlayIndex);
-            _computerStarted = false;
-            StopWatch.Stop();
-            _computerPlayIndex = null;
+            if (StopWatch.IsRunning)
+            {
+                StopWatch.Stop();
+            }
+            if (_artificialDelay.ElapsedMilliseconds > 3000)
+            {
+                _artificialDelay.Stop();
+                Play((short)_computerPlayIndex);
+                _computerStarted = false;
+                _computerPlayIndex = null;
+            }
         }
     }
 
