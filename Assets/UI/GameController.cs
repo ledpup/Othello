@@ -227,11 +227,9 @@ public class GameController : MonoBehaviour
     {
         RestartGame();
         GameoverPanel.SetActive(false);
-        var plays = _playHistory.Keys.Count;
-        for (short i = 0; i < plays; i++)
+        foreach (var play in _playHistory.Values)
         {
-            if (_playHistory.ContainsKey(i))
-                Destroy(_playHistory[i]);
+            Destroy(play);
         }
         _playHistory = new Dictionary<short, GameObject>();
         Messenger<short>.Broadcast("Notify tile", -1);
