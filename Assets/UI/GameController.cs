@@ -26,7 +26,8 @@ public class GameController : MonoBehaviour
     public Text PlayerTurn;
     public Text BlackAnalysis;
     public Text WhiteAnalysis;
-    public Dropdown SearchDepthDropDown;
+    public Dropdown MaxSearchDepthDropDown;
+    public Dropdown MaxSearchTimeDropDown;
     public Button StartButton;
     public Button ReplayButton;
 
@@ -85,7 +86,7 @@ public class GameController : MonoBehaviour
         set { _playerUiSettings.SearchMethod = value; }
     }
 
-    public int SearchDepth
+    public int MaxSearchDepth
     {
         get { return _computerPlayer.BaseSearchDepth; }
         set { _computerPlayer.BaseSearchDepth = value; }
@@ -153,13 +154,8 @@ public class GameController : MonoBehaviour
 
         _depthFirstSearch = new DepthFirstSearch();
 
-        StopWatch = new Stopwatch();
+        _searchTime = new Stopwatch();
         _artificialDelay = new Stopwatch();
-
-
-
-
-
 
         NewGameButton.GetComponent<Button>().onClick.AddListener(NewGame);
 
@@ -180,15 +176,76 @@ public class GameController : MonoBehaviour
 
         SkipTurnPanel.GetComponentInChildren<Button>().onClick.AddListener(delegate { SkipTurn(); });
 
-        var searchDepth = SearchDepthDropDown.GetComponent<Dropdown>();
-        searchDepth.value = _playerUiSettings.SearchDepth - 2;
-        searchDepth.onValueChanged.AddListener(delegate { ChangeSearchDepth(); });
+        var maxSearchDepth = MaxSearchDepthDropDown.GetComponent<Dropdown>();
+        maxSearchDepth.value = _playerUiSettings.MaxSearchDepth - 2;
+        maxSearchDepth.onValueChanged.AddListener(delegate { ChangeMaxSearchDepth(); });
+
+        var maxSearchTime = MaxSearchTimeDropDown.GetComponent<Dropdown>();
+        maxSearchTime.value = GetSearchTimeDropDownValue(_playerUiSettings.MaxSearchTime);
+        maxSearchTime.onValueChanged.AddListener(delegate { ChangeMaxSearchTime(); });
 
         ReplayButton.onClick.AddListener(delegate { ReplayGame(); });
 
         _playHistory = new Dictionary<short, GameObject>();
 
         PlayHistory();
+    }
+
+    private void ChangeMaxSearchTime()
+    {
+        _playerUiSettings.MaxSearchTime = GetSearchTime(MaxSearchTimeDropDown.GetComponent<Dropdown>().value);
+    }
+
+    private int GetSearchTimeDropDownValue(int maxSearchDepth)
+    {
+        switch (maxSearchDepth)
+        {
+            case 10000:
+                return 0;
+            case 15000:
+                return 1;
+            case 30000:
+                return 2;
+            case 45000:
+                return 3;
+            case 60000:
+                return 4;
+            case 90000:
+                return 5;
+            case 120000:
+                return 6;
+            case 180000:
+                return 7;
+            case 240000:
+                return 8;
+        }
+        return 9;
+    }
+
+    private int GetSearchTime(int dropDownValue)
+    {
+        switch (dropDownValue)
+        {
+            case 0:
+                return 10000;
+            case 1:
+                return 15000;
+            case 2:
+                return 30000;
+            case 3:
+                return 45000;
+            case 4:
+                return 60000;
+            case 5:
+                return 90000;
+            case 6:
+                return 120000;
+            case 7:
+                return 180000;
+            case 8:
+                return 240000;
+        }
+        return 300000;
     }
 
     private void ChangeReplayButtonText()
@@ -217,10 +274,10 @@ public class GameController : MonoBehaviour
         ColourPlayHistoryButtons((short)Plays.Count);
     }
 
-    private void ChangeSearchDepth()
+    private void ChangeMaxSearchDepth()
     {
-        _playerUiSettings.SearchDepth = SearchDepthDropDown.GetComponent<Dropdown>().value + 2;
-        SearchDepth = _playerUiSettings.SearchDepth;
+        _playerUiSettings.MaxSearchDepth = MaxSearchDepthDropDown.GetComponent<Dropdown>().value + 2;
+        MaxSearchDepth = _playerUiSettings.MaxSearchDepth;
     }
 
     void NewGame()
@@ -260,7 +317,7 @@ public class GameController : MonoBehaviour
 
     private void InfoGui()
     {
-        SearchInfo.text = "Search time: " + Math.Round(StopWatch.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + string.Format("{0:n0}", NodesSearched) + "\nTranspositions: " + string.Format("{0:n0}", Transpositions);
+        SearchInfo.text = "Search time: " + Math.Round(_searchTime.ElapsedMilliseconds / 1000D, 1) + " secs\nNodes searched: " + string.Format("{0:n0}", NodesSearched) + "\nTranspositions: " + string.Format("{0:n0}", Transpositions);
 
         var results = AnalysisInfo();
 
@@ -723,7 +780,8 @@ public class GameController : MonoBehaviour
     }
 
     private DepthFirstSearch _depthFirstSearch;
-    public Stopwatch StopWatch, _artificialDelay;
+    Stopwatch _searchTime;
+    Stopwatch _artificialDelay;
 
     void ComputerPlay()
     {
@@ -738,20 +796,20 @@ public class GameController : MonoBehaviour
         if (_computerPlayIndex == null && !_computerStarted && _statsAvailable)
         {
             _computerStarted = true;
-            StopWatch.Reset();
-            StopWatch.Start();
+            _searchTime.Reset();
+            _searchTime.Start();
             _artificialDelay.Reset();
             _artificialDelay.Start();
 
             DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
-            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _computerPlayer, ref _computerPlayIndex));
+            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _computerPlayer, ref _computerPlayIndex, _searchTime));
             thread.Start();
         }
         else if (_computerPlayIndex != null)
         {
-            if (StopWatch.IsRunning)
+            if (_searchTime.IsRunning)
             {
-                StopWatch.Stop();
+                _searchTime.Stop();
             }
             if (_artificialDelay.ElapsedMilliseconds > 3000)
             {

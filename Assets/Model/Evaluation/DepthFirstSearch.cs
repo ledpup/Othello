@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Othello.Model.Evaluation
@@ -12,7 +13,7 @@ namespace Othello.Model.Evaluation
         }
         private static EvaluationNodeCollection _analysisNodeCollection;
 
-        public short GetPlay(GameManager gameManager, ComputerPlayer computerPlayer)
+        public short GetPlay(GameManager gameManager, ComputerPlayer computerPlayer, Stopwatch searchTime)
         {
             var node = new EvaluationNode(ref gameManager.GameState, computerPlayer.GetWeights(gameManager.TurnExcludingPasses));
 
@@ -26,10 +27,10 @@ namespace Othello.Model.Evaluation
             //                                  });
 
             var maxDepth = computerPlayer.GetSearchDepth(gameManager.TurnExcludingPasses);
-			
+
             node.Children.ToList().ForEach(x =>
             {
-                var score = computerPlayer.Search(x, new SearchConfig(gameManager.PlayerIndex, 0, maxDepth, computerPlayer.PlayerUiSettings.UseTranspositionTable));
+                var score = computerPlayer.Search(x, new SearchConfig(gameManager.PlayerIndex, 0, maxDepth, computerPlayer.PlayerUiSettings.UseTranspositionTable, null, computerPlayer.MaxSearchTime), searchTime);
                 indexesAndScores.Add(new KeyValuePair<short, float>((short)x.PlayIndex, score));
             });
 
@@ -37,7 +38,7 @@ namespace Othello.Model.Evaluation
             return rankedScores.First().Key;
         }
 
-        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ComputerPlayer computerPlayer, ref short? computerPlayIndex)
+        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ComputerPlayer computerPlayer, ref short? computerPlayIndex, Stopwatch searchTime)
         {
             if (computerPlayer.PlayerUiSettings.UseOpeningBook)
             {
@@ -48,7 +49,7 @@ namespace Othello.Model.Evaluation
                 }
             }
 
-            computerPlayIndex = GetPlay(gameManager, computerPlayer);
+            computerPlayIndex = GetPlay(gameManager, computerPlayer, searchTime);
         }
 
         public short? BestBookPlay(Dictionary<short, PlayStats> playStats, int playerIndex)

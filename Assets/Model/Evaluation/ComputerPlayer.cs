@@ -38,13 +38,13 @@ namespace Othello.Model.Evaluation
         }
         public int BaseSearchDepth
         {
-            get { return PlayerUiSettings.SearchDepth; }
+            get { return PlayerUiSettings.MaxSearchDepth; }
             set
             {
-                PlayerUiSettings.SearchDepth = value;
+                PlayerUiSettings.MaxSearchDepth = value > 1 ? value : 2;
                 for (var i = 0; i < NumberOfGamePhases; i++)
                 {
-                    SearchDepth[i] = PlayerUiSettings.SearchDepth;
+                    MaxSearchDepth[i] = PlayerUiSettings.MaxSearchDepth;
                 }
                 SetDefaults();
             }   
@@ -57,8 +57,8 @@ namespace Othello.Model.Evaluation
 	    public readonly List<string> Strategies = new List<string>
 	                                    {"Pieces", "Mobility", "PotentialMobility", "Pattern", };
 
-	    private readonly int[] SearchDepth;
-
+	    private readonly int[] MaxSearchDepth;
+        public int MaxSearchTime;
 
         public ComputerPlayer() : this(new PlayerUiSettings())
         {}
@@ -69,11 +69,12 @@ namespace Othello.Model.Evaluation
 			
             NumberOfGamePhases = 60 / TurnsPerPhase;
 
-            SearchDepth = new int[NumberOfGamePhases];
+            MaxSearchDepth = new int[NumberOfGamePhases];
+            MaxSearchTime = playerUiSettings.MaxSearchTime;
             Weights = new Dictionary<string, float>[NumberOfGamePhases];
             for (var i = 0; i < NumberOfGamePhases; i++)
             {
-                SearchDepth[i] = PlayerUiSettings.SearchDepth;
+                MaxSearchDepth[i] = PlayerUiSettings.MaxSearchDepth;
                 Weights[i] = new Dictionary<string, float>();
                 Strategies.ForEach(x => Weights[i].Add(x, 1));
             }
@@ -85,8 +86,8 @@ namespace Othello.Model.Evaluation
 
         private void SetDefaults()
         {
-            SearchDepth[8] = 10;
-            SearchDepth[9] = 10;
+            MaxSearchDepth[8] = 10;
+            MaxSearchDepth[9] = 10;
 
             Weights[0]["Pieces"] = .1f;
             Weights[1]["Pieces"] = .1f;
@@ -119,7 +120,7 @@ namespace Othello.Model.Evaluation
 
         public int GetSearchDepth(short turn)
         {
-            return SearchDepth[Phase(turn)];
+            return MaxSearchDepth[Phase(turn)];
         }
 
         public void Draw()

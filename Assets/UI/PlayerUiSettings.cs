@@ -14,7 +14,8 @@ public class PlayerUiSettings
     public bool UseTranspositionTable;
     public bool UseOpeningBook;
     public int SearchMethod;
-    public int SearchDepth;
+    public int MaxSearchDepth;
+    public int MaxSearchTime;
 
     public PlayerUiSettings()
     {
@@ -25,8 +26,9 @@ public class PlayerUiSettings
         ShowArchiveStats = true;
         UseTranspositionTable = true;
         UseOpeningBook = true;
-        SearchDepth = 5;
+        MaxSearchDepth = 5;
         SearchMethod = 1;
+        MaxSearchTime = 300000;
     }
 
     internal static PlayerUiSettings Load()
