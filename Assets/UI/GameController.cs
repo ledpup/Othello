@@ -811,7 +811,7 @@ public class GameController : MonoBehaviour
             {
                 _searchTime.Stop();
             }
-            if (_artificialDelay.ElapsedMilliseconds > 3000)
+            if (_artificialDelay.ElapsedMilliseconds > 2500)
             {
                 _artificialDelay.Stop();
                 Play((short)_computerPlayIndex);
