@@ -6,17 +6,17 @@ namespace Othello.Model.Evaluation
 {
     public static class SearchAlgorithms
     {
-        public delegate float SearchMethod(INode node, SearchConfig searchConfig, Stopwatch searchTime);
+        public delegate float SearchMethod(INode node, SearchConfig searchConfig, Stopwatch searchTime = null);
         private const float Minimum = -1000000;
         public const int InitialAlphaBeta = 10000;
         public static readonly float[] Sign = new[] { 1f, -1 };
 
-        public static float NegaMax(INode node, SearchConfig config, Stopwatch searchTime)
+        public static float NegaMax(INode node, SearchConfig config, Stopwatch searchTime = null)
         {
             if (config.NodesSearched != null)
                 config.NodesSearched.Add(node);
 
-            if (node.IsGameOver || config.Depth == config.MaxDepth || searchTime.ElapsedMilliseconds > config.MaxSearchTime)
+            if (node.IsGameOver || config.Depth == config.MaxDepth || (searchTime != null && searchTime.ElapsedMilliseconds > config.MaxSearchTime))
             {
                 return Sign[config.Colour] * node.Value;
             }
@@ -42,17 +42,17 @@ namespace Othello.Model.Evaluation
             return bestScore;
         }
 
-        public static float AlphaBetaNegaMax(INode node, SearchConfig config, Stopwatch searchTime)
+        public static float AlphaBetaNegaMax(INode node, SearchConfig config, Stopwatch searchTime = null)
         {
             return AlphaBetaNegaMax(node, config, -InitialAlphaBeta, InitialAlphaBeta, searchTime);
         }
 
-        static float AlphaBetaNegaMax(INode node, SearchConfig config, float alpha, float beta, Stopwatch searchTime)
+        static float AlphaBetaNegaMax(INode node, SearchConfig config, float alpha, float beta, Stopwatch searchTime = null)
         {
             if (config.NodesSearched != null)
                 config.NodesSearched.Add(node);
 
-            if (node.IsGameOver || config.Depth == config.MaxDepth || searchTime.ElapsedMilliseconds > config.MaxSearchTime)
+            if (node.IsGameOver || config.Depth == config.MaxDepth || (searchTime != null && searchTime.ElapsedMilliseconds > config.MaxSearchTime))
                 return Sign[config.Colour] * node.Value;
 
             ProcessNode(node, config.Depth, config.MaxDepth);
@@ -102,17 +102,17 @@ namespace Othello.Model.Evaluation
                     ComputerPlayer.TranspositionTable.Add(gameState, score);
         }
 
-        public static float NegaScout(INode node, SearchConfig config, Stopwatch searchTime)
+        public static float NegaScout(INode node, SearchConfig config, Stopwatch searchTime = null)
         {
             return NegaScout(node, config, -InitialAlphaBeta, InitialAlphaBeta, searchTime);
         }
 
-        static float NegaScout(INode node, SearchConfig config, float alpha, float beta, Stopwatch searchTime)
+        static float NegaScout(INode node, SearchConfig config, float alpha, float beta, Stopwatch searchTime = null)
         {
             if (config.NodesSearched != null)
                 config.NodesSearched.Add(node);
 
-            if (node.IsGameOver || config.Depth == config.MaxDepth || searchTime.ElapsedMilliseconds > config.MaxSearchTime)
+            if (node.IsGameOver || config.Depth == config.MaxDepth || (searchTime != null && searchTime.ElapsedMilliseconds > config.MaxSearchTime))
                 return Sign[config.Colour] * node.Value;
 
             ProcessNode(node, config.Depth, config.MaxDepth);

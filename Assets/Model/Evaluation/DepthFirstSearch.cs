@@ -13,7 +13,7 @@ namespace Othello.Model.Evaluation
         }
         private static EvaluationNodeCollection _analysisNodeCollection;
 
-        public short GetPlay(GameManager gameManager, ComputerPlayer computerPlayer, Stopwatch searchTime)
+        public short GetPlay(GameManager gameManager, ComputerPlayer computerPlayer, Stopwatch searchTime = null)
         {
             var node = new EvaluationNode(ref gameManager.GameState, computerPlayer.GetWeights(gameManager.TurnExcludingPasses));
 
@@ -38,7 +38,7 @@ namespace Othello.Model.Evaluation
             return rankedScores.First().Key;
         }
 
-        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ComputerPlayer computerPlayer, ref short? computerPlayIndex, Stopwatch searchTime)
+        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ComputerPlayer computerPlayer, ref short? computerPlayIndex, Stopwatch searchTime = null)
         {
             if (computerPlayer.PlayerUiSettings.UseOpeningBook)
             {
