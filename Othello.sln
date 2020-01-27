@@ -1,7 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.Model", "Othello.Model\Othello.Model.csproj", "{AA0D0C66-E87D-4AE4-AD02-CAEED5F25087}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.Core", "Othello.Core\Othello.Core.csproj", "{65672CD5-EA62-4FEA-A205-FDB44960CDC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,14 @@ Global
 		{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA0D0C66-E87D-4AE4-AD02-CAEED5F25087}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA0D0C66-E87D-4AE4-AD02-CAEED5F25087}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA0D0C66-E87D-4AE4-AD02-CAEED5F25087}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA0D0C66-E87D-4AE4-AD02-CAEED5F25087}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65672CD5-EA62-4FEA-A205-FDB44960CDC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65672CD5-EA62-4FEA-A205-FDB44960CDC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65672CD5-EA62-4FEA-A205-FDB44960CDC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65672CD5-EA62-4FEA-A205-FDB44960CDC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,21 +1,22 @@
 ﻿using System;
 using System.IO;
 using Othello.Model;
+using Othello.Core;
 using UnityEngine;
 
 [Serializable]
-public class PlayerUiSettings
+public class PlayerUiSettings : IPlayerUiSettings
 {
-    public bool BlackIsHuman;
-    public bool WhiteIsHuman;
-	public bool ShowValidPlays;
-	public bool ShowBoardCoordinates;
-    public bool ShowArchiveStats;
-    public bool UseTranspositionTable;
-    public bool UseOpeningBook;
-    public int SearchMethod;
-    public int MaxSearchDepth;
-    public int MaxSearchTime;
+    public bool BlackIsHuman { get; set; }
+    public bool WhiteIsHuman { get; set; }
+    public bool ShowValidPlays { get; set; }
+    public bool ShowBoardCoordinates { get; set; }
+    public bool ShowArchiveStats { get; set; }
+    public bool UseTranspositionTable { get; set; }
+    public bool UseOpeningBook { get; set; }
+    public int SearchMethod { get; set; }
+    public int MaxSearchDepth { get; set; }
+    public int MaxSearchTime { get; set; }
 
     public PlayerUiSettings()
     {

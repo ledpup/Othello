@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Othello.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,7 +51,7 @@ namespace Othello.Model.Evaluation
             }   
         }
 		
-		public PlayerUiSettings PlayerUiSettings;
+		public IPlayerUiSettings PlayerUiSettings;
 
         public static Dictionary<GameState, float> TranspositionTable;
 
@@ -60,10 +61,7 @@ namespace Othello.Model.Evaluation
 	    private readonly int[] MaxSearchDepth;
         public int MaxSearchTime;
 
-        public ComputerPlayer() : this(new PlayerUiSettings())
-        {}
-
-        public ComputerPlayer(PlayerUiSettings playerUiSettings)
+        public ComputerPlayer(IPlayerUiSettings playerUiSettings)
         {
 			PlayerUiSettings = playerUiSettings;
 			

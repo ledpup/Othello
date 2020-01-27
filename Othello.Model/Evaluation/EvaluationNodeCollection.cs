@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using Othello.Core;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Othello.Model.Evaluation
 {
 	public class EvaluationNodeCollection
-	{
+    {
         private readonly List<EvaluationNodeBuffer> _evaluationNodeBuffers;
-
+        
         public EvaluationNodeCollection()
         {
             _evaluationNodeBuffers = new List<EvaluationNodeBuffer>();
         }
 
-        public void ClearMemory()
+        public void ClearMemory(IGameController gameController)
         {
             _evaluationNodeBuffers.ForEach(x => x.LowestFreeSlot = 0);
             ComputerPlayer.TranspositionTable.Clear();
-            GameController.Transpositions = 0;
+            gameController.Transpositions = 0;
         }
 
         public EvaluationNodeReference AddAnalysisNode(ref EvaluationNode evaluationNode)

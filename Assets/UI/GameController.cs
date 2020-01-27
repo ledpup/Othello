@@ -9,8 +9,9 @@ using System.Diagnostics;
 using System.Text;
 using Othello.Model.Evaluation;
 using System.Threading;
+using Othello.Core;
 
-public class GameController : MonoBehaviour
+public class GameController : MonoBehaviour, IGameController
 {
     public GameObject NewGameButton;
     public GameObject ButtonPrefab;
@@ -30,7 +31,7 @@ public class GameController : MonoBehaviour
     public Dropdown MaxSearchTimeDropDown;
     public Button StartButton;
     public Button ReplayButton;
-
+   
     private PlayerUiSettings _playerUiSettings;
     public Toggle ShowValidPlaysToggle, ShowBoardCoordinatesToggle, ShowArchiveStatsToggle;
 
@@ -801,8 +802,8 @@ public class GameController : MonoBehaviour
             _artificialDelay.Reset();
             _artificialDelay.Start();
 
-            DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
-            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _computerPlayer, ref _computerPlayIndex, _searchTime));
+            DepthFirstSearch.AnalysisNodeCollection.ClearMemory(this);
+            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _computerPlayer, ref _computerPlayIndex, this, _searchTime));
             thread.Start();
         }
         else if (_computerPlayIndex != null)
@@ -1030,7 +1031,7 @@ public class GameController : MonoBehaviour
         return _gameManager.AnalysisInfo(InfoPlayIndex, _computerPlayer);
     }
 
-    public static int Transpositions { get; set; }
+    public int Transpositions { get; set; }
 
     internal string ArchiveInfo()
     {
