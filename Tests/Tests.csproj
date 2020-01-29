@@ -111,6 +111,10 @@
       <Project>{e88425e7-8db3-f7ee-3ac7-7f5a7a72f3e8}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Othello.Model\Othello.Model.csproj">
+      <Project>{72a7e5ac-4613-4a56-a571-7fabcf281b8e}</Project>
+      <Name>Othello.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

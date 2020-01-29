@@ -24,6 +24,9 @@ namespace Othello.Model
 
             GameState = GameState.NewGame();
 
+            BlackName = "Black";
+            WhiteName = "White";
+
             Plays = new List<short?>();
 
             plays.ForEach(x =>
@@ -31,9 +34,6 @@ namespace Othello.Model
                 PlacePiece(x);
                 NextTurn();
             });
-
-            BlackName = "Black";
-            WhiteName = "White";
 		}
 		
 		public bool HasPlays { get { return GameState.HasPlays; } }
@@ -46,7 +46,7 @@ namespace Othello.Model
 		public void PlacePiece(short? tileIndex)
 		{
 			if (GameState.HasPlays && tileIndex == null)
-				throw new Exception(string.Format("{0} can not pass.", Player));
+				throw new Exception(string.Format("{0} can not pass on their turn.", Player));
 					
 			Plays.Add(tileIndex);
 
@@ -56,7 +56,7 @@ namespace Othello.Model
 			var play = (short)tileIndex;
 			
 			if (!CanPlay(play))
-				throw new Exception(string.Format("Play to {0} (index {1}) is not a valid play.", tileIndex.ToAlgebraicNotation(), play));
+				throw new Exception(string.Format("Play to {0} is not a valid play.", tileIndex.ToAlgebraicNotation().ToUpper()));
 			
 			FlippedPieces = GameState.PlacePiece(play);
 		    Placement = play;
