@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Othello.Model;
 using Othello.Model.Evaluation;
 
-namespace Tests
+namespace Othello.UnitTests
 {
     [TestClass]
     public class PatternsTest

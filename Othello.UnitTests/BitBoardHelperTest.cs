@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Othello.Model;
 
-namespace Tests
+namespace Othello.UnitTests
 {
     /// <summary>
     ///This is a test class for BitBoardTest and is intended

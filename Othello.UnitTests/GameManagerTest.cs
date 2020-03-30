@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Othello.Model;
 
-namespace Tests
+namespace Othello.UnitTests
 {
     [TestClass]
     public class GameManagerTest

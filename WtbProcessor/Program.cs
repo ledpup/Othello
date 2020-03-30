@@ -6,7 +6,7 @@ using System.Linq;
 using Othello.Model;
 using Othello.Model.Evaluation;
 
-namespace WtbProcessor
+namespace ComputerTrainer
 {
     class Program
     {
@@ -15,7 +15,7 @@ namespace WtbProcessor
             var gameArchive = File.ReadAllLines("WthorOpeningBook.txt").ToList();
             var gameStateStats = new GameStateStats();
 
-            var computerPlayers = new[] { new ComputerPlayer(), new ComputerPlayer() };
+            var computerPlayers = new[] { new ComputerPlayer(new PlayerUiSettings()), new ComputerPlayer(new PlayerUiSettings()) };
 
             var random = new Random();
 
@@ -95,8 +95,10 @@ namespace WtbProcessor
 
                 gameStateStats.GenerateStats(gameManager, gameArchive);
 
-                DepthFirstSearch.AnalysisNodeCollection.ClearMemory();
-                depthFirstSearch.GetPlayWithBook(gameManager, gameStateStats, computerPlayers[gameManager.PlayerIndex], ref computerPlayIndex);
+                var gameController = new GameController();
+
+                DepthFirstSearch.AnalysisNodeCollection.ClearMemory(gameController);
+                depthFirstSearch.GetPlayWithBook(gameManager, gameStateStats, computerPlayers[gameManager.PlayerIndex], gameController, ref computerPlayIndex);
 
                 //Console.Write(gameManager.Turn);
                 //gameManager.Draw();

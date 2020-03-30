@@ -39,7 +39,7 @@ namespace Othello.Model.Evaluation
             return rankedScores.First().Key;
         }
 
-        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ComputerPlayer computerPlayer, ref short? computerPlayIndex, IGameController gameController, Stopwatch searchTime = null)
+        public void GetPlayWithBook(GameManager gameManager, GameStateStats gameStateStats, ComputerPlayer computerPlayer, IGameController gameController, ref short? computerPlayIndex, Stopwatch searchTime = null)
         {
             if (computerPlayer.PlayerUiSettings.UseOpeningBook)
             {

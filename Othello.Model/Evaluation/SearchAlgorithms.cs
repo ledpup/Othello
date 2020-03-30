@@ -105,10 +105,10 @@ namespace Othello.Model.Evaluation
 
         public static float NegaScout(INode node, SearchConfig config, IGameController gameController, Stopwatch searchTime = null)
         {
-            return NegaScout(node, config, -InitialAlphaBeta, InitialAlphaBeta, searchTime);
+            return NegaScout(node, config, -InitialAlphaBeta, InitialAlphaBeta, gameController, searchTime);
         }
 
-        static float NegaScout(INode node, SearchConfig config, float alpha, float beta, Stopwatch searchTime = null)
+        static float NegaScout(INode node, SearchConfig config, float alpha, float beta, IGameController gameController, Stopwatch searchTime = null)
         {
             if (config.NodesSearched != null)
                 config.NodesSearched.Add(node);
@@ -129,13 +129,16 @@ namespace Othello.Model.Evaluation
             var firstChildSearched = false;
             foreach (var child in orderedChildren)
             {
-                var t = -NegaScout(child, config, -b, -alpha, searchTime);
-                if ((t > alpha) && (t < beta) && firstChildSearched)
+                var gameState = child.GameState;
+
+                var score = GetScore(config.UseTranspositionTable, gameState, gameController) ?? -NegaScout(child, config, -b, -alpha, gameController, searchTime);
+
+                if ((score > alpha) && (score < beta) && firstChildSearched)
                 {
-                    t = -NegaScout(child, config, -beta, -alpha, searchTime);
+                    score = -NegaScout(child, config, -beta, -alpha, gameController, searchTime);
                 }
 
-                alpha = Math.Max(alpha, t);
+                alpha = Math.Max(alpha, score);
 
                 if (alpha >= beta)
                     return alpha;
