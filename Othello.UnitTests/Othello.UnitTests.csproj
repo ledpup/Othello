@@ -9,8 +9,8 @@
     <ProjectGuid>{591EF001-F7EF-4257-ABD4-4F0D7817394D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
+    <RootNamespace>Othello.UnitTests</RootNamespace>
+    <AssemblyName>Othello.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -74,9 +74,11 @@
     <Compile Include="DepthFirstSearchTest.cs" />
     <Compile Include="BitBoardHelperTest.cs" />
     <Compile Include="AnalysisNodeTest.cs" />
+    <Compile Include="UiClasses\GameController.cs" />
     <Compile Include="PatternsTest.cs" />
     <Compile Include="StatsTest.cs" />
     <Compile Include="TestNode.cs" />
+    <Compile Include="UiClasses\PlayerUiSettings.cs" />
     <Compile Include="ValidPlaysTest.cs" />
     <Compile Include="GameManagerTest.cs" />
     <Compile Include="PlayResolutionTest.cs" />
@@ -107,9 +109,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Assembly-CSharp.csproj">
-      <Project>{e88425e7-8db3-f7ee-3ac7-7f5a7a72f3e8}</Project>
-      <Name>Assembly-CSharp</Name>
+    <ProjectReference Include="..\Othello.Core\Othello.Core.csproj">
+      <Project>{CC33DBEE-04CE-4B6E-8174-6891634D9FCA}</Project>
+      <Name>Othello.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Othello.Model\Othello.Model.csproj">
       <Project>{72a7e5ac-4613-4a56-a571-7fabcf281b8e}</Project>

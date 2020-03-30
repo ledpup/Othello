@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Othello.Model;
 
-namespace Tests
+namespace Othello.UnitTests
 {
     /// <summary>
     ///This is a test class for MoveResolutionTest and is intended
