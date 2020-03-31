@@ -12,7 +12,7 @@ namespace Othello.Model
 			if (string.IsNullOrEmpty(algebraicNotation))
 				return null;
 			
-            var charArray = algebraicNotation.ToCharArray();
+            var charArray = algebraicNotation.ToLower().ToCharArray();
             var column = int.Parse(((char)(charArray[0] - 48)).ToString());
             var row = int.Parse(charArray[1].ToString());
 
@@ -51,7 +51,7 @@ namespace Othello.Model
             var column = playIndex / 8 + 1;
             var row = playIndex % 8 + 1;
 
-            return ((char)(row + 96)).ToString() + column;
+            return ((char)(row + 64)).ToString() + column;
         }
 		
         public static string ToAlgebraicNotation(this short playIndex)

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Othello.Online.DataModel;
+using Othello.Online.DataTransferObject;
 
 namespace Othello.Online.Controllers
 {
@@ -36,15 +37,23 @@ namespace Othello.Online.Controllers
         }
 
         [HttpPost]
-        public async Task CreateGame(Game game)
+        public async Task CreateGame(GameDto game)
         {
-            await _othelloRepository.CreateGame(game);
+            await _othelloRepository.CreateGameAsync(game);
+        }
+
+        [HttpPatch]
+        public async Task UpdateGame(Guid gameId, string play)
+        {
+            await _othelloRepository.UpdateGameAsync(gameId, play);
         }
 
         [HttpGet]
-        public async Task<Game> GetGameAsync(Guid gameId)
+        public async Task<GameDto> GetGameAsync(Guid gameId)
         {
-            return await _othelloRepository.GetGameAsync(gameId);
+            var dto = await _othelloRepository.GetGameDtoAsync(gameId);
+
+            return dto;
         }
     }
 }

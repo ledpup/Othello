@@ -67,6 +67,11 @@ namespace Othello.Model
             GameState = GameState.NextTurn();
 		}
 
+        public string SerialiseState()
+        {
+            return SerialsePlays(Plays);
+        }
+
 		public static string SerialsePlays(List<short?> plays)
 		{
             if (plays.Count == 0)

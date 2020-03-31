@@ -11,7 +11,7 @@ namespace Othello.UnitTests
     public class GameManagerTest
     {
         private List<short?> _tamenoriPlays = new List<short?> { 26, 20, 45, 44, 37, 34, 29, 46, 53, 19 };
-        private string _tamenori = "c4,e3,f6,e6,f5,c5,f4,g6,f7,d3";
+        private string _tamenori = "C4,E3,F6,E6,F5,C5,F4,G6,F7,D3";
 
         [TestMethod]
         public void CreateNewGame()

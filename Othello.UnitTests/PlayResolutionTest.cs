@@ -193,32 +193,32 @@ namespace Othello.UnitTests
             var gameState = GameState.NewGame();
 
             var actual = Play.PotentialMobilityOneDirection(Play.Left, gameState.PlayerPieces, gameState.EmptySquares);
-            var expected = "c5";
+            var expected = "C5";
             Assert.AreEqual(expected, ((short?)actual.Indices().Single()).ToAlgebraicNotation());
 
             actual = Play.PotentialMobilityOneDirection(Play.UpLeft, gameState.PlayerPieces, gameState.EmptySquares);
-            Assert.AreEqual("d3", ((short?)(actual.Indices().ToList()[0])).ToAlgebraicNotation());
-            Assert.AreEqual("c4", ((short?)(actual.Indices().ToList()[1])).ToAlgebraicNotation());
+            Assert.AreEqual("D3", ((short?)(actual.Indices().ToList()[0])).ToAlgebraicNotation());
+            Assert.AreEqual("C4", ((short?)(actual.Indices().ToList()[1])).ToAlgebraicNotation());
 
             actual = Play.PotentialMobilityOneDirection(Play.Up, gameState.PlayerPieces, gameState.EmptySquares);
-            expected = "e3";
+            expected = "E3";
             Assert.AreEqual(expected, ((short?)actual.Indices().Single()).ToAlgebraicNotation());
 
 
             actual = Play.PotentialMobility(gameState.PlayerPieces, gameState.EmptySquares);
             var plays = actual.Indices().Select(x => ((short?)x).ToAlgebraicNotation()).ToList();
             Assert.AreEqual(10, plays.Count);
-            Assert.IsTrue(plays.Contains("d3"));
-            Assert.IsTrue(plays.Contains("e3"));
-            Assert.IsTrue(plays.Contains("f3"));
-            Assert.IsTrue(plays.Contains("f4"));
-            Assert.IsTrue(plays.Contains("f5"));
-            Assert.IsTrue(plays.Contains("e6"));
-            Assert.IsTrue(plays.Contains("d6"));
-            Assert.IsTrue(plays.Contains("c6"));
-            Assert.IsTrue(plays.Contains("c5"));
-            Assert.IsTrue(plays.Contains("c4"));
-            Assert.IsTrue(plays.Contains("c4"));
+            Assert.IsTrue(plays.Contains("D3"));
+            Assert.IsTrue(plays.Contains("E3"));
+            Assert.IsTrue(plays.Contains("F3"));
+            Assert.IsTrue(plays.Contains("F4"));
+            Assert.IsTrue(plays.Contains("F5"));
+            Assert.IsTrue(plays.Contains("E6"));
+            Assert.IsTrue(plays.Contains("D6"));
+            Assert.IsTrue(plays.Contains("C6"));
+            Assert.IsTrue(plays.Contains("C5"));
+            Assert.IsTrue(plays.Contains("C4"));
+            Assert.IsTrue(plays.Contains("C4"));
         }
     }
 }
