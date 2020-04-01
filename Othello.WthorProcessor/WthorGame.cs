@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Othello.ThorProcessor
+namespace Othello.WthorProcessor
 {
-    public class ThorGame
+    public class WthorGame
     {
-        public ThorGame()
+        public WthorGame()
         {
             Plays = new List<string>();
         }

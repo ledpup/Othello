@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Othello.ThorProcessor
+namespace Othello.WthorProcessor
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var players = ThorFileReader.ReadPlayersFile(@"DataFiles\WTHOR.JOU");
-            var tournaments = ThorFileReader.ReadTournamentFile(@"DataFiles\WTHOR.TRN");
+            var players = WthorFileLoader.ReadPlayersFile(@"DataFiles\WTHOR.JOU");
+            var tournaments = WthorFileLoader.ReadTournamentFile(@"DataFiles\WTHOR.TRN");
 
             var files = Directory.GetFiles(@"DataFiles", "*.wtb").OrderBy(x => x).ToList();
             if (!files.Any())
             {
                 throw new Exception("No Thor DB files can be found.");
             }
-            var games = new List<ThorGame>();
+            var games = new List<WthorGame>();
 
             files.ForEach(x => 
             {
-                games.AddRange(ThorFileReader.ReadThorGameFile(x));
+                games.AddRange(WthorFileLoader.ReadWthorGameFile(x));
             });
 
-            var serialisedGames = ThorFileReader.BuildOpeningBook(games, tournaments, players);
+            var serialisedGames = WthorFileLoader.BuildOpeningBook(games, tournaments, players);
         }
     }
 }

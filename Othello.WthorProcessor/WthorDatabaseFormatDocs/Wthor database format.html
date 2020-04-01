@@ -1,0 +1,306 @@
+
+<!-- saved from url=(0051)https://translate.googleusercontent.com/translate_f -->
+<html lang="en" class="translated-ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="google" content="notranslate">
+<meta http-equiv="X-Translated-By" content="Google"><link href="https://translate.googleusercontent.com/Format_WThor.pdf" hreflang="fr" rel="alternate machine-translated-from"><link href="./Wthor database format_files/css" rel="stylesheet" type="text/css"><!--<base href="" target="_top">--><base href="." target="_top">
+
+<meta name="Creator" content="Word 5.1a 5.1a">
+<meta name="CreationDate" content="D:20010628101445">
+<meta name="Producer" content="[ClibPDF Library 2.02-r1-1] PrintToPDF 2.1.3">
+<meta name="Author" content="Nicolet">
+<meta name="Title" content="base_61.doc.pdf">
+<meta name="Keywords" content="UNREGISTERED">
+<title>Wthor database format</title>
+<link type="text/css" rel="stylesheet" charset="UTF-8" href="./Wthor database format_files/translateelement.css"><script type="text/javascript" charset="UTF-8" src="./Wthor database format_files/main.js.download"></script><script type="text/javascript" charset="UTF-8" src="./Wthor database format_files/element_main.js.download"></script></head><body bgcolor="#ffffff" vlink="blue" link="blue">
+      <iframe src="./Wthor database format_files/translate_un.html" width="0" height="0" frameborder="0" style="width:0px;height:0px;border:0px;display:none;"></iframe>
+<table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="left"><font face="arial,sans-serif"><a name="1"><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Page 1</font></font></b></a></font></td></tr></tbody></table><font size="4" face="Times"><span style="font-size:25px;font-family:Times">
+<div style="position:absolute;top:261;left:363"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Computer science</font></font></b></nobr></div>
+</span></font>
+<font size="7" face="Times"><span style="font-size:52px;font-family:Times">
+<div style="position:absolute;top:289;left:129"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wthor database format</font></font></b></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:342;left:512"><nobr><i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">by Sylvain Quin and Stéphane Nicolet</font></font></i></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:382;left:218"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">General</font></font></b></nobr></div>
+<div style="position:absolute;top:382;left:503"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Game files on 8x8 board</font></font></b></nobr></div>
+<div style="position:absolute;top:415;left:105"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The base of Wthor is of PC / Intel origin. </font><font style="vertical-align: inherit;">Also, the</font></font></nobr></div>
+<div style="position:absolute;top:432;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">are Word and Longint data stored at</font></font></nobr></div>
+<div style="position:absolute;top:448;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Intel format, ie the least significant byte in front.</font></font></nobr></div>
+<div style="position:absolute;top:415;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File name: WTH _ ####. WTB</font></font></nobr></div>
+<div style="position:absolute;top:432;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Each record (68 bytes) contains:</font></font></nobr></div>
+<div style="position:absolute;top:465;left:458"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wording</font></font></b></nobr></div>
+<div style="position:absolute;top:465;left:671"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cut</font></font></b></nobr></div>
+<div style="position:absolute;top:465;left:735"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Type</font></font></b></nobr></div>
+<div style="position:absolute;top:481;left:236"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">On your mind</font></font></b></nobr></div>
+<div style="position:absolute;top:481;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tournament label number</font></font></nobr></div>
+<div style="position:absolute;top:481;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:481;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:498;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Black player number</font></font></nobr></div>
+<div style="position:absolute;top:498;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:498;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:514;left:105"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">All files in the Wthor database</font></font></nobr></div>
+<div style="position:absolute;top:531;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">have a 16-byte header, followed by a certain</font></font></nobr></div>
+<div style="position:absolute;top:547;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">number of records all having the same size.</font></font></nobr></div>
+<div style="position:absolute;top:564;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The header is as follows:</font></font></nobr></div>
+<div style="position:absolute;top:514;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Player number White</font></font></nobr></div>
+<div style="position:absolute;top:514;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:514;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:531;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Number of black pawns (real score) 1</font></font></nobr></div>
+<div style="position:absolute;top:531;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:547;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Theoretical score</font></font></nobr></div>
+<div style="position:absolute;top:547;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:547;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:564;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">List of moves</font></font></nobr></div>
+<div style="position:absolute;top:564;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">60</font></font></nobr></div>
+<div style="position:absolute;top:564;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte []</font></font></nobr></div>
+<div style="position:absolute;top:597;left:87"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wording</font></font></b></nobr></div>
+<div style="position:absolute;top:597;left:315"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Size Type</font></font></b></nobr></div>
+<div style="position:absolute;top:613;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Century of file creation</font></font></nobr></div>
+<div style="position:absolute;top:613;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:613;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:630;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File creation year</font></font></nobr></div>
+<div style="position:absolute;top:630;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:630;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:646;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File creation month</font></font></nobr></div>
+<div style="position:absolute;top:646;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:646;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:663;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File creation day</font></font></nobr></div>
+<div style="position:absolute;top:663;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:663;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:679;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Number of records N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font></nobr></div>
+<div style="position:absolute;top:679;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4</font></font></nobr></div>
+<div style="position:absolute;top:679;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Longint</font></font></nobr></div>
+<div style="position:absolute;top:696;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Number of records N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></font></nobr></div>
+<div style="position:absolute;top:696;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:696;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:712;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Year of the parties</font></font></nobr></div>
+<div style="position:absolute;top:712;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:712;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:729;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Parameter P </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> : game board size</font></font></nobr></div>
+<div style="position:absolute;top:729;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:729;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:745;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Parameter P </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> : type of parts</font></font></nobr></div>
+<div style="position:absolute;top:745;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:745;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:763;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Parameter P </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> : depth</font></font></nobr></div>
+<div style="position:absolute;top:763;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:763;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:780;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">X</font></font></nobr></div>
+<div style="position:absolute;top:780;left:315"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:780;left:360"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">(Reserve)</font></font></nobr></div>
+<div style="position:absolute;top:597;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- There is a file of games per year. </font><font style="vertical-align: inherit;">In a file</font></font></nobr></div>
+<div style="position:absolute;top:613;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">of parts, these are stored in any order</font></font></nobr></div>
+<div style="position:absolute;top:630;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">conch, but normally grouped by tournament.</font></font></nobr></div>
+<div style="position:absolute;top:646;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The #### of the file name are the number of the year.</font></font></nobr></div>
+<div style="position:absolute;top:663;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The theoretical score contains the score (in number of</font></font></nobr></div>
+<div style="position:absolute;top:679;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">pawns) of the Black player on a perfect final. </font><font style="vertical-align: inherit;">This final</font></font></nobr></div>
+<div style="position:absolute;top:696;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">is calculated on the position whose number of empty boxes</font></font></nobr></div>
+<div style="position:absolute;top:712;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">is equal to parameter 3 (depth). </font><font style="vertical-align: inherit;">For example, for</font></font></nobr></div>
+<div style="position:absolute;top:729;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">a depth of 22, the perfect finish begins at</font></font></nobr></div>
+<div style="position:absolute;top:745;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">move 39, that is, once move 38 is played.</font></font></nobr></div>
+<div style="position:absolute;top:762;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The list of moves starts at move 1.f5.</font></font></nobr></div>
+<div style="position:absolute;top:778;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The shots are stored in chronological order from the</font></font></nobr></div>
+<div style="position:absolute;top:795;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">part according to the following format: number the lines and co-</font></font></nobr></div>
+<div style="position:absolute;top:811;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">lonnes from 1 to 8 and perform the operation =&gt; column + (10 *</font></font></nobr></div>
+<div style="position:absolute;top:828;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">line). </font><font style="vertical-align: inherit;">Ex: a1 = 11, h1 = 18, a8 = 81, h8 = 88.</font></font></nobr></div>
+<div style="position:absolute;top:811;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The first 4 bytes represent a signature allowing-</font></font></nobr></div>
+<div style="position:absolute;top:828;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">both to avoid overwriting a file with a larger version</font></font></nobr></div>
+<div style="position:absolute;top:844;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Ancient. </font><font style="vertical-align: inherit;">For this, the programs must allow</font></font></nobr></div>
+<div style="position:absolute;top:861;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">an update of the directory (or folder) other than</font></font></nobr></div>
+<div style="position:absolute;top:877;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">by a system copy.</font></font></nobr></div>
+<div style="position:absolute;top:844;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- File size in bytes: 16 + N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> * 68.</font></font></nobr></div>
+<div style="position:absolute;top:877;left:494"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Game files on 10x10 set</font></font></b></nobr></div>
+<div style="position:absolute;top:894;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The number of records N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> stores the number of</font></font></nobr></div>
+<div style="position:absolute;top:910;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">parts (parts file) or positions (file of</font></font></nobr></div>
+<div style="position:absolute;top:927;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">lonely) in the file. </font><font style="vertical-align: inherit;">It is worth 0 for the files of</font></font></nobr></div>
+<div style="position:absolute;top:943;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">players and tournaments. </font><font style="vertical-align: inherit;">The number of records N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font></nobr></div>
+<div style="position:absolute;top:960;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">is limited to 2,147,483,648 games per year for</font></font></nobr></div>
+<div style="position:absolute;top:976;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">games files, at 2,147,483,648 positions for</font></font></nobr></div>
+<div style="position:absolute;top:993;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">solitaires files.</font></font></nobr></div>
+<div style="position:absolute;top:910;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File name: WTH _ ####. WTD</font></font></nobr></div>
+<div style="position:absolute;top:927;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Each record (104 bytes) contains:</font></font></nobr></div>
+<div style="position:absolute;top:960;left:458"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wording</font></font></b></nobr></div>
+<div style="position:absolute;top:960;left:671"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cut</font></font></b></nobr></div>
+<div style="position:absolute;top:960;left:735"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Type</font></font></b></nobr></div>
+<div style="position:absolute;top:976;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tournament label number</font></font></nobr></div>
+<div style="position:absolute;top:976;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:976;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:993;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Black player number</font></font></nobr></div>
+<div style="position:absolute;top:993;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:993;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:1009;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The number of records N </font></font><font style="font-size:4px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></font></nobr></div>
+<div style="position:absolute;top:1009;left:301"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">stores the number of</font></font></nobr></div>
+<div style="position:absolute;top:1026;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">players (player names file), tournaments (file</font></font></nobr></div>
+<div style="position:absolute;top:1042;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">of tournament labels) or the number of empty boxes in the</font></font></nobr></div>
+<div style="position:absolute;top:1059;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">solitaires (solitaires file) in the file. </font><font style="vertical-align: inherit;">It is worth 0</font></font></nobr></div>
+<div style="position:absolute;top:1075;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">for game files. </font><font style="vertical-align: inherit;">The number of records</font></font></nobr></div>
+<div style="position:absolute;top:1092;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> is limited to 65535 for tournament labels and</font></font></nobr></div>
+<div style="position:absolute;top:1108;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">player names, to 64 for solitaire files.</font></font></nobr></div>
+<div style="position:absolute;top:1009;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Player number White</font></font></nobr></div>
+<div style="position:absolute;top:1009;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:1009;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:1026;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Number of black pawns (real score) 1</font></font></nobr></div>
+<div style="position:absolute;top:1026;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:1042;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Theoretical score</font></font></nobr></div>
+<div style="position:absolute;top:1042;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:1042;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:1059;left:458"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">List of moves</font></font></nobr></div>
+<div style="position:absolute;top:1059;left:671"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">96</font></font></nobr></div>
+<div style="position:absolute;top:1059;left:735"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte []</font></font></nobr></div>
+<div style="position:absolute;top:1092;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- There is a file of games per year. </font><font style="vertical-align: inherit;">In a file</font></font></nobr></div>
+<div style="position:absolute;top:1108;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">of parts, these are stored in any order</font></font></nobr></div>
+<div style="position:absolute;top:1125;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">conch, but normally grouped by tournament.</font></font></nobr></div>
+<div style="position:absolute;top:1125;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The year of the games is worth 0 in the player files,</font></font></nobr></div>
+<div style="position:absolute;top:1141;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">tournaments or solitaires.</font></font></nobr></div>
+<div style="position:absolute;top:1141;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The #### of the file name are the number of the year.</font></font></nobr></div>
+<div style="position:absolute;top:1158;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- Parameter P </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> (in a file of parts or</font></font></nobr></div>
+<div style="position:absolute;top:1174;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">solitaires) indicates the size of the game board:</font></font></nobr></div>
+<div style="position:absolute;top:1158;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The theoretical score contains the score (in number of</font></font></nobr></div>
+<div style="position:absolute;top:1174;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">pawns) of the Black player on a perfect final. </font><font style="vertical-align: inherit;">This final</font></font></nobr></div>
+<div style="position:absolute;top:1191;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">is calculated on the position whose number of empty boxes</font></font></nobr></div>
+<div style="position:absolute;top:1207;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">is equal to parameter 3 (depth). </font><font style="vertical-align: inherit;">For example, for</font></font></nobr></div>
+<div style="position:absolute;top:1224;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">a depth of 22, the perfect finish begins at</font></font></nobr></div>
+<div style="position:absolute;top:1240;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">move 75, that is, once move 74 is played.</font></font></nobr></div>
+<div style="position:absolute;top:1191;left:137"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0: standard 8x8 game board</font></font></nobr></div>
+<div style="position:absolute;top:1207;left:137"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">8: standard 8x8 game board</font></font></nobr></div>
+<div style="position:absolute;top:1224;left:137"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">10: 10x10 game board</font></font></nobr></div>
+<div style="position:absolute;top:1240;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">It is 0 in all other cases.</font></font></nobr></div>
+<div style="position:absolute;top:1257;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The parameter P </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2 is</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> worth 1 in the solitaires files, and</font></font></nobr></div>
+<div style="position:absolute;top:1257;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The list of moves starts at move 1.g6.</font></font></nobr></div>
+<div style="position:absolute;top:1273;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0 in all other cases.</font></font></nobr></div>
+<div style="position:absolute;top:1273;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The shots are stored in chronological order from the</font></font></nobr></div>
+<div style="position:absolute;top:1290;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">part according to the following format: number the lines and co-</font></font></nobr></div>
+<div style="position:absolute;top:1306;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">lonnes from 1 to 10 and perform the operation =&gt; column + (12</font></font></nobr></div>
+<div style="position:absolute;top:1323;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">* line). </font><font style="vertical-align: inherit;">Ex: a1 = 13, j1 = 22, a10 = 121, j10 = 130.</font></font></nobr></div>
+<div style="position:absolute;top:1290;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- Parameter P </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> (in a part file) indicates the</font></font></nobr></div>
+<div style="position:absolute;top:1306;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">depth for which the theoretical score is calculated (the</font></font></nobr></div>
+<div style="position:absolute;top:1323;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">value 0 is equivalent to value 22 for files</font></font></nobr></div>
+<div style="position:absolute;top:1339;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">after 01/01/2001).</font></font></nobr></div>
+<div style="position:absolute;top:1339;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- File size in bytes: 16 + N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> * 104.</font></font></nobr></div>
+</span></font>
+
+<div style="position:absolute;top:1438;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="2"><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Page 2</font></font></b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:1525;left:123"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solitaire files on 8x8 set</font></font></b></nobr></div>
+<div style="position:absolute;top:1525;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The position is stored line by line, with 2 bytes per</font></font></nobr></div>
+<div style="position:absolute;top:1542;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">line. </font><font style="vertical-align: inherit;">Byte 0 encodes boxes a1-d1, byte 1 boxes e1-</font></font></nobr></div>
+<div style="position:absolute;top:1558;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">h1, etc., up to byte 15 coding boxes e8-h8. </font><font style="vertical-align: inherit;">In</font></font></nobr></div>
+<div style="position:absolute;top:1575;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">each byte, the color of each box is coded by the</font></font></nobr></div>
+<div style="position:absolute;top:1591;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">following bit combination:</font></font></nobr></div>
+<div style="position:absolute;top:1558;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File name: SOLITAIRES _ ##. PZZ</font></font></nobr></div>
+<div style="position:absolute;top:1575;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solitaires are interesting final positions</font></font></nobr></div>
+<div style="position:absolute;top:1591;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">extracted from the Wthor database in which the player</font></font></nobr></div>
+<div style="position:absolute;top:1608;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">having the stroke has, at each stroke, a single stroke leading to the</font></font></nobr></div>
+<div style="position:absolute;top:1624;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">gain or zero on the perfect result. </font><font style="vertical-align: inherit;">All the loners</font></font></nobr></div>
+<div style="position:absolute;top:1641;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">of the same file have the same number of empty boxes,</font></font></nobr></div>
+<div style="position:absolute;top:1657;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">indicated in the header and ## of the file name.</font></font></nobr></div>
+<div style="position:absolute;top:1608;left:507"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">empty box: 00</font></font></nobr></div>
+<div style="position:absolute;top:1624;left:507"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">black pawn: 11</font></font></nobr></div>
+<div style="position:absolute;top:1641;left:507"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">white pawn: 10</font></font></nobr></div>
+<div style="position:absolute;top:1657;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The line is worth 1 for Black, 2 for White.</font></font></nobr></div>
+<div style="position:absolute;top:1674;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The score of the solution contains the score, in difference</font></font></nobr></div>
+<div style="position:absolute;top:1690;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">of pawns with his opponent, of the player having the line in</font></font></nobr></div>
+<div style="position:absolute;top:1707;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">the position of the loner, on a perfect finish.</font></font></nobr></div>
+<div style="position:absolute;top:1690;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Following the standard 16-byte main header of the</font></font></nobr></div>
+<div style="position:absolute;top:1707;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wthor base, each 8x8 solitaires file includes a</font></font></nobr></div>
+<div style="position:absolute;top:1723;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">secondary header of 512 bytes constituted as follows:</font></font></nobr></div>
+<div style="position:absolute;top:1723;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The first stroke of the solution is stored according to the form-</font></font></nobr></div>
+<div style="position:absolute;top:1740;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">next mat: number rows and columns from 1 to 8 and</font></font></nobr></div>
+<div style="position:absolute;top:1756;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">perform the operation =&gt; column + (10 * row).</font></font></nobr></div>
+<div style="position:absolute;top:1756;left:87"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wording</font></font></b></nobr></div>
+<div style="position:absolute;top:1756;left:296"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Size Type</font></font></b></nobr></div>
+<div style="position:absolute;top:1773;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Presence table</font></font></nobr></div>
+<div style="position:absolute;top:1773;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">512</font></font></nobr></div>
+<div style="position:absolute;top:1773;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Longint []</font></font></nobr></div>
+<div style="position:absolute;top:1773;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- The real score of the game contains the real score (in</font></font></nobr></div>
+<div style="position:absolute;top:1789;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">number of pawns) of the Black player in the game whose</font></font></nobr></div>
+<div style="position:absolute;top:1806;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">extract the solitaire.</font></font></nobr></div>
+<div style="position:absolute;top:1806;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The presence table is an array of 64 long integers</font></font></nobr></div>
+<div style="position:absolute;top:1822;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">where all entries are 0 except N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:1821;left:387"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">nd </font></font><font style="font-size:13px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">that</font></font></font></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:1839;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">contains the number of records N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> in the file. </font><font style="vertical-align: inherit;">This</font></font></nobr></div>
+<div style="position:absolute;top:1855;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">presence table allows consistency check</font></font></nobr></div>
+<div style="position:absolute;top:1872;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">information read in the main header: N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> is the</font></font></nobr></div>
+<div style="position:absolute;top:1888;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">number of solitaires and N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> the number of empty spaces in the</font></font></nobr></div>
+<div style="position:absolute;top:1905;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">lonely.</font></font></nobr></div>
+<div style="position:absolute;top:1822;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- move 25 of the game contains the one that took place in</font></font></nobr></div>
+<div style="position:absolute;top:1839;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">the part from which the solitaire is drawn, if the part appears in</font></font></nobr></div>
+<div style="position:absolute;top:1855;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">the Wthor base. </font><font style="vertical-align: inherit;">It is stored in the following format:</font></font></nobr></div>
+<div style="position:absolute;top:1872;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">number rows and columns from 1 to 8 and perform</font></font></nobr></div>
+<div style="position:absolute;top:1888;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">the operation =&gt; column + (10 * row). </font><font style="vertical-align: inherit;">It contains 0 if this</font></font></nobr></div>
+<div style="position:absolute;top:1905;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">information is not available.</font></font></nobr></div>
+<div style="position:absolute;top:1921;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- File size in bytes: 16 + 512 + N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> * 36.</font></font></nobr></div>
+<div style="position:absolute;top:1938;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Each record (36 bytes) is constituted as</font></font></nobr></div>
+<div style="position:absolute;top:1954;left:84"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">follows:</font></font></nobr></div>
+<div style="position:absolute;top:1954;left:515"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tournament label file</font></font></b></nobr></div>
+<div style="position:absolute;top:1987;left:87"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wording</font></font></b></nobr></div>
+<div style="position:absolute;top:1987;left:296"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Size Type</font></font></b></nobr></div>
+<div style="position:absolute;top:1987;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File name: WTHOR.TRN</font></font></nobr></div>
+<div style="position:absolute;top:2004;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Year of the solitaire game</font></font></nobr></div>
+<div style="position:absolute;top:2004;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:2004;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:2004;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Each record (26 bytes) is an array of</font></font></nobr></div>
+<div style="position:absolute;top:2020;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">characters terminated with a binary zero. </font><font style="vertical-align: inherit;">Useful length</font></font></nobr></div>
+<div style="position:absolute;top:2037;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">is 25 characters.</font></font></nobr></div>
+<div style="position:absolute;top:2020;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tournament label number</font></font></nobr></div>
+<div style="position:absolute;top:2020;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:2020;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Word</font></font></nobr></div>
+<div style="position:absolute;top:2037;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Black player number</font></font></nobr></div>
+<div style="position:absolute;top:2037;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4</font></font></nobr></div>
+<div style="position:absolute;top:2037;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Longint</font></font></nobr></div>
+<div style="position:absolute;top:2053;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Player number White</font></font></nobr></div>
+<div style="position:absolute;top:2053;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4</font></font></nobr></div>
+<div style="position:absolute;top:2053;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Longint</font></font></nobr></div>
+<div style="position:absolute;top:2053;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File size in bytes: 16 + N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> * 26.</font></font></nobr></div>
+<div style="position:absolute;top:2070;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Position</font></font></nobr></div>
+<div style="position:absolute;top:2070;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">16</font></font></nobr></div>
+<div style="position:absolute;top:2070;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte []</font></font></nobr></div>
+<div style="position:absolute;top:2086;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Number of empty boxes</font></font></nobr></div>
+<div style="position:absolute;top:2086;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:2086;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:2086;left:524"><nobr><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Player names file</font></font></b></nobr></div>
+<div style="position:absolute;top:2103;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Trait</font></font></nobr></div>
+<div style="position:absolute;top:2103;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:2103;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:2119;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solution score</font></font></nobr></div>
+<div style="position:absolute;top:2119;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:2119;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Signed Byte</font></font></nobr></div>
+<div style="position:absolute;top:2119;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File name: WTHOR.JOU</font></font></nobr></div>
+<div style="position:absolute;top:2136;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1st shot of the solution</font></font></nobr></div>
+<div style="position:absolute;top:2136;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:2136;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:2136;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Each record (20 bytes) is an array of</font></font></nobr></div>
+<div style="position:absolute;top:2152;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">characters terminated with a binary zero. </font><font style="vertical-align: inherit;">Useful length</font></font></nobr></div>
+<div style="position:absolute;top:2169;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">is 19 characters.</font></font></nobr></div>
+<div style="position:absolute;top:2152;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Actual score of the game</font></font></nobr></div>
+<div style="position:absolute;top:2152;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:2152;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:2169;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Hit 25 of the game</font></font></nobr></div>
+<div style="position:absolute;top:2169;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></nobr></div>
+<div style="position:absolute;top:2169;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Byte</font></font></nobr></div>
+<div style="position:absolute;top:2185;left:87"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">X</font></font></nobr></div>
+<div style="position:absolute;top:2185;left:296"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></nobr></div>
+<div style="position:absolute;top:2185;left:342"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">(Reserve)</font></font></nobr></div>
+<div style="position:absolute;top:2185;left:455"><nobr><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">File size in bytes: 16 + N </font></font><font style="font-size:7px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></font><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> * 20.</font></font></nobr></div>
+</span></font>
+
+
+
+            <script>
+              function gtElInit() {
+                var lib = new google.translate.TranslateService();
+                lib.setCheckVisibility(false);
+                lib.translatePage('fr', 'en', function (progress, done, error) {
+                  if (progress == 100 || done || error) {
+                    document.getElementById("gt-dt-spinner").style.display = "none";
+                  }
+                });
+              }
+            </script>
+            <script src="./Wthor database format_files/f.txt">
+            </script><div id="goog-gt-tt" class="skiptranslate" dir="ltr"><div style="padding: 8px;"><div><div class="logo"><img src="./Wthor database format_files/translate_24dp.png" width="20" height="20" alt="Google Translate"></div></div></div><div class="top" style="padding: 8px; float: left; width: 100%;"><h1 class="title gray">Original text</h1></div><div class="middle" style="padding: 8px;"><div class="original-text"></div></div><div class="bottom" style="padding: 8px;"><div class="activity-links"><span class="activity-link">Contribute a better translation</span><span class="activity-link"></span></div><div class="started-activity-container"><hr style="color: #CCC; background-color: #CCC; height: 1px; border: none;"><div class="activity-root"></div></div></div><div class="status-message" style="display: none;"></div></div>
+          <div class="goog-te-spinner-pos"><div class="goog-te-spinner-animation"><svg xmlns="http://www.w3.org/2000/svg" class="goog-te-spinner" width="96px" height="96px" viewBox="0 0 66 66"><circle class="goog-te-spinner-path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg></div></div></body></html>
