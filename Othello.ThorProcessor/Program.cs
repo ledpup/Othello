@@ -24,7 +24,6 @@ namespace Othello.ThorProcessor
                 games.AddRange(ThorFileReader.ReadThorGameFile(x));
             });
 
-
             var serialisedGames = ThorFileReader.BuildOpeningBook(games, tournaments, players);
         }
     }

@@ -43,6 +43,14 @@
     <None Remove="DataFiles\WTH_2009.wtb" />
     <None Remove="DataFiles\WTH_2010.wtb" />
     <None Remove="DataFiles\WTH_2011.wtb" />
+    <None Remove="DataFiles\WTH_2012.wtb" />
+    <None Remove="DataFiles\WTH_2013.wtb" />
+    <None Remove="DataFiles\WTH_2014.wtb" />
+    <None Remove="DataFiles\WTH_2015.wtb" />
+    <None Remove="DataFiles\WTH_2016.wtb" />
+    <None Remove="DataFiles\WTH_2017.wtb" />
+    <None Remove="DataFiles\WTH_2018.wtb" />
+    <None Remove="DataFiles\WTH_2019.wtb" />
   </ItemGroup>
 
   <ItemGroup>
@@ -155,6 +163,30 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\WTH_2011.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2012.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2013.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2014.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2015.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2016.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2017.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2018.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2019.wtb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
