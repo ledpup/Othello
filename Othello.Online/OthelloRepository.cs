@@ -78,7 +78,14 @@ namespace Othello.Online
             var game = await _othelloContext.Games.SingleOrDefaultAsync(x => x.Id == gameId);
 
             var gameManager = GameManager.Load(game.GameState);
+
+            if (!gameManager.CanPlay((short)play.ToIndex()))
+            {
+                gameManager.PlacePiece(null);
+                gameManager.NextTurn();
+            }
             gameManager.PlacePiece(play.ToIndex());
+            gameManager.NextTurn();
 
             game.GameState = gameManager.SerialiseState();
             game.UpdatedUtc = DateTime.UtcNow;

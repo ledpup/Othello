@@ -88,6 +88,10 @@ namespace ComputerTrainer
                 if (!gameManager.HasPlays)
                 {
                     gameManager.NextTurn();
+                    if (!gameManager.HasPlays && !gameManager.IsGameOver)
+                    {
+                        throw new Exception("Game state is corrupted. Neither player can have their turn but the game is not considered to be over");
+                    }
                     continue;
                 }
 

@@ -93,6 +93,31 @@ namespace Othello.Online.IntegrationTest
         }
 
         [TestMethod]
+        public async Task UpdateGame_ValidPlayWithTurnSkip_GameStateUpdatedAsync()
+        {
+            await SetupUsersAsync();
+
+            var users = await _othelloRepository.GetUsersAsync();
+
+            var gameStateUpUntilSkippedTurn = "D3,C3,B3,B2,B1,A1,C4,C1,C2,D2,D1,E1,A2,A3,F5,E2,F1,G1";
+
+            var gameDto = new GameDto
+            {
+                Name = "New game",
+                GameState = gameStateUpUntilSkippedTurn,
+                UserBlackId = users[0].Id,
+                UserWhiteId = users[1].Id,
+            };
+
+            var gameId = await _othelloRepository.CreateGameAsync(gameDto);
+            await _othelloRepository.UpdateGameAsync(gameId, "F2");
+
+            var savedDto = await _othelloRepository.GetGameDtoAsync(gameId);
+
+            Assert.AreEqual(gameStateUpUntilSkippedTurn + ",,F2", savedDto.GameState);
+        }
+
+        [TestMethod]
         public async Task UpdateGame_InvalidPlay_GameStateUnchangedAsync()
         {
             await SetupUsersAsync();
