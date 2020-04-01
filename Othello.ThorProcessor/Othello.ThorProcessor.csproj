@@ -1,0 +1,166 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DataFiles\WTHOR.JOU" />
+    <None Remove="DataFiles\WTHOR.TRN" />
+    <None Remove="DataFiles\WTH_1977.wtb" />
+    <None Remove="DataFiles\WTH_1978.wtb" />
+    <None Remove="DataFiles\WTH_1979.wtb" />
+    <None Remove="DataFiles\WTH_1980.wtb" />
+    <None Remove="DataFiles\WTH_1981.wtb" />
+    <None Remove="DataFiles\WTH_1982.wtb" />
+    <None Remove="DataFiles\WTH_1983.wtb" />
+    <None Remove="DataFiles\WTH_1984.wtb" />
+    <None Remove="DataFiles\WTH_1985.wtb" />
+    <None Remove="DataFiles\WTH_1986.wtb" />
+    <None Remove="DataFiles\WTH_1987.wtb" />
+    <None Remove="DataFiles\WTH_1988.wtb" />
+    <None Remove="DataFiles\WTH_1989.wtb" />
+    <None Remove="DataFiles\WTH_1990.wtb" />
+    <None Remove="DataFiles\WTH_1991.wtb" />
+    <None Remove="DataFiles\WTH_1992.wtb" />
+    <None Remove="DataFiles\WTH_1993.wtb" />
+    <None Remove="DataFiles\WTH_1994.wtb" />
+    <None Remove="DataFiles\WTH_1995.wtb" />
+    <None Remove="DataFiles\WTH_1996.wtb" />
+    <None Remove="DataFiles\WTH_1997.wtb" />
+    <None Remove="DataFiles\WTH_1998.wtb" />
+    <None Remove="DataFiles\WTH_1999.wtb" />
+    <None Remove="DataFiles\WTH_2000.wtb" />
+    <None Remove="DataFiles\WTH_2001.wtb" />
+    <None Remove="DataFiles\WTH_2002.wtb" />
+    <None Remove="DataFiles\WTH_2003.wtb" />
+    <None Remove="DataFiles\WTH_2004.wtb" />
+    <None Remove="DataFiles\WTH_2005.wtb" />
+    <None Remove="DataFiles\WTH_2006.wtb" />
+    <None Remove="DataFiles\WTH_2007.wtb" />
+    <None Remove="DataFiles\WTH_2008.wtb" />
+    <None Remove="DataFiles\WTH_2009.wtb" />
+    <None Remove="DataFiles\WTH_2010.wtb" />
+    <None Remove="DataFiles\WTH_2011.wtb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DataFiles\WTHOR.JOU">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTHOR.TRN">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1977.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1978.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1979.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1980.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1981.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1982.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1983.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1984.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1985.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1986.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1987.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1988.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1989.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1990.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1991.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1992.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1993.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1994.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1995.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1996.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1997.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1998.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_1999.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2000.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2001.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2002.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2003.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2004.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2005.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2006.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2007.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2008.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2009.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2010.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2011.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Othello.Model\Othello.Model.csproj" />
+  </ItemGroup>
+
+</Project>
