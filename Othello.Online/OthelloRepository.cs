@@ -27,6 +27,7 @@ namespace Othello.Online
                 GameState = game.GameState,
                 UserBlackId = game.UserBlackId,
                 UserWhiteId = game.UserWhiteId,
+                Finished = game.Finished,
                 TurnLengthLimit = game.TurnLengthLimit,
             };
 
@@ -88,6 +89,7 @@ namespace Othello.Online
             gameManager.NextTurn();
 
             game.GameState = gameManager.SerialiseState();
+            game.Finished = gameManager.IsGameOver;
             game.UpdatedUtc = DateTime.UtcNow;
             _othelloContext.Update(game);
 

@@ -17,6 +17,7 @@ namespace Othello.Online.DataTransferObject
         public string GameState { get; set; }
         public Guid UserBlackId { get; set; }
         public Guid UserWhiteId { get; set; }
+        public bool Finished { get; set; }
         public TimeSpan TurnLengthLimit { get; set; }
     }
 }
