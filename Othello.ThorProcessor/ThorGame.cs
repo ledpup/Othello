@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Othello.Model.Thor
+namespace Othello.ThorProcessor
 {
     public class ThorGame
     {

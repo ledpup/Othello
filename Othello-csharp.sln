@@ -16,6 +16,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.Online.IntegrationT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Othello.UnitTests", "Othello.UnitTests\Othello.UnitTests.csproj", "{591EF001-F7EF-4257-ABD4-4F0D7817394D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.ThorProcessor", "Othello.ThorProcessor\Othello.ThorProcessor.csproj", "{78970A7A-D916-49E7-8037-4865AB12CF50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,14 @@ Global
 		{591EF001-F7EF-4257-ABD4-4F0D7817394D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{591EF001-F7EF-4257-ABD4-4F0D7817394D}.Release|x86.ActiveCfg = Release|Any CPU
 		{591EF001-F7EF-4257-ABD4-4F0D7817394D}.Release|x86.Build.0 = Release|Any CPU
+		{78970A7A-D916-49E7-8037-4865AB12CF50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78970A7A-D916-49E7-8037-4865AB12CF50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78970A7A-D916-49E7-8037-4865AB12CF50}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{78970A7A-D916-49E7-8037-4865AB12CF50}.Debug|x86.Build.0 = Debug|Any CPU
+		{78970A7A-D916-49E7-8037-4865AB12CF50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78970A7A-D916-49E7-8037-4865AB12CF50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78970A7A-D916-49E7-8037-4865AB12CF50}.Release|x86.ActiveCfg = Release|Any CPU
+		{78970A7A-D916-49E7-8037-4865AB12CF50}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
