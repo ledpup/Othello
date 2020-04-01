@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Othello.ThorProcessor
+namespace Othello.WthorProcessor
 {
-    public static class ThorFileReader
+    public static class WthorFileLoader
     {
         public static Dictionary<int, string> ReadTournamentFile(string fileName)
         {
@@ -18,7 +18,7 @@ namespace Othello.ThorProcessor
             }
             if (fileInfo.Extension.ToUpper() != ".TRN")
             {
-                throw new Exception($"File extension is {fileInfo.Extension}. THOR tournament file is a .TRN file extension.");
+                throw new Exception($"File extension is {fileInfo.Extension}. WTHOR tournament file is a .TRN file extension.");
             }    
 
             var array = File.ReadAllBytes(fileName);
@@ -36,7 +36,7 @@ namespace Othello.ThorProcessor
             }
             if (fileInfo.Extension.ToUpper() != ".JOU")
             {
-                throw new Exception($"File extension is {fileInfo.Extension}. THOR players file is a .JOU file extension.");
+                throw new Exception($"File extension is {fileInfo.Extension}. WTHOR players file is a .JOU file extension.");
             }
 
             var array = File.ReadAllBytes(fileName);
@@ -45,39 +45,39 @@ namespace Othello.ThorProcessor
             return players;
         }
 
-        public static List<ThorGame> ReadThorGameFile(string fileName)
+        public static List<WthorGame> ReadWthorGameFile(string fileName)
         {
             var fileInfo = new FileInfo(fileName);
             if (!fileInfo.Exists)
             {
-                throw new FileNotFoundException($"THOR DB file {fileName} not found", fileName);
+                throw new FileNotFoundException($"WTHOR DB file {fileName} not found", fileName);
             }
             if (fileInfo.Extension.ToUpper() != ".WTB")
             {
-                throw new Exception($"File extension is {fileInfo.Extension}. THOR game database file is a .WTB file extension.");
+                throw new Exception($"File extension is {fileInfo.Extension}. WTHOR game database file is a .WTB file extension.");
             }
 
-            var thorGames = new List<ThorGame>();
+            var wthorGames = new List<WthorGame>();
 
             var data = File.ReadAllBytes(fileName);
-            thorGames.AddRange(GetThorGamesFromDbFile(data));
+            wthorGames.AddRange(GetWthorGamesFromDbFile(data));
 
-            return thorGames;
+            return wthorGames;
         }
 
-        public static string[] BuildOpeningBook(List<ThorGame> games, IDictionary<int, string> tournaments, IDictionary<int, string> players)
+        public static string[] BuildOpeningBook(List<WthorGame> games, IDictionary<int, string> tournaments, IDictionary<int, string> players)
         {
             var serialisedGames = new List<string>();
             games.ForEach(x => 
             {
-                var game = ValidateAndSerialiseGame(x, players);
-                if (game != null)
+                var gameManager = ConvertWthorGameToGameManager(x, players);
+                if (gameManager != null)
                 {
-                    serialisedGames.Add(game);
+                    serialisedGames.Add(SerialiseGameToOpeningBookFormat(gameManager));
                 }
                 else
                 {
-                    //throw new Exception($"Game between {players[x.BlackId]} and {players[x.WhiteId]} in tournament {tournaments[x.TournamentId]} is invalid as it was not finished. Game state is {x.SerialisedPlays}.");
+                    // throw new Exception($"Game between {players[x.BlackId]} and {players[x.WhiteId]} in tournament {tournaments[x.TournamentId]} is invalid as it was not finished. Game state is {x.SerialisedPlays}.");
                 }   
             });
 
@@ -88,7 +88,17 @@ namespace Othello.ThorProcessor
             return array;
         }
 
-        public static string ValidateAndSerialiseGame(ThorGame game, IDictionary<int, string> players)
+
+        static string SerialiseGameToOpeningBookFormat(GameManager gameManager)
+        {
+            var stringBuilder = new StringBuilder(gameManager.Plays.ToChars());
+            stringBuilder.Append(",");
+            stringBuilder.Append(gameManager.Winner);
+
+            return stringBuilder.ToString();
+        }
+
+        public static GameManager ConvertWthorGameToGameManager(WthorGame game, IDictionary<int, string> players)
         {
             var plays = GameManager.DeserialsePlays(game.SerialisedPlays);
 
@@ -116,13 +126,9 @@ namespace Othello.ThorProcessor
                 {
                     throw new Exception(string.Format("Invalid game because the calculated score ({0}) does not match the recorded score ({1}).", gameManager.BlackScore, game.BlackScore));
                 }
-
-                var stringBuilder = new StringBuilder(gameManager.Plays.ToChars());
-                stringBuilder.Append(",");
-                stringBuilder.Append(gameManager.Winner);
-
-                return stringBuilder.ToString();
+                return gameManager;
             }
+            // Game not finished
             return null;
         }
 
@@ -150,7 +156,7 @@ namespace Othello.ThorProcessor
             return dictionary;
         }
 
-        public static List<ThorGame> GetThorGamesFromDbFile(byte[] fileContent)
+        public static List<WthorGame> GetWthorGamesFromDbFile(byte[] fileContent)
         {
             const int fileHeaderLength = 16;
             const int gameHeaderLength = 8;
@@ -158,13 +164,13 @@ namespace Othello.ThorProcessor
             const int gameBlockLength = gameHeaderLength + numberOfPlays;
 
             if (fileContent[12] != 8)
-                throw new Exception("Thor processor only supports 8x8 boards");
+                throw new Exception("WThor processor only supports 8x8 boards");
 
-            var games = new List<ThorGame>();
+            var games = new List<WthorGame>();
 
             for (var i = fileHeaderLength; i < fileContent.Length; i += gameBlockLength)
             {
-                var game = new ThorGame
+                var game = new WthorGame
                 {
                     TournamentId = BitConverter.ToInt16(new[] { fileContent[i], fileContent[i + 1] }, 0),
                     BlackId = BitConverter.ToInt16(new[] { fileContent[i + 2], fileContent[i + 3] }, 0),
