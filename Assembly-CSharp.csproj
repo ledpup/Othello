@@ -73,7 +73,7 @@
     <Compile Include="Assets\UI\PieceBehaviour.cs" />
     <Compile Include="Assets\UI\PlayerUiSettings.cs" />
     <Compile Include="Assets\UI\TileBehaviour.cs" />
-    <None Include="Assets\StreamingAssets\ArchiveData.txt" />
+    <None Include="Assets\StreamingAssets\WthorOpeningBook.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/ledpup/Documents/GitHub/Othello/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -308,6 +308,12 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.19f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
+    <Reference Include="Othello.Core">
+      <HintPath>C:/Users/ledpup/Documents/GitHub/Othello/Assets/bin/Debug/Othello.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Othello.Model">
+      <HintPath>C:/Users/ledpup/Documents/GitHub/Othello/Assets/bin/Debug/Othello.Model.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>C:/Users/ledpup/Documents/GitHub/Othello/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
@@ -316,12 +322,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>C:/Users/ledpup/Documents/GitHub/Othello/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
-    </Reference>
-    <Reference Include="Othello.Model">
-      <HintPath>C:/Users/ledpup/Documents/GitHub/Othello/Assets/bin/Debug/Othello.Model.dll</HintPath>
-    </Reference>
-    <Reference Include="Othello.Core">
-      <HintPath>C:/Users/ledpup/Documents/GitHub/Othello/Assets/bin/Debug/Othello.Core.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.19f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

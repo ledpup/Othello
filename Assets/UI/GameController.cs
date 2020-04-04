@@ -107,16 +107,11 @@ public class GameController : MonoBehaviour, IGameController
 
         _playerUiSettings = PlayerUiSettings.Load();
 
-
-
-
-
         BoardLocation = ((short)0).ToCartesianCoordinate();
 
-        var archiveData = Application.streamingAssetsPath + "/ArchiveData.txt";
-
-        GameArchive = File.Exists(archiveData)
-                                ? File.ReadAllLines(archiveData).ToList()
+        var wthorOpeningBook = Application.streamingAssetsPath + "/WthorOpeningBook.txt";
+        GameArchive = File.Exists(wthorOpeningBook)
+                                ? File.ReadAllLines(wthorOpeningBook).ToList()
                                 : new List<string>();
 
         try

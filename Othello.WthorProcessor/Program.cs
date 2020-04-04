@@ -9,10 +9,13 @@ namespace Othello.WthorProcessor
     {
         static void Main(string[] args)
         {
-            var players = WthorFileLoader.ReadPlayersFile(@"DataFiles\WTHOR.JOU");
-            var tournaments = WthorFileLoader.ReadTournamentFile(@"DataFiles\WTHOR.TRN");
+            var folder = args.Length > 0 ? args[0] : "DataFiles";
+            var outputFile = args.Length > 1 ? args[1] : "WthorOpeningBook.txt";
 
-            var files = Directory.GetFiles(@"DataFiles", "*.wtb").OrderBy(x => x).ToList();
+            var players = WthorFileLoader.ReadPlayersFile($@"{folder}\WTHOR.JOU");
+            var tournaments = WthorFileLoader.ReadTournamentFile($@"{folder}\WTHOR.TRN");
+
+            var files = Directory.GetFiles(folder, "*.wtb").OrderBy(x => x).ToList();
             if (!files.Any())
             {
                 throw new Exception("No Thor DB files can be found.");
@@ -25,6 +28,8 @@ namespace Othello.WthorProcessor
             });
 
             var serialisedGames = WthorFileLoader.BuildOpeningBook(games, tournaments, players);
+
+            File.WriteAllLines(outputFile, serialisedGames);
         }
     }
 }
