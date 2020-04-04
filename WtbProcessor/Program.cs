@@ -12,7 +12,7 @@ namespace WtbProcessor
     {
         static void Main(string[] args)
         {
-            var gameArchive = File.ReadAllLines("ArchiveData.txt").ToList();
+            var gameArchive = File.ReadAllLines("WthorOpeningBook.txt").ToList();
             var gameStateStats = new GameStateStats();
 
             var computerPlayers = new[] { new ComputerPlayer(), new ComputerPlayer() };

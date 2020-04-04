@@ -67,7 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ArchiveData.txt">
+    <Content Include="WthorOpeningBook.txt">
       <CustomToolNamespace>My.Tool.Namespace</CustomToolNamespace>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
