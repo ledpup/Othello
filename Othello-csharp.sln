@@ -12,12 +12,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.Model", "Othello.Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.Core", "Othello.Core\Othello.Core.csproj", "{CC33DBEE-04CE-4B6E-8174-6891634D9FCA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.Online", "Othello.Online\Othello.Online.csproj", "{154699E3-51F5-41EE-B294-350D6E856CBF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.Online.IntegrationTests", "Othello.Online.IntegrationTests\Othello.Online.IntegrationTests.csproj", "{7258C960-22C8-4279-8F4B-F1DF84B50F75}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Othello.UnitTests", "Othello.UnitTests\Othello.UnitTests.csproj", "{591EF001-F7EF-4257-ABD4-4F0D7817394D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Othello.ThorProcessor", "Othello.ThorProcessor\Othello.ThorProcessor.csproj", "{78970A7A-D916-49E7-8037-4865AB12CF50}"
 EndProject
 Global
