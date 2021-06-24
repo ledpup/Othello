@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Othello.Model;
 using Othello.Model.Evaluation;
 
-namespace Tests
+namespace Othello.UnitTests
 {
     [TestClass]
     public class AnalysisNodeTest
@@ -52,7 +52,7 @@ namespace Tests
                 }
 
                 var depthFirstSearch = new DepthFirstSearch();
-                var computerPlayIndex = depthFirstSearch.GetPlay(gameManager, new ComputerPlayer());
+                var computerPlayIndex = depthFirstSearch.GetPlay(gameManager, new ComputerPlayer(new PlayerUiSettings()), new GameController());
 
                 gameManager.PlacePiece(computerPlayIndex);
                 gameManager.NextTurn();

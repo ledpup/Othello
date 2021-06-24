@@ -12,6 +12,27 @@ namespace Othello.Model.Evaluation
 	    public readonly short NumberOfGamePhases;
 	    private const short TurnsPerPhase = 6;
 
+        public ComputerPlayer(IPlayerUiSettings playerUiSettings)
+        {
+            PlayerUiSettings = playerUiSettings;
+
+            NumberOfGamePhases = 60 / TurnsPerPhase;
+
+            MaxSearchDepth = new int[NumberOfGamePhases];
+            MaxSearchTime = playerUiSettings.MaxSearchTime;
+            Weights = new Dictionary<string, float>[NumberOfGamePhases];
+            for (var i = 0; i < NumberOfGamePhases; i++)
+            {
+                MaxSearchDepth[i] = PlayerUiSettings.MaxSearchDepth;
+                Weights[i] = new Dictionary<string, float>();
+                Strategies.ForEach(x => Weights[i].Add(x, 1));
+            }
+
+            SetDefaults();
+
+            TranspositionTable = new Dictionary<GameState, float>();
+        }
+
         public SearchAlgorithms.SearchMethod Search
         { 
             get
@@ -60,27 +81,6 @@ namespace Othello.Model.Evaluation
 
 	    private readonly int[] MaxSearchDepth;
         public int MaxSearchTime;
-
-        public ComputerPlayer(IPlayerUiSettings playerUiSettings)
-        {
-			PlayerUiSettings = playerUiSettings;
-			
-            NumberOfGamePhases = 60 / TurnsPerPhase;
-
-            MaxSearchDepth = new int[NumberOfGamePhases];
-            MaxSearchTime = playerUiSettings.MaxSearchTime;
-            Weights = new Dictionary<string, float>[NumberOfGamePhases];
-            for (var i = 0; i < NumberOfGamePhases; i++)
-            {
-                MaxSearchDepth[i] = PlayerUiSettings.MaxSearchDepth;
-                Weights[i] = new Dictionary<string, float>();
-                Strategies.ForEach(x => Weights[i].Add(x, 1));
-            }
-
-            SetDefaults();
-
-            TranspositionTable = new Dictionary<GameState, float>();
-        }
 
         private void SetDefaults()
         {

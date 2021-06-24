@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Othello.Model;
 using Othello.Model.Evaluation;
 
-namespace Tests
+namespace Othello.UnitTests
 {
     [TestClass]
     public class PatternsTest
@@ -14,14 +14,14 @@ namespace Tests
         [TestMethod]
         public void CornerTest()
         {
-            var corners = Patterns.CombinedSymmetries("a1".ToBitBoard());
+            var corners = Patterns.CombinedSymmetries("A1".ToBitBoard());
 
             var positions = corners.ToAlgebraicNotationList();
             corners.Draw();
-            Assert.IsTrue(positions.Contains("a1"));
-            Assert.IsTrue(positions.Contains("h1"));
-            Assert.IsTrue(positions.Contains("a8"));
-            Assert.IsTrue(positions.Contains("h8"));
+            Assert.IsTrue(positions.Contains("A1"));
+            Assert.IsTrue(positions.Contains("H1"));
+            Assert.IsTrue(positions.Contains("A8"));
+            Assert.IsTrue(positions.Contains("H8"));
         }
 
         [TestMethod]
@@ -31,14 +31,14 @@ namespace Tests
 
             var positions = edges[2].ToAlgebraicNotationList();
             
-            Assert.IsTrue(positions.Contains("a8"));
-            Assert.IsTrue(positions.Contains("b8"));
-            Assert.IsTrue(positions.Contains("c8"));
-            Assert.IsTrue(positions.Contains("d8"));
-            Assert.IsTrue(positions.Contains("e8"));
-            Assert.IsTrue(positions.Contains("f8"));
-            Assert.IsTrue(positions.Contains("g8"));
-            Assert.IsTrue(positions.Contains("h8"));
+            Assert.IsTrue(positions.Contains("A8"));
+            Assert.IsTrue(positions.Contains("B8"));
+            Assert.IsTrue(positions.Contains("C8"));
+            Assert.IsTrue(positions.Contains("D8"));
+            Assert.IsTrue(positions.Contains("E8"));
+            Assert.IsTrue(positions.Contains("F8"));
+            Assert.IsTrue(positions.Contains("G8"));
+            Assert.IsTrue(positions.Contains("H8"));
         }
 
         [TestMethod]

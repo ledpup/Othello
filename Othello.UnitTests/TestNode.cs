@@ -4,7 +4,7 @@ using System.Linq;
 using Othello.Model;
 using Othello.Model.Evaluation;
 
-namespace Tests
+namespace Othello.UnitTests
 {
     class TestNode : INode
     {

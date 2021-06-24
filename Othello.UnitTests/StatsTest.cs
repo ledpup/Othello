@@ -5,7 +5,7 @@ using Othello.Model;
 using System.Diagnostics.Contracts;
 using Othello.Model.Evaluation;
 
-namespace Tests
+namespace Othello.UnitTests
 {
     [TestClass]
     public class StatsTest
