@@ -36,6 +36,8 @@ namespace Othello.Online
 
         public async Task<Guid> CreateGameAsync(GameDto gameDto)
         {
+            //var gameManager = Othello.Model.GameManager.Load(game.State);
+
             try
             {
                 GameManager.Load(gameDto.GameState);
@@ -55,6 +57,7 @@ namespace Othello.Online
             };
             _othelloContext.Games.Add(game);
 
+            _othelloContext.Games.Add(game);
             await _othelloContext.SaveChangesAsync();
 
             _othelloContext.Entry(game).State = EntityState.Detached;

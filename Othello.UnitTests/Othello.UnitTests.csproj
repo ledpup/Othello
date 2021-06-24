@@ -9,6 +9,9 @@
     <ProjectGuid>{591EF001-F7EF-4257-ABD4-4F0D7817394D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tests</RootNamespace>
+    <AssemblyName>Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <RootNamespace>Othello.UnitTests</RootNamespace>
     <AssemblyName>Othello.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
