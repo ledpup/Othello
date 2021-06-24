@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{E88425E7-8DB3-F7EE-3AC7-7F5A7A72F3E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -73,7 +74,6 @@
     <Compile Include="Assets\UI\PieceBehaviour.cs" />
     <Compile Include="Assets\UI\PlayerUiSettings.cs" />
     <Compile Include="Assets\UI\TileBehaviour.cs" />
-    <None Include="Assets\StreamingAssets\ArchiveData.txt" />
     <None Include="Assets\StreamingAssets\WthorOpeningBook.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/ledpup/Documents/GitHub/Othello/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
