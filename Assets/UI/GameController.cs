@@ -798,7 +798,7 @@ public class GameController : MonoBehaviour, IGameController
             _artificialDelay.Start();
 
             DepthFirstSearch.AnalysisNodeCollection.ClearMemory(this);
-            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _computerPlayer, ref _computerPlayIndex, this, _searchTime));
+            var thread = new Thread(() => _depthFirstSearch.GetPlayWithBook(_gameManager, _positionStats[_gameManager.Plays.ToChars()], _computerPlayer, this, ref _computerPlayIndex, _searchTime));
             thread.Start();
         }
         else if (_computerPlayIndex != null)
