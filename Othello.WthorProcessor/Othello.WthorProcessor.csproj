@@ -60,6 +60,7 @@
     <None Remove="DataFiles\WTH_2017.wtb" />
     <None Remove="DataFiles\WTH_2018.wtb" />
     <None Remove="DataFiles\WTH_2019.wtb" />
+    <None Remove="DataFiles\WTH_2020.wtb" />
     <None Remove="Format_WThor.pdf" />
     <None Remove="Wthor database format.html" />
   </ItemGroup>
@@ -198,6 +199,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\WTH_2019.wtb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\WTH_2020.wtb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
