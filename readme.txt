@@ -11,4 +11,8 @@ The source code can be compiled in either Visual Studio or MonoDevelop. You will
 
 More information about the project can be found at http://ledpup.blogspot.com.au/search/label/Reversi.
 
-March 2019 update: published to the Microsoft Store at https://www.microsoft.com/store/apps/9WZDNCRDWZZ3.
+Opening book games are from WThor archive (games recorded yearly from 1977): https://www.ffothello.org/informatique/la-base-wthor/
+
+2021 update: Abandoned XBox Live but merged the rest of the branch into master. Added 2020 archive.
+2020 update: refactored the WThor file reader. Added the games from 2012-2019. Started on online multiplayer using XBox Live.
+2019 update: published to the Microsoft Store at https://www.microsoft.com/store/apps/9WZDNCRDWZZ3.
