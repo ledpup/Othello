@@ -13,11 +13,11 @@ Othello is an implementation of the board-game Othello (aka Reversi). It was cre
 
 ## Visual Studio
 
-The source code can be compiled in either Visual Studio 2019, VS Code, or MonoDevelop. Build in Visual Studio first so the class libraries can go into the folders for Unity to pick-up. The class libraries are:
+The source code can be compiled in either Visual Studio 2019, VS Code, or MonoDevelop. Build in Visual Studio (or equivalent) first so the class libraries can go into the folders for Unity to pick-up. The class libraries are:
 * Othello.Core
 * Othello.Model
 
-If you don't build in Visual Studio (or equivalent IDE) you'll get compile errors in Unity.
+If you don't build in Visual Studio (or equivalent) you'll get compile errors in Unity.
 
 ## Unity
 
