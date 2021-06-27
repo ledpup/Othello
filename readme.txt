@@ -16,7 +16,7 @@ Build in Visual Studio first so the class libraries can go into the folders for 
 * Othello.Core
 * Othello.Model
 If you don't build in Visual Studio (or equivalent IDE) you'll get compile errors in Unity.
-The graphics engine currently runs on Unity 2019.2.19f1. It should be updated to a newer version. The unity project file is stored in the Assets folder. See http://unity3d.com/.
+The graphics engine currently runs on Unity 2019.2.19f1. It should be updated to a newer version. The unity project file is stored in the Assets folder. See http://unity3d.com/. The Unity scene you need to open is called *Othello.unity*, in the root of the repo.
 
 # Additional Information
 
