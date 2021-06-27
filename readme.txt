@@ -8,6 +8,7 @@ Othello is an implementation of the board-game Othello (aka Reversi). It was cre
 * Save and load games
 
 The source code can be compiled in either Visual Studio 2019, VS Code, or MonoDevelop.
+Build in Visual Studio first so the class libraries can go into the folders for Unity to pick-up.
 The graphics engine runs on Unity 2019.2.19f1. The unity project file is stored in the Assets folder. See http://unity3d.com/.
 
 More information about the project can be found at http://ledpup.blogspot.com.au/search/label/Reversi.
