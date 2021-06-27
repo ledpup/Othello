@@ -25,8 +25,8 @@ The graphics engine currently runs on Unity 2020.3.12f1. It should be updatable 
 
 # Additional Information
 
-More information about the project can be found at http://ledpup.blogspot.com.au/search/label/Reversi.
-Opening book games are from WThor archive (games recorded yearly from 1977): https://www.ffothello.org/informatique/la-base-wthor/
+* More information about the project can be found at http://ledpup.blogspot.com.au/search/label/Reversi.
+* Opening book games are from WThor archive (games recorded yearly from 1977): https://www.ffothello.org/informatique/la-base-wthor/
 
 # History
 
